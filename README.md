@@ -1,2 +1,1 @@
-# KASVU 
-### sote app
+# KASVU - sote app
