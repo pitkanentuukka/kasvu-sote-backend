@@ -1,1 +1,1 @@
-# StadinAO-Arviointi-sovellus
+# KASVU sote app
