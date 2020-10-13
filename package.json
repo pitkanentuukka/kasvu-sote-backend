@@ -4,11 +4,13 @@
   "description": "sote kasvu app ",
   "main": "index.js",
   "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
     "nodemon": "^2.0.4"
   },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "devStart": "nodemon server.js"
   },
   "repository": {
     "type": "git",
