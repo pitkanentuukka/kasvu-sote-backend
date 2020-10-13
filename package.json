@@ -1,0 +1,23 @@
+{
+  "name": "kasvu-sote",
+  "version": "0.0.1",
+  "description": "sote kasvu app ",
+  "main": "index.js",
+  "dependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eync/KASVU-sote.git"
+  },
+  "author": "S.R.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eync/KASVU-sote/issues"
+  },
+  "homepage": "https://github.com/eync/KASVU-sote#readme"
+}
