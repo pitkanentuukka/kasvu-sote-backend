@@ -3,10 +3,10 @@ const app = express();
 const path = require('path')
 const { config } = require('./config')
 const { authUser } = require('./auth')
-const MongoClient = require('mongodb').MongoClient;
+var MongoClient = require('mongodb').MongoClient;
 
-
-
+app.set('views', path.join(__dirname, "./views"));
+app.set('view engine', 'ejs');
 //public kansio missä on frontend jutut jne.
 app.use(express.static(path.join(__dirname, "../public")));
 
@@ -18,12 +18,14 @@ app.get('/', (req, res) => {
             if (!err) { 
                 let output = "<h4>Käyttäjät</h4>";
                 readCollection.forEach(element => {
-                    console.log(element.id); 
                     output += element.email;
-                    output += "<hr>"
-                    
-                });
-                res.send(output)
+                    output += "<hr>" 
+                     
+                }); 
+                var makeThis = readCollection
+                res.render('index', { makeThis: makeThis });
+                
+                // res.send(output)
                 } 
             })
              //client.close();
@@ -36,11 +38,18 @@ app.get('/', (req, res) => {
 //kun on kirjautunut sisälle niin tämä on näkymä missä on kaikki tiedot jne jne..
 app.get('/etu', authUser, (req, res) => {
     res.send('Tehtävä sivusto, ainoastaan rekisteröitynyt oppilas näkee tämän')
+    res.redirect('/no-access');
 });
 
 //oppilaan tehtavat luoteltu
 app.get('/tehtavat', authUser, (req, res) => {
     res.send('Tehtävä sivusto, ainoastaan rekisteröitynyt oppilas näkee tämän')
+});
+
+//ei pääsyoikeutta
+app.get('/no-access', (req, res) => {
+    res.send('Ei pääsy oikeutta, ota yhteys jne.')
+
 });
 
 
