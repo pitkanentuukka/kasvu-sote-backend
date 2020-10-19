@@ -2,7 +2,7 @@ const config = {
 
     db_name: "kasvu",
     db_user: "kasvu-dbuser",
-    db_password: "xuQjoT6ZoUWPKO7B",
+    db_password: "",
     db_collection: {
         users: "userBase",
         roles: "userRoles"
