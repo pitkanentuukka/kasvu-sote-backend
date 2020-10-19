@@ -7,7 +7,7 @@ var MongoClient = require('mongodb').MongoClient;
 
 app.set('views', path.join(__dirname, "./views"));
 app.set('view engine', 'ejs');
-//public kansio missä on frontend jutut jne.
+//public kansio missä on css/js jutut jne.
 app.use(express.static(path.join(__dirname, "../public")));
 
 app.get('/', (req, res) => {
