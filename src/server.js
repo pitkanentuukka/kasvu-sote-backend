@@ -55,5 +55,5 @@ app.get('/no-access', (req, res) => {
 
 
 
-app.listen(config.portNumber, ()=> {console.log(`Serveri pyörii localhost:${config.portNumber}`)});
+app.listen(config.portNumber, err => {console.log(err ? `Serveri ei lähtenyt pyörimään` : `Serveri pyörii localhost:${config.portNumber}`)});
  
