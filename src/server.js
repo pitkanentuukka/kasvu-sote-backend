@@ -1,9 +1,10 @@
 const express = require('express');
 const app = express();
-const path = require('path')
-const { config } = require('./config')
-const { authUser } = require('./auth')
-var MongoClient = require('mongodb').MongoClient;
+const path = require('path');
+const { config } = require('./config');
+const { authUser } = require('./auth');
+const mysql = require('mysql');
+// var MongoClient = require('mongodb').MongoClient;
 
 app.set('views', path.join(__dirname, "./views"));
 app.set('view engine', 'ejs');
@@ -11,27 +12,27 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, "../public")));
 
 app.get('/', (req, res) => {
-    MongoClient.connect(config.db_url(), {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
-        if (!err) {
-          const collection = client.db(config.db_name).collection(config.db_collection.users);
-          collection.find({}).toArray((err, readCollection) => {
-            if (!err) { 
-                let output = "<h4>Käyttäjät</h4>";
-                readCollection.forEach(element => {
-                    output += element.email;
-                    output += "<hr>" 
+    // MongoClient.connect(config.db_url(), {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
+    //     if (!err) {
+    //       const collection = client.db(config.db_name).collection(config.db_collection.users);
+    //       collection.find({}).toArray((err, readCollection) => {
+    //         if (!err) { 
+    //             let output = "<h4>Käyttäjät</h4>";
+    //             readCollection.forEach(element => {
+    //                 output += element.email;
+    //                 output += "<hr>" 
                      
-                }); 
-                var makeThis = readCollection
-                res.render('index', { makeThis: makeThis });
+    //             }); 
+    //             var makeThis = readCollection
+    //             res.render('index', { makeThis: makeThis });
                 
-                // res.send(output)
-                } 
-            })
-             //client.close();
-        }
+    //             // res.send(output)
+    //             } 
+    //         })
+    //          //client.close();
+    //     }
         
-    }) 
+    // }) 
     
 });
 
