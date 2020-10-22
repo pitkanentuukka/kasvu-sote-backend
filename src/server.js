@@ -78,7 +78,7 @@ app.post('/login', jsonParser, (req, res) => {
   if (email && password) {
 
     let sql = "select * from user where email = ?"
-    let inserts = email
+    let inserts = email;
 
     config.sql_pool().getConnection((err, connection) => {
 
@@ -90,7 +90,9 @@ app.post('/login', jsonParser, (req, res) => {
         } else {
           bcrypt.compare(password, results[0].password, (bcerr, bcres)=> {
             if (bcres) {
-              const payload = {email}
+              const userId = results[0].user_id;
+              const role = results[0].role;
+              const payload = { email, role, userId }
               const token = jwt.sign(payload, process.env.JWT_KEY, {
                 expiresIn: '365d'}
               )
