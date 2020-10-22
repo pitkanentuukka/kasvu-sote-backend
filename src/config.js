@@ -1,15 +1,17 @@
+const mysql = require('mysql');
+
 const config = {
     // mysql connections
     sql_connection: {
-        connectionLimit : '',
-        host            : '',
-        user            : '',
+        connectionLimit : 10,
+        host            : 'localhost',
+        user            : 'root',
         password        : '',
-        database        : '',
+        database        : 'kasvu',
         debug           : false
     },
     sql_pool() {
-        return `mysql.createPool(${this.mysql_connection})`;
+        return mysql.createPool(this.sql_connection);
     },
     // db_name: "kasvu",
     // db_user: "kasvu-dbuser",

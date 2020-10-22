@@ -12,6 +12,14 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, "../public")));
 
 app.get('/', (req, res) => {
+    config.sql_pool().getConnection(function(err, connection) {
+        connection.query('SELECT Testi FROM testi', function (error, results, fields) {
+            if (error) throw error;
+            connection.release();
+            console.log('Toimii ', results[0].Testi); 
+            res.render('index'); 
+            
+        });
     // MongoClient.connect(config.db_url(), {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
     //     if (!err) {
     //       const collection = client.db(config.db_name).collection(config.db_collection.users);
@@ -33,7 +41,7 @@ app.get('/', (req, res) => {
     //     }
         
     // }) 
-    
+    })
 });
 
 //kun on kirjautunut sisälle niin tämä on näkymä missä on kaikki tiedot jne jne..
