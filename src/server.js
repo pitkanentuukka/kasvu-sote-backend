@@ -9,12 +9,7 @@ const jwt = require('jsonwebtoken')
 const bodyParser = require('body-parser')
 
 const dotenv = require('dotenv')
-
-
 dotenv.config()
-
-// var MongoClient = require('mongodb').MongoClient;
-
 
 app.set('views', path.join(__dirname, "./views"));
 app.set('view engine', 'ejs');
@@ -31,27 +26,6 @@ app.get('/', (req, res) => {
             res.render('index');
 
         });
-    // MongoClient.connect(config.db_url(), {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
-    //     if (!err) {
-    //       const collection = client.db(config.db_name).collection(config.db_collection.users);
-    //       collection.find({}).toArray((err, readCollection) => {
-    //         if (!err) {
-    //             let output = "<h4>Käyttäjät</h4>";
-    //             readCollection.forEach(element => {
-    //                 output += element.email;
-    //                 output += "<hr>"
-
-    //             });
-    //             var makeThis = readCollection
-    //             res.render('index', { makeThis: makeThis });
-
-    //             // res.send(output)
-    //             }
-    //         })
-    //          //client.close();
-    //     }
-
-    // })
     })
 });
 
