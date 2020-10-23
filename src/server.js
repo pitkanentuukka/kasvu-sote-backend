@@ -9,12 +9,7 @@ const jwt = require('jsonwebtoken')
 const bodyParser = require('body-parser')
 
 const dotenv = require('dotenv')
-
-
 dotenv.config()
-
-// var MongoClient = require('mongodb').MongoClient;
-
 
 app.set('views', path.join(__dirname, "./views"));
 app.set('view engine', 'ejs');
@@ -31,27 +26,6 @@ app.get('/', (req, res) => {
             res.render('index');
 
         });
-    // MongoClient.connect(config.db_url(), {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
-    //     if (!err) {
-    //       const collection = client.db(config.db_name).collection(config.db_collection.users);
-    //       collection.find({}).toArray((err, readCollection) => {
-    //         if (!err) {
-    //             let output = "<h4>Käyttäjät</h4>";
-    //             readCollection.forEach(element => {
-    //                 output += element.email;
-    //                 output += "<hr>"
-
-    //             });
-    //             var makeThis = readCollection
-    //             res.render('index', { makeThis: makeThis });
-
-    //             // res.send(output)
-    //             }
-    //         })
-    //          //client.close();
-    //     }
-
-    // })
     })
 });
 
@@ -78,7 +52,7 @@ app.post('/login', jsonParser, (req, res) => {
   if (email && password) {
 
     let sql = "select * from user where email = ?"
-    let inserts = email
+    let inserts = email;
 
     config.sql_pool().getConnection((err, connection) => {
 
@@ -90,7 +64,9 @@ app.post('/login', jsonParser, (req, res) => {
         } else {
           bcrypt.compare(password, results[0].password, (bcerr, bcres)=> {
             if (bcres) {
-              const payload = {email}
+              const userId = results[0].user_id;
+              const role = results[0].role;
+              const payload = { email, role, userId }
               const token = jwt.sign(payload, process.env.JWT_KEY, {
                 expiresIn: '365d'}
               )
