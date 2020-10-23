@@ -5,9 +5,9 @@ const config = {
     sql_connection: {
         connectionLimit : 10,
         host            : 'localhost',
-        user            : 'root',
-        password        : '',
-        database        : 'kasvu',
+        user            : 'sote_kasvu',
+        password        : 'password',
+        database        : 'sote_kasvu',
         debug           : false
     },
     sql_pool() {
@@ -16,7 +16,7 @@ const config = {
     // db_name: "kasvu",
     // db_user: "kasvu-dbuser",
     // db_password: "",
-    // db_collection: { 
+    // db_collection: {
     //     users: "userBase",
     //     roles: "userRoles"
     // },
