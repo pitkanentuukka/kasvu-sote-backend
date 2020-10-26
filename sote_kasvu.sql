@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 22, 2020 at 10:50 AM
+-- Generation Time: Oct 26, 2020 at 10:23 AM
 -- Server version: 10.1.44-MariaDB-0+deb9u1
 -- PHP Version: 7.0.33-0+deb9u7
 
@@ -32,8 +32,8 @@ CREATE TABLE `assignment` (
   `student_id` int(11) NOT NULL,
   `block_id` int(11) NOT NULL,
   `assign_date` date NOT NULL,
-  `grade` int(11) NOT NULL,
-  `evaluation_text` varchar(500) NOT NULL
+  `grade` int(11) DEFAULT NULL,
+  `evaluation_text` varchar(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -44,7 +44,7 @@ CREATE TABLE `assignment` (
 
 CREATE TABLE `block` (
   `block_id` int(11) NOT NULL,
-  `name` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
   `section_id` int(11) NOT NULL,
   `text` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -135,16 +135,16 @@ CREATE TABLE `user` (
 --
 ALTER TABLE `assignment`
   ADD PRIMARY KEY (`assignment_id`),
-  ADD KEY `teacher_id` (`teacher_id`),
-  ADD KEY `student_id` (`student_id`),
-  ADD KEY `block_id` (`block_id`);
+  ADD KEY `opettaja` (`teacher_id`),
+  ADD KEY `oppilas` (`student_id`),
+  ADD KEY `osio_id` (`block_id`);
 
 --
 -- Indexes for table `block`
 --
 ALTER TABLE `block`
   ADD PRIMARY KEY (`block_id`),
-  ADD KEY `section_id` (`section_id`);
+  ADD KEY `osa` (`section_id`);
 
 --
 -- Indexes for table `degree`
@@ -196,22 +196,22 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `assignment`
 --
 ALTER TABLE `assignment`
-  MODIFY `assignment_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `assignment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `block`
 --
 ALTER TABLE `block`
-  MODIFY `block_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `block_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `degree`
 --
 ALTER TABLE `degree`
-  MODIFY `degree_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `degree_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `section`
 --
 ALTER TABLE `section`
-  MODIFY `section_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `section_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `submission`
 --
@@ -221,12 +221,12 @@ ALTER TABLE `submission`
 -- AUTO_INCREMENT for table `task`
 --
 ALTER TABLE `task`
-  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- Constraints for dumped tables
 --
