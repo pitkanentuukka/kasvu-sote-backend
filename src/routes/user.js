@@ -7,7 +7,7 @@ const { config } = require('../config')
 
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
-const { config } = require('../config')
+
 
 
 router.post('/login', bodyParser(), (req, res) => {
