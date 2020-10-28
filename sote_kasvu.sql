@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 28, 2020 at 02:19 PM
+-- Generation Time: Oct 28, 2020 at 04:06 PM
 -- Server version: 10.1.44-MariaDB-0+deb9u1
 -- PHP Version: 7.0.33-0+deb9u7
 
@@ -72,7 +72,8 @@ CREATE TABLE `evaluation` (
 CREATE TABLE `problem` (
   `problem_id` int(11) NOT NULL,
   `criteria_Id` int(11) NOT NULL,
-  `text` text NOT NULL
+  `text` text NOT NULL,
+  `teacher_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -106,6 +107,13 @@ CREATE TABLE `teacher_student` (
   `student_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `teacher_student`
+--
+
+INSERT INTO `teacher_student` (`teacher_id`, `student_id`) VALUES
+(3, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -115,7 +123,8 @@ CREATE TABLE `teacher_student` (
 CREATE TABLE `theory` (
   `theory_id` int(11) NOT NULL,
   `criteria_Id` int(11) NOT NULL,
-  `text` text NOT NULL
+  `text` text NOT NULL,
+  `teacher_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -162,7 +171,8 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`user_id`, `email`, `password`, `role`, `first_name`, `last_name`) VALUES
 (1, 'someone@example.com', '$2b$10$xMP0yVK3GyR8Seuq2czyEOctMUo39LIkWJ5ExYa8DkHCzyue0pHhG', 'admin', 'jaska', 'jokunen'),
 (2, 'matti.mallioppilas@edu.hel.fi', '$2b$10$3nz60uB/sXMlca5J469hKegwS/trEvNJZV0HAgTJrc0HbQhMAdkeq', 'student', 'matti', 'mallioppilas'),
-(3, 'olli.opettaja@edu.hel.fi', '$2b$10$grMhWF/DOjzVHEyGJSldSOFUdEWGxpKPZ2oG7UB5lHbixf6SU0u76', 'teacher', 'olli', 'opettaja');
+(3, 'olli.opettaja@edu.hel.fi', '$2b$10$grMhWF/DOjzVHEyGJSldSOFUdEWGxpKPZ2oG7UB5lHbixf6SU0u76', 'teacher', 'olli', 'opettaja'),
+(4, 'teemu.tyopaikkaohjaaja@edu.hel.fi', '$2b$10$E58vIrrm4/IOmO7.tw8SruSaFzAyL.kOYLH6c2EZ32xYm3xSFPUOu', 'instructor', 'Teemu', 'Työpaikkaohjaaja');
 
 --
 -- Indexes for dumped tables
@@ -188,7 +198,8 @@ ALTER TABLE `evaluation`
 --
 ALTER TABLE `problem`
   ADD PRIMARY KEY (`problem_id`),
-  ADD KEY `criteria_Id` (`criteria_Id`);
+  ADD KEY `criteria_Id` (`criteria_Id`),
+  ADD KEY `teacher_problem` (`teacher_id`);
 
 --
 -- Indexes for table `problem_assignment`
@@ -213,7 +224,8 @@ ALTER TABLE `teacher_student`
 --
 ALTER TABLE `theory`
   ADD PRIMARY KEY (`theory_id`),
-  ADD KEY `criteria_Id` (`criteria_Id`);
+  ADD KEY `criteria_Id` (`criteria_Id`),
+  ADD KEY `teacher_id` (`teacher_id`);
 
 --
 -- Indexes for table `theory_assignment`
@@ -268,7 +280,7 @@ ALTER TABLE `theory_assignment`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- Constraints for dumped tables
 --
@@ -285,7 +297,8 @@ ALTER TABLE `evaluation`
 -- Constraints for table `problem`
 --
 ALTER TABLE `problem`
-  ADD CONSTRAINT `criteria_id` FOREIGN KEY (`criteria_Id`) REFERENCES `criteria` (`criteria_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `criteria_id` FOREIGN KEY (`criteria_Id`) REFERENCES `criteria` (`criteria_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `teacher_problem` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `problem_assignment`
@@ -308,6 +321,7 @@ ALTER TABLE `teacher_student`
 -- Constraints for table `theory`
 --
 ALTER TABLE `theory`
+  ADD CONSTRAINT `teacher_theory` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `theory_ibfk_1` FOREIGN KEY (`criteria_Id`) REFERENCES `criteria` (`criteria_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
