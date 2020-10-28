@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 26, 2020 at 10:23 AM
+-- Generation Time: Oct 28, 2020 at 02:19 PM
 -- Server version: 10.1.44-MariaDB-0+deb9u1
 -- PHP Version: 7.0.33-0+deb9u7
 
@@ -23,92 +23,121 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `assignment`
+-- Table structure for table `criteria`
 --
 
-CREATE TABLE `assignment` (
-  `assignment_id` int(11) NOT NULL,
-  `teacher_id` int(11) NOT NULL,
+CREATE TABLE `criteria` (
+  `criteria_id` int(11) NOT NULL,
+  `text` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `criteria`
+--
+
+INSERT INTO `criteria` (`criteria_id`, `text`) VALUES
+(1, 'toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen\r\n'),
+(2, 'noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa\r\n'),
+(3, 'toimii kasvatus-, sosiaali- ja terveysalan työn arvojen ja lähihoitajan ammattieettisten ohjeiden mukaan\r\n'),
+(4, 'noudattaa tietosuojaa ja salassapitoa\r\n'),
+(5, 'työskentelee laatusuositusten ja omavalvontamääräysten mukaan työryhmän ohjaamana\r\n'),
+(6, 'toimii kestävän kehityksen periaatteiden mukaan\r\n'),
+(7, 'Opiskelija suunnittelee työtään ja tekee yhteistyötä työryhmän kanssa.\r\n'),
+(8, 'suunnittelee työtehtäviään työpaikan toiminnan mukaan\r\n'),
+(9, 'tekee yhteistyötä työryhmän kanssa\r\n'),
+(10, 'viestii ja dokumentoi työpaikan käytäntöjen mukaisesti työryhmän ohjaamana\r\n'),
+(11, 'Opiskelija suunnittelee, toteuttaa ja arvioi kasvun ja osallisuuden edistämistä.\r\n');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `evaluation`
+--
+
+CREATE TABLE `evaluation` (
+  `evaluation_id` int(11) NOT NULL,
+  `criteria_Id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
-  `block_id` int(11) NOT NULL,
-  `assign_date` date NOT NULL,
-  `grade` int(11) DEFAULT NULL,
-  `evaluation_text` varchar(500) DEFAULT NULL
+  `instructor_id` int(11) NOT NULL,
+  `evaluation_text` text NOT NULL,
+  `evaluation_date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `block`
+-- Table structure for table `problem`
 --
 
-CREATE TABLE `block` (
-  `block_id` int(11) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `section_id` int(11) NOT NULL,
+CREATE TABLE `problem` (
+  `problem_id` int(11) NOT NULL,
+  `criteria_Id` int(11) NOT NULL,
   `text` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `degree`
+-- Table structure for table `problem_assignment`
 --
 
-CREATE TABLE `degree` (
-  `degree_id` int(11) NOT NULL,
-  `name` varchar(40) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `grade`
---
-
-CREATE TABLE `grade` (
-  `grader_id` int(11) NOT NULL,
-  `submission_id` int(11) NOT NULL,
-  `grade` int(11) NOT NULL,
-  `text` varchar(500) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `section`
---
-
-CREATE TABLE `section` (
-  `section_id` int(11) NOT NULL,
-  `name` varchar(40) NOT NULL,
-  `degree` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `submission`
---
-
-CREATE TABLE `submission` (
-  `submission_id` int(11) NOT NULL,
-  `task_id` int(11) NOT NULL,
+CREATE TABLE `problem_assignment` (
+  `problem_assignment_id` int(11) NOT NULL,
+  `problem_id` int(11) NOT NULL,
+  `teacher_id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
-  `date` date NOT NULL,
-  `file` varchar(500) NOT NULL
+  `assign_date` datetime NOT NULL,
+  `submission_text` text,
+  `submission_date` datetime DEFAULT NULL,
+  `grade` int(11) DEFAULT NULL,
+  `evaluation` text,
+  `evaluation_datetime` int(11) DEFAULT NULL,
+  `grader_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `task`
+-- Table structure for table `teacher_student`
 --
 
-CREATE TABLE `task` (
-  `task_id` int(11) NOT NULL,
-  `text` varchar(255) NOT NULL,
-  `block_id` int(11) NOT NULL
+CREATE TABLE `teacher_student` (
+  `teacher_id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `theory`
+--
+
+CREATE TABLE `theory` (
+  `theory_id` int(11) NOT NULL,
+  `criteria_Id` int(11) NOT NULL,
+  `text` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `theory_assignment`
+--
+
+CREATE TABLE `theory_assignment` (
+  `theory_assignment_id` int(11) NOT NULL,
+  `theory_id` int(11) NOT NULL,
+  `teacher_id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `assign_date` datetime NOT NULL,
+  `submission` text,
+  `submission_time` datetime DEFAULT NULL,
+  `self_grade` int(11) DEFAULT NULL,
+  `self_evaluation_text` text,
+  `self_evaluation_datetime` datetime DEFAULT NULL,
+  `grade` int(11) DEFAULT NULL,
+  `evaluation` int(11) DEFAULT NULL,
+  `evaluation_datetime` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -127,60 +156,73 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`user_id`, `email`, `password`, `role`, `first_name`, `last_name`) VALUES
+(1, 'someone@example.com', '$2b$10$xMP0yVK3GyR8Seuq2czyEOctMUo39LIkWJ5ExYa8DkHCzyue0pHhG', 'admin', 'jaska', 'jokunen'),
+(2, 'matti.mallioppilas@edu.hel.fi', '$2b$10$3nz60uB/sXMlca5J469hKegwS/trEvNJZV0HAgTJrc0HbQhMAdkeq', 'student', 'matti', 'mallioppilas'),
+(3, 'olli.opettaja@edu.hel.fi', '$2b$10$grMhWF/DOjzVHEyGJSldSOFUdEWGxpKPZ2oG7UB5lHbixf6SU0u76', 'teacher', 'olli', 'opettaja');
+
+--
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `assignment`
+-- Indexes for table `criteria`
 --
-ALTER TABLE `assignment`
-  ADD PRIMARY KEY (`assignment_id`),
-  ADD KEY `opettaja` (`teacher_id`),
-  ADD KEY `oppilas` (`student_id`),
-  ADD KEY `osio_id` (`block_id`);
+ALTER TABLE `criteria`
+  ADD PRIMARY KEY (`criteria_id`);
 
 --
--- Indexes for table `block`
+-- Indexes for table `evaluation`
 --
-ALTER TABLE `block`
-  ADD PRIMARY KEY (`block_id`),
-  ADD KEY `osa` (`section_id`);
+ALTER TABLE `evaluation`
+  ADD PRIMARY KEY (`evaluation_id`),
+  ADD KEY `criteria_Id` (`criteria_Id`),
+  ADD KEY `student_id` (`student_id`),
+  ADD KEY `instructor_id` (`instructor_id`);
 
 --
--- Indexes for table `degree`
+-- Indexes for table `problem`
 --
-ALTER TABLE `degree`
-  ADD PRIMARY KEY (`degree_id`);
+ALTER TABLE `problem`
+  ADD PRIMARY KEY (`problem_id`),
+  ADD KEY `criteria_Id` (`criteria_Id`);
 
 --
--- Indexes for table `grade`
+-- Indexes for table `problem_assignment`
 --
-ALTER TABLE `grade`
-  ADD PRIMARY KEY (`grader_id`,`submission_id`),
-  ADD KEY `grader_id` (`grader_id`),
-  ADD KEY `submission_id` (`submission_id`);
+ALTER TABLE `problem_assignment`
+  ADD PRIMARY KEY (`problem_assignment_id`),
+  ADD KEY `teacher_id` (`teacher_id`),
+  ADD KEY `student_id` (`student_id`),
+  ADD KEY `problem_id` (`problem_id`),
+  ADD KEY `grader_id` (`grader_id`);
 
 --
--- Indexes for table `section`
+-- Indexes for table `teacher_student`
 --
-ALTER TABLE `section`
-  ADD PRIMARY KEY (`section_id`),
-  ADD KEY `degree` (`degree`);
-
---
--- Indexes for table `submission`
---
-ALTER TABLE `submission`
-  ADD PRIMARY KEY (`submission_id`),
-  ADD KEY `task_id` (`task_id`),
+ALTER TABLE `teacher_student`
+  ADD PRIMARY KEY (`teacher_id`,`student_id`),
+  ADD KEY `teacher_id` (`teacher_id`),
   ADD KEY `student_id` (`student_id`);
 
 --
--- Indexes for table `task`
+-- Indexes for table `theory`
 --
-ALTER TABLE `task`
-  ADD PRIMARY KEY (`task_id`),
-  ADD KEY `block_id` (`block_id`);
+ALTER TABLE `theory`
+  ADD PRIMARY KEY (`theory_id`),
+  ADD KEY `criteria_Id` (`criteria_Id`);
+
+--
+-- Indexes for table `theory_assignment`
+--
+ALTER TABLE `theory_assignment`
+  ADD PRIMARY KEY (`theory_assignment_id`),
+  ADD KEY `teacher_id` (`teacher_id`),
+  ADD KEY `student_id` (`student_id`),
+  ADD KEY `theory_id` (`theory_id`);
 
 --
 -- Indexes for table `user`
@@ -193,35 +235,35 @@ ALTER TABLE `user`
 --
 
 --
--- AUTO_INCREMENT for table `assignment`
+-- AUTO_INCREMENT for table `criteria`
 --
-ALTER TABLE `assignment`
-  MODIFY `assignment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `criteria`
+  MODIFY `criteria_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
--- AUTO_INCREMENT for table `block`
+-- AUTO_INCREMENT for table `evaluation`
 --
-ALTER TABLE `block`
-  MODIFY `block_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `evaluation`
+  MODIFY `evaluation_id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `degree`
+-- AUTO_INCREMENT for table `problem`
 --
-ALTER TABLE `degree`
-  MODIFY `degree_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `problem`
+  MODIFY `problem_id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `section`
+-- AUTO_INCREMENT for table `problem_assignment`
 --
-ALTER TABLE `section`
-  MODIFY `section_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `problem_assignment`
+  MODIFY `problem_assignment_id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `submission`
+-- AUTO_INCREMENT for table `theory`
 --
-ALTER TABLE `submission`
-  MODIFY `submission_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `theory`
+  MODIFY `theory_id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `task`
+-- AUTO_INCREMENT for table `theory_assignment`
 --
-ALTER TABLE `task`
-  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `theory_assignment`
+  MODIFY `theory_assignment_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `user`
 --
@@ -232,37 +274,49 @@ ALTER TABLE `user`
 --
 
 --
--- Constraints for table `assignment`
+-- Constraints for table `evaluation`
 --
-ALTER TABLE `assignment`
-  ADD CONSTRAINT `assignment_ibfk_1` FOREIGN KEY (`block_id`) REFERENCES `block` (`block_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `assignment_ibfk_2` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `assignment_ibfk_3` FOREIGN KEY (`student_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `evaluation`
+  ADD CONSTRAINT `criteria` FOREIGN KEY (`criteria_Id`) REFERENCES `criteria` (`criteria_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `instructor` FOREIGN KEY (`instructor_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `student` FOREIGN KEY (`student_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `block`
+-- Constraints for table `problem`
 --
-ALTER TABLE `block`
-  ADD CONSTRAINT `block_ibfk_1` FOREIGN KEY (`section_id`) REFERENCES `section` (`section_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `problem`
+  ADD CONSTRAINT `criteria_id` FOREIGN KEY (`criteria_Id`) REFERENCES `criteria` (`criteria_id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `section`
+-- Constraints for table `problem_assignment`
 --
-ALTER TABLE `section`
-  ADD CONSTRAINT `section_ibfk_1` FOREIGN KEY (`degree`) REFERENCES `degree` (`degree_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `problem_assignment`
+  ADD CONSTRAINT `grader_id` FOREIGN KEY (`grader_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `problem_assignment_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `problem_id` FOREIGN KEY (`problem_id`) REFERENCES `problem` (`problem_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `student_id` FOREIGN KEY (`student_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `teacher_id` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `submission`
+-- Constraints for table `teacher_student`
 --
-ALTER TABLE `submission`
-  ADD CONSTRAINT `submission_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `task` (`task_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `submission_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `teacher_student`
+  ADD CONSTRAINT `teacher_student_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `teacher_student_ibfk_2` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `task`
+-- Constraints for table `theory`
 --
-ALTER TABLE `task`
-  ADD CONSTRAINT `task_ibfk_1` FOREIGN KEY (`block_id`) REFERENCES `block` (`block_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `theory`
+  ADD CONSTRAINT `theory_ibfk_1` FOREIGN KEY (`criteria_Id`) REFERENCES `criteria` (`criteria_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `theory_assignment`
+--
+ALTER TABLE `theory_assignment`
+  ADD CONSTRAINT `studen` FOREIGN KEY (`student_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `teacher` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `theory_id` FOREIGN KEY (`theory_id`) REFERENCES `theory` (`theory_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
