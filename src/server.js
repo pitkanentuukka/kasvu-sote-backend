@@ -18,3 +18,4 @@ app.use(bodyParser())
 app.listen(config.portNumber, err => {console.log(err ? `Serveri ei lähtenyt pyörimään` : `Serveri pyörii localhost:${config.portNumber}`)});
 app.use('/api/user', require('./routes/user'))
 app.use('/api/tasks', require('./routes/tasks'))
+app.use('/api/teacher', require('./routes/teacher'))
