@@ -16,8 +16,11 @@ const dotenv = require('dotenv')
 * get all students of a currently logged in teacher
 */
 router.get("/students", cors(), (req, res) => {
-  if (typeof(req.cookies.token !== 'undefined')) {
+
+  if (req.cookies.token) {
+
     const authData = getRoleAndId(req.cookies.token)
+
     if (authData.role ==='teacher') {
       const inserts = [authData.userId]
       const sql = "select user_id, email, first_name, last_name from user, teacher_student \
@@ -27,8 +30,8 @@ router.get("/students", cors(), (req, res) => {
         connection.query(sql, inserts, (err, results, fields) => {
           if (err) {
             res.status(500).end()
-          }
-          if (results.length > 0) {
+          }else if (results.length > 0) {
+
             res.status(200).json(results).end()
           } else {
             res.status(200).json({"msg": "no students found"}).end()
@@ -38,11 +41,12 @@ router.get("/students", cors(), (req, res) => {
 
     } else {
       // not a teacher
-      res.status(403).end()
+      res.status(403).json({"msg": "not a teacher"}).end()
     }
-  }
+  } else {
   // not logged in
-  res.status(403).end()
+  res.status(403).json({"msg": "not logged in"}).end()
+}
 
 })
 
@@ -75,9 +79,10 @@ router.post('/addTheory', cors(), (req, res) => {
       // not a teacher
       res.status(403).end()
     }
+  } else {
+    // not logged in
+    res.status(403).end()
   }
-  // not logged in
-  res.status(403).end()
 })
 
 /**
@@ -110,10 +115,10 @@ router.post('/addProblem', cors(), (req, res) => {
       // not a teacher
       res.status(403).end()
     }
+  } else {
+    // not logged in
+    res.status(403).end()
   }
-  // not logged in
-  // maybe this should redirect to login?
-  res.status(403).end()
 })
 
 router.post('/assignTheoryToStudent', cors(), (req, res) => {
@@ -146,9 +151,11 @@ router.post('/assignTheoryToStudent', cors(), (req, res) => {
       // not a teacher
       res.status(403).end()
     }
+  } else {
+    // not logged in
+    res.status(403).end()
+
   }
-  // not logged in
-  res.status(403).end()
 })
 
 router.post('/assignProblemToStudent', cors(), (req, res) => {
@@ -183,13 +190,14 @@ router.post('/assignProblemToStudent', cors(), (req, res) => {
       // not a teacher
       res.status(403).end()
     }
+  } else {
+    // not logged in
+    res.status(403).end()
   }
-  // not logged in
-  res.status(403).end()
 })
 
-
-/*function getRoleAndId(cookie) {
+/*
+function getRoleAndId(cookie) {
   let returnData = {};
    jwt.verify(cookie, process.env.JWT_KEY, (err, authData) => {
     if(err) {
@@ -200,7 +208,6 @@ router.post('/assignProblemToStudent', cors(), (req, res) => {
     }
   })
   return returnData;
-}*/
-
-
+}
+*/
 module.exports = router
