@@ -25,7 +25,7 @@ router.post('/login', bodyParser(), (req, res) => {
       connection.query(sql, inserts, (error, results, fields) =>{
 
         if (results.length === 0) {
-          res.status(403).json({"message": "invalid username or password"})
+          res.status(403).json({"message": "invalid username or password"}).end()
         } else {
           bcrypt.compare(password, results[0].password, (bcerr, bcres)=> {
             if (bcres) {
@@ -38,14 +38,14 @@ router.post('/login', bodyParser(), (req, res) => {
               res.status(200).cookie('token', token, {httpOnly : true})
               res.end()
             } else {
-                res.status(403).json({"msg": "invalid username or password"})
+                res.status(403).json({"msg": "invalid username or password"}).end()
             }
           })
           }
         })
       })
     } else {
-      res.status(400).json({"msg": "missing email or password"})
+      res.status(400).json({"msg": "missing email or password"}).end()
     }
 
 
