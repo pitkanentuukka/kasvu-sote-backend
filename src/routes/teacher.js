@@ -1,4 +1,4 @@
-onst express = require('express')
+const express = require('express')
 const router = express.Router()
 const { config } = require('../config')
 const { authUser } = require('../auth')
@@ -19,7 +19,7 @@ router.get("/students", cors(), (req, res) => {
     let authData = getRoleAndId(req.cookies.token)
     if (authData.role ==='teacher') {
       let inserts = [authData.userId]
-      let sql = "select * from user, teacher_student \
+      let sql = "select user_id, email, first_name, last_name from user, teacher_student \
       where user.user_id = teacher_student.student_id \
       and teacher_student.teacher_id = ? "
       config.sql_pool().getConnection((err, connection) => {
@@ -48,7 +48,7 @@ router.post('/addtheory', cors(), (req, res) => {
     let authData = getRoleAndId(req.cookies.token)
     if (authData.role ==='teacher') {
       let inserts = [req.body.criteria_id, req.body.text, authData.userId]
-      let sql = "insert into theory (criteria_id, text, teacher_id ) values (?, ?, ?)
+      let sql = "insert into theory (criteria_id, text, teacher_id ) values (?, ?, ?)"
       config.sql_pool().getConnection((err, connection) => {
         connection.query(sql, inserts, (err, results, fields) => {
           if (error) {
@@ -76,7 +76,7 @@ router.post('/addproblem', cors(), (req, res) => {
     let authData = getRoleAndId(req.cookies.token)
     if (authData.role ==='teacher') {
       let inserts = [req.body.criteria_id, req.body.text, authData.userId]
-      let sql = "insert into problem (criteria_id, text, teacher_id ) values (?, ?, ?)
+      let sql = "insert into problem (criteria_id, text, teacher_id ) values (?, ?, ?)"
       config.sql_pool().getConnection((err, connection) => {
         connection.query(sql, inserts, (err, results, fields) => {
           if (error) {
@@ -92,6 +92,7 @@ router.post('/addproblem', cors(), (req, res) => {
     }
   }
   // not logged in
+  // maybe this should redirect to login?
   res.status(403)
 })
 
