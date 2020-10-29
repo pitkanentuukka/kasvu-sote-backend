@@ -6,7 +6,7 @@ const cors = require('cors')
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser')
-
+const {getRoleAndId} = require('../cookie-helper')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 const dotenv = require('dotenv')
@@ -25,8 +25,13 @@ router.get("/students", cors(), (req, res) => {
       and teacher_student.teacher_id = ? "
       config.sql_pool().getConnection((err, connection) => {
         connection.query(sql, inserts, (err, results, fields) => {
+          if (err) {
+            res.status(500).end()
+          }
           if (results.length > 0) {
-            res.status(200).json(results)
+            res.status(200).json(results).end()
+          } else {
+            res.status(200).json({"msg": "no students found"}).end()
           }
         })
       })
@@ -115,7 +120,7 @@ router.post('/assignTheoryToStudent', cors(), (req, res) => {
   if (typeof(req.cookies.token !== 'undefined')) {
     const authData = getRoleAndId(req.cookies.token)
     if (authData.role ==='teacher') {
-      if (req.body.student_id  && req.body.theory_id ) {
+      if (req.body.student_id  && req.body.theory_id) {
         const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
         const inserts = [req.body.theory_id, req.body.student_id,
           authData.userId, datetime]
@@ -184,7 +189,7 @@ router.post('/assignProblemToStudent', cors(), (req, res) => {
 })
 
 
-function getRoleAndId(cookie) {
+/*function getRoleAndId(cookie) {
   let returnData = {};
    jwt.verify(cookie, process.env.JWT_KEY, (err, authData) => {
     if(err) {
@@ -195,7 +200,7 @@ function getRoleAndId(cookie) {
     }
   })
   return returnData;
-}
+}*/
 
 
 module.exports = router
