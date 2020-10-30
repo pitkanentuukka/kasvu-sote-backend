@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 28, 2020 at 04:06 PM
+-- Generation Time: Oct 30, 2020 at 12:58 PM
 -- Server version: 10.1.44-MariaDB-0+deb9u1
 -- PHP Version: 7.0.33-0+deb9u7
 
@@ -76,6 +76,14 @@ CREATE TABLE `problem` (
   `teacher_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `problem`
+--
+
+INSERT INTO `problem` (`problem_id`, `criteria_Id`, `text`, `teacher_id`) VALUES
+(1, 1, 'tähän tulisi joku ongelmanratkaisutehtävä', 3),
+(2, 2, 'tähän tulisi joku toinen ongelmanratkaisutehtävä', 3);
+
 -- --------------------------------------------------------
 
 --
@@ -88,13 +96,21 @@ CREATE TABLE `problem_assignment` (
   `teacher_id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
   `assign_date` datetime NOT NULL,
-  `submission_text` text,
+  `submission` text,
   `submission_date` datetime DEFAULT NULL,
   `grade` int(11) DEFAULT NULL,
   `evaluation` text,
   `evaluation_datetime` int(11) DEFAULT NULL,
   `grader_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `problem_assignment`
+--
+
+INSERT INTO `problem_assignment` (`problem_assignment_id`, `problem_id`, `teacher_id`, `student_id`, `assign_date`, `submission`, `submission_date`, `grade`, `evaluation`, `evaluation_datetime`, `grader_id`) VALUES
+(1, 1, 3, 2, '2020-10-29 10:59:39', NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 2, 3, 2, '2020-10-29 12:45:16', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -127,6 +143,14 @@ CREATE TABLE `theory` (
   `teacher_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `theory`
+--
+
+INSERT INTO `theory` (`theory_id`, `criteria_Id`, `text`, `teacher_id`) VALUES
+(1, 1, 'tähän voisi tulla joku tehtävä', 3),
+(2, 2, 'tässä on esimerkkitehtävä toiselle kriteerille', 3);
+
 -- --------------------------------------------------------
 
 --
@@ -148,6 +172,13 @@ CREATE TABLE `theory_assignment` (
   `evaluation` int(11) DEFAULT NULL,
   `evaluation_datetime` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `theory_assignment`
+--
+
+INSERT INTO `theory_assignment` (`theory_assignment_id`, `theory_id`, `teacher_id`, `student_id`, `assign_date`, `submission`, `submission_time`, `self_grade`, `self_evaluation_text`, `self_evaluation_datetime`, `grade`, `evaluation`, `evaluation_datetime`) VALUES
+(1, 1, 3, 2, '2020-10-29 12:45:59', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -260,22 +291,22 @@ ALTER TABLE `evaluation`
 -- AUTO_INCREMENT for table `problem`
 --
 ALTER TABLE `problem`
-  MODIFY `problem_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `problem_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `problem_assignment`
 --
 ALTER TABLE `problem_assignment`
-  MODIFY `problem_assignment_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `problem_assignment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `theory`
 --
 ALTER TABLE `theory`
-  MODIFY `theory_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `theory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `theory_assignment`
 --
 ALTER TABLE `theory_assignment`
-  MODIFY `theory_assignment_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `theory_assignment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `user`
 --
