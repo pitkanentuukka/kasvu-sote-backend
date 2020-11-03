@@ -19,3 +19,4 @@ app.listen(config.portNumber, err => {console.log(err ? `Serveri ei lähtenyt py
 app.use('/api/user', require('./routes/user'))
 app.use('/api/tasks', require('./routes/tasks'))
 app.use('/api/teacher', require('./routes/teacher'))
+app.use('/api/instructor', require('./routes/instructor'))

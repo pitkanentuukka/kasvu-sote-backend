@@ -50,7 +50,7 @@ router.get("/students", cors(), (req, res) => {
 
 })
 
-router.post('/evaluateStudent') {
+router.post('/evaluateStudent', cors(), (req, res) => {
   if (req.cookies.token) {
     const authData = getRoleAndId(req.cookies.token)
     if (authData.role ==='instructor') {
@@ -90,6 +90,6 @@ router.post('/evaluateStudent') {
       // not logged in
       res.status(403).end()
     }
-}
+})
 
 module.exports = router
