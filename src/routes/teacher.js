@@ -51,7 +51,7 @@ router.get("/students", cors(), (req, res) => {
 })
 
 /**
-* teacher adds a theory task linked to his uid & posted criteria
+* teacher adds a  task linked to his uid & posted criteria
 */
 router.post('/addTheory', cors(), (req, res) => {
   if (typeof(req.cookies.token !== 'undefined')) {
@@ -178,7 +178,7 @@ router.post('/assignProblemToStudent', cors(), (req, res) => {
                 res.status(500).end()
               } else {
                 console.log(results);
-                res.status(200).json({id: results.insertId})
+                res.status(200).json({id: results.insertId}).end()
               }
             })
           })
@@ -196,18 +196,122 @@ router.post('/assignProblemToStudent', cors(), (req, res) => {
   }
 })
 
-/*
-function getRoleAndId(cookie) {
-  let returnData = {};
-   jwt.verify(cookie, process.env.JWT_KEY, (err, authData) => {
-    if(err) {
-      return
-    } else {
+router.get('/getTheoryAssignmentsForEvaluation/:id', cors(), (req, res) => {
+  if (typeof(req.cookies.token !== 'undefined')) {
+    const authData = getRoleAndId(req.cookies.token)
+    if (authData.role ==='teacher') {
+      if (!req.params.id) {
+        // gotta catch them all
+        const inserts = [authData.userId]
+        const sql ="SELECT theory_assignment.theory_assignment_id,\
+         theory_assignment.theory_id, theory_assignment.student_id,\
+         theory_assignment.assign_date, theory_assignment.submission,\
+         theory_assignment.submission_time, theory.text, theory.criteria_id,\
+         theory.theory_id, criteria.criteria_id, criteria.text, user.email,\
+         user.first_name, user.last_name \
+         FROM theory_assignment, theory, criteria, user \
+         WHERE user.user_id = theory_assignment.student_id \
+         AND theory.theory_id = theory_assignment.theory_assignment_id \
+         AND criteria.criteria_id = theory.criteria_id AND theory_assignment.grade IS NULL \
+         AND theory_assignment.submission IS NOT NULL \
+         AND theory_assignment.teacher_id = ?"
+      } else {
+        // there can be only one
+        const inserts = [authData.userId, req.parans.id]
+        const sql ="SELECT problem_assignment.problem_assignment_id,\
+         problem_assignment.problem_id, problem_assignment.student_id,\
+         problem_assignment.assign_date, problem_assignment.submission,\
+         problem_assignment.submission_time, problem.text, problem.criteria_id,\
+         problem.problem_id, criteria.criteria_id, criteria.text\
+         FROM problem_assignment, problem, criteria, \
+         WHERE user.user_id = problem_assignment.student_id \
+         AND problem.problem_id = problem_assignment.problem_assignment_id \
+         AND criteria.criteria_id = problem.criteria_id AND problem_assignment.grade IS NULL \
+         AND problem_assignment.submission IS NOT NULL \
+         AND problem_assignment.teacher_id = ? \
+         AND problem_assignment.student_id = ?"
+         config.sql_pool().getConnection((err, connection) => {
+           connection.query(sql, inserts, (err, results, fields) => {
 
-      returnData = authData;
+             if (err) {
+               console.log(err);
+               res.status(500).end()
+             } else {
+               console.log(results);
+               res.status(200).json({id: results.insertId}).end()
+             }
+           })
+         })
+
+      }
+
+    } else {
+      // not a teacher
+      res.status(403).end()
     }
-  })
-  return returnData;
-}
-*/
+  } else {
+    // not logged in
+    res.status(403).end()
+  }
+})
+
+router.get('/getProblemAssignmentsForEvaluation/:id', cors(), (req, res) => {
+  if (typeof(req.cookies.token !== 'undefined')) {
+    const authData = getRoleAndId(req.cookies.token)
+    if (authData.role ==='teacher') {
+      if (!req.params.id) {
+        // gotta catch them all
+        const inserts = [authData.userId]
+        const sql ="SELECT problem_assignment.problem_assignment_id,\
+         problem_assignment.problem_id, problem_assignment.student_id,\
+         problem_assignment.assign_date, problem_assignment.submission,\
+         problem_assignment.submission_date, problem.text, problem.criteria_id,\
+         problem.problem_id, criteria.criteria_id, criteria.text, user.email,\
+         user.first_name, user.last_name \
+         FROM problem_assignment, problem, criteria, user \
+         WHERE user.user_id = problem_assignment.student_id \
+         AND problem.problem_id = problem_assignment.problem_assignment_id \
+         AND criteria.criteria_id = problem.criteria_id AND problem_assignment.grade IS NULL \
+         AND problem_assignment.submission IS NOT NULL \
+         AND problem_assignment.teacher_id = ?"
+      } else {
+        // there can be only one
+        const inserts = [authData.userId, req.parans.id]
+        const sql ="SELECT problem_assignment.problem_assignment_id,\
+         problem_assignment.problem_id, problem_assignment.student_id,\
+         problem_assignment.assign_date, problem_assignment.submission,\
+         problem_assignment.submission_date, problem.text, problem.criteria_id,\
+         problem.problem_id, criteria.criteria_id, criteria.text\
+         FROM problem_assignment, problem, criteria, \
+         WHERE user.user_id = problem_assignment.student_id \
+         AND problem.problem_id = problem_assignment.problem_assignment_id \
+         AND criteria.criteria_id = problem.criteria_id AND problem_assignment.grade IS NULL \
+         AND problem_assignment.submission IS NOT NULL \
+         AND problem_assignment.teacher_id = ? \
+         AND problem_assignment.student_id = ?"
+         config.sql_pool().getConnection((err, connection) => {
+           connection.query(sql, inserts, (err, results, fields) => {
+
+             if (err) {
+               console.log(err);
+               res.status(500).end()
+             } else {
+               console.log(results);
+               res.status(200).json({id: results.insertId}).end()
+             }
+           })
+         })
+
+      }
+
+    } else {
+      // not a teacher
+      res.status(403).end()
+    }
+  } else {
+    // not logged in
+    res.status(403).end()
+  }
+})
+
 module.exports = router
