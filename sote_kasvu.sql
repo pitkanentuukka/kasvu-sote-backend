@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 30, 2020 at 12:58 PM
+-- Generation Time: Nov 10, 2020 at 04:49 PM
 -- Server version: 10.1.44-MariaDB-0+deb9u1
 -- PHP Version: 7.0.33-0+deb9u7
 
@@ -23,11 +23,40 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `category`
+--
+
+CREATE TABLE `category` (
+  `category_id` int(11) NOT NULL,
+  `module_id` int(11) NOT NULL,
+  `name` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `category`
+--
+
+INSERT INTO `category` (`category_id`, `module_id`, `name`) VALUES
+(1, 1, 'Opiskelija työskentelee kasvatus-, sosiaali- ja terveysalan työn säädösten, määräysten, toimintaperiaatteiden, arvojen ja ammattieettisten ohjeiden mukaan.'),
+(2, 1, 'Opiskelija suunnittelee työtään ja tekee yhteistyötä työryhmän kanssa.'),
+(3, 1, 'Opiskelija suunnittelee, toteuttaa ja arvioi kasvun ja osallisuuden edistämistä.'),
+(4, 1, 'Opiskelija toimii vuorovaikutuksessa asiakkaan kanssa.'),
+(5, 1, 'Opiskelija edistää kasvua ja osallisuutta käyttäen alan työmenetelmiä, -välineitä ja materiaaleja.'),
+(6, 1, 'Opiskelija ohjaa ja avustaa päivittäisissä toiminnoissa.'),
+(7, 1, 'Opiskelija huolehtii asiakkaan hyvinvoinnista, terveydestä ja turvallisuudesta.'),
+(8, 1, 'Opiskelija antaa tietoa palveluista.'),
+(9, 1, 'Opiskelija ylläpitää turvallisuutta, työkykyään ja työhyvinvointiaan.'),
+(10, 1, 'Opiskelija arvioi ja kehittää toimintaansa.');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `criteria`
 --
 
 CREATE TABLE `criteria` (
   `criteria_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
   `text` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -35,18 +64,18 @@ CREATE TABLE `criteria` (
 -- Dumping data for table `criteria`
 --
 
-INSERT INTO `criteria` (`criteria_id`, `text`) VALUES
-(1, 'toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen\r\n'),
-(2, 'noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa\r\n'),
-(3, 'toimii kasvatus-, sosiaali- ja terveysalan työn arvojen ja lähihoitajan ammattieettisten ohjeiden mukaan\r\n'),
-(4, 'noudattaa tietosuojaa ja salassapitoa\r\n'),
-(5, 'työskentelee laatusuositusten ja omavalvontamääräysten mukaan työryhmän ohjaamana\r\n'),
-(6, 'toimii kestävän kehityksen periaatteiden mukaan\r\n'),
-(7, 'Opiskelija suunnittelee työtään ja tekee yhteistyötä työryhmän kanssa.\r\n'),
-(8, 'suunnittelee työtehtäviään työpaikan toiminnan mukaan\r\n'),
-(9, 'tekee yhteistyötä työryhmän kanssa\r\n'),
-(10, 'viestii ja dokumentoi työpaikan käytäntöjen mukaisesti työryhmän ohjaamana\r\n'),
-(11, 'Opiskelija suunnittelee, toteuttaa ja arvioi kasvun ja osallisuuden edistämistä.\r\n');
+INSERT INTO `criteria` (`criteria_id`, `category_id`, `text`) VALUES
+(1, 1, 'toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen\n'),
+(2, 1, 'noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa\r\n'),
+(3, 1, 'toimii kasvatus-, sosiaali- ja terveysalan työn arvojen ja lähihoitajan ammattieettisten ohjeiden mukaan\r\n'),
+(4, 1, 'noudattaa tietosuojaa ja salassapitoa\r\n'),
+(5, 1, 'työskentelee laatusuositusten ja omavalvontamääräysten mukaan työryhmän ohjaamana\r\n'),
+(6, 1, 'toimii kestävän kehityksen periaatteiden mukaan\r\n'),
+(7, 1, 'Opiskelija suunnittelee työtään ja tekee yhteistyötä työryhmän kanssa.\r\n'),
+(8, 1, 'suunnittelee työtehtäviään työpaikan toiminnan mukaan\r\n'),
+(9, 1, 'tekee yhteistyötä työryhmän kanssa\r\n'),
+(10, 1, 'viestii ja dokumentoi työpaikan käytäntöjen mukaisesti työryhmän ohjaamana\r\n'),
+(11, 1, 'Opiskelija suunnittelee, toteuttaa ja arvioi kasvun ja osallisuuden edistämistä.\r\n');
 
 -- --------------------------------------------------------
 
@@ -62,6 +91,25 @@ CREATE TABLE `evaluation` (
   `evaluation_text` text NOT NULL,
   `evaluation_date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `module`
+--
+
+CREATE TABLE `module` (
+  `module_id` int(11) NOT NULL,
+  `name` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `module`
+--
+
+INSERT INTO `module` (`module_id`, `name`) VALUES
+(1, 'Kasvun ja osallisuuden edistäminen'),
+(2, 'Hyvinvoinnin ja toimintakyvyn edistäminen');
 
 -- --------------------------------------------------------
 
@@ -115,20 +163,21 @@ INSERT INTO `problem_assignment` (`problem_assignment_id`, `problem_id`, `teache
 -- --------------------------------------------------------
 
 --
--- Table structure for table `teacher_student`
+-- Table structure for table `teacher_student_module`
 --
 
-CREATE TABLE `teacher_student` (
+CREATE TABLE `teacher_student_module` (
   `teacher_id` int(11) NOT NULL,
-  `student_id` int(11) NOT NULL
+  `student_id` int(11) NOT NULL,
+  `module_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `teacher_student`
+-- Dumping data for table `teacher_student_module`
 --
 
-INSERT INTO `teacher_student` (`teacher_id`, `student_id`) VALUES
-(3, 2);
+INSERT INTO `teacher_student_module` (`teacher_id`, `student_id`, `module_id`) VALUES
+(3, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -160,7 +209,6 @@ INSERT INTO `theory` (`theory_id`, `criteria_Id`, `text`, `teacher_id`) VALUES
 CREATE TABLE `theory_assignment` (
   `theory_assignment_id` int(11) NOT NULL,
   `theory_id` int(11) NOT NULL,
-  `teacher_id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
   `assign_date` datetime NOT NULL,
   `submission` text,
@@ -177,8 +225,8 @@ CREATE TABLE `theory_assignment` (
 -- Dumping data for table `theory_assignment`
 --
 
-INSERT INTO `theory_assignment` (`theory_assignment_id`, `theory_id`, `teacher_id`, `student_id`, `assign_date`, `submission`, `submission_time`, `self_grade`, `self_evaluation_text`, `self_evaluation_datetime`, `grade`, `evaluation`, `evaluation_datetime`) VALUES
-(1, 1, 3, 2, '2020-10-29 12:45:59', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `theory_assignment` (`theory_assignment_id`, `theory_id`, `student_id`, `assign_date`, `submission`, `submission_time`, `self_grade`, `self_evaluation_text`, `self_evaluation_datetime`, `grade`, `evaluation`, `evaluation_datetime`) VALUES
+(1, 1, 2, '2020-10-29 12:45:59', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -210,10 +258,18 @@ INSERT INTO `user` (`user_id`, `email`, `password`, `role`, `first_name`, `last_
 --
 
 --
+-- Indexes for table `category`
+--
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`category_id`),
+  ADD KEY `module_id` (`module_id`);
+
+--
 -- Indexes for table `criteria`
 --
 ALTER TABLE `criteria`
-  ADD PRIMARY KEY (`criteria_id`);
+  ADD PRIMARY KEY (`criteria_id`),
+  ADD KEY `category_id` (`category_id`);
 
 --
 -- Indexes for table `evaluation`
@@ -223,6 +279,12 @@ ALTER TABLE `evaluation`
   ADD KEY `criteria_Id` (`criteria_Id`),
   ADD KEY `student_id` (`student_id`),
   ADD KEY `instructor_id` (`instructor_id`);
+
+--
+-- Indexes for table `module`
+--
+ALTER TABLE `module`
+  ADD PRIMARY KEY (`module_id`);
 
 --
 -- Indexes for table `problem`
@@ -243,12 +305,13 @@ ALTER TABLE `problem_assignment`
   ADD KEY `grader_id` (`grader_id`);
 
 --
--- Indexes for table `teacher_student`
+-- Indexes for table `teacher_student_module`
 --
-ALTER TABLE `teacher_student`
-  ADD PRIMARY KEY (`teacher_id`,`student_id`),
+ALTER TABLE `teacher_student_module`
+  ADD PRIMARY KEY (`teacher_id`,`student_id`,`module_id`),
   ADD KEY `teacher_id` (`teacher_id`),
-  ADD KEY `student_id` (`student_id`);
+  ADD KEY `student_id` (`student_id`),
+  ADD KEY `module_id` (`module_id`);
 
 --
 -- Indexes for table `theory`
@@ -263,7 +326,6 @@ ALTER TABLE `theory`
 --
 ALTER TABLE `theory_assignment`
   ADD PRIMARY KEY (`theory_assignment_id`),
-  ADD KEY `teacher_id` (`teacher_id`),
   ADD KEY `student_id` (`student_id`),
   ADD KEY `theory_id` (`theory_id`);
 
@@ -278,6 +340,11 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT for table `category`
+--
+ALTER TABLE `category`
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
 -- AUTO_INCREMENT for table `criteria`
 --
 ALTER TABLE `criteria`
@@ -287,6 +354,11 @@ ALTER TABLE `criteria`
 --
 ALTER TABLE `evaluation`
   MODIFY `evaluation_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `module`
+--
+ALTER TABLE `module`
+  MODIFY `module_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `problem`
 --
@@ -317,6 +389,18 @@ ALTER TABLE `user`
 --
 
 --
+-- Constraints for table `category`
+--
+ALTER TABLE `category`
+  ADD CONSTRAINT `module` FOREIGN KEY (`module_id`) REFERENCES `module` (`module_id`);
+
+--
+-- Constraints for table `criteria`
+--
+ALTER TABLE `criteria`
+  ADD CONSTRAINT `category` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`);
+
+--
 -- Constraints for table `evaluation`
 --
 ALTER TABLE `evaluation`
@@ -342,11 +426,12 @@ ALTER TABLE `problem_assignment`
   ADD CONSTRAINT `teacher_id` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `teacher_student`
+-- Constraints for table `teacher_student_module`
 --
-ALTER TABLE `teacher_student`
-  ADD CONSTRAINT `teacher_student_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `teacher_student_ibfk_2` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `teacher_student_module`
+  ADD CONSTRAINT `teacher_student_module_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `teacher_student_module_ibfk_2` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `teacher_student_module_ibfk_3` FOREIGN KEY (`module_id`) REFERENCES `module` (`module_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `theory`
@@ -360,7 +445,6 @@ ALTER TABLE `theory`
 --
 ALTER TABLE `theory_assignment`
   ADD CONSTRAINT `studen` FOREIGN KEY (`student_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `teacher` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `theory_id` FOREIGN KEY (`theory_id`) REFERENCES `theory` (`theory_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
