@@ -23,11 +23,13 @@ router.get("/students", cors(), (req, res) => {
 
     if (authData.role ==='teacher') {
       const inserts = [authData.userId]
-      const sql = "select user_id, email, first_name, last_name from user, teacher_student \
-      where user.user_id = teacher_student.student_id \
-      and teacher_student.teacher_id = ? "
+      const sql = "select user_id, email, first_name, last_name\
+      from user, teacher_student_module \
+      where user.user_id = teacher_student_module.student_id \
+      and teacher_student_module.teacher_id = ? "
       config.sql_pool().getConnection((err, connection) => {
         connection.query(sql, inserts, (err, results, fields) => {
+          connection.release()
           if (err) {
             res.status(500).end()
           }else if (results.length > 0) {
@@ -36,17 +38,19 @@ router.get("/students", cors(), (req, res) => {
           } else {
             res.status(200).json({"msg": "no students found"}).end()
           }
+
         })
       })
+
 
     } else {
       // not a teacher
       res.status(403).json({"msg": "not a teacher"}).end()
     }
   } else {
-  // not logged in
-  res.status(403).json({"msg": "not logged in"}).end()
-}
+    // not logged in
+    res.status(403).json({"msg": "not logged in"}).end()
+  }
 
 })
 
@@ -60,7 +64,8 @@ router.post('/addTheory', cors(), (req, res) => {
       if (req.body.criteria_id !== null && req.body.text !==null) {
 
         const inserts = [req.body.criteria_id, req.body.text, authData.userId]
-        const sql = "insert into theory (criteria_id, text, teacher_id ) values (?, ?, ?)"
+        const sql = "insert into theory (criteria_id, text, teacher_id ) \
+        values (?, ?, ?)"
         config.sql_pool().getConnection((err, connection) => {
           connection.query(sql, inserts, (err, results, fields) => {
             if (err) {
@@ -120,6 +125,10 @@ router.post('/addProblem', cors(), (req, res) => {
     res.status(403).end()
   }
 })
+
+/**
+* is this needed?
+*/
 
 router.post('/assignTheoryToStudent', cors(), (req, res) => {
   if (typeof(req.cookies.token !== 'undefined')) {
