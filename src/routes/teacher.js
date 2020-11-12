@@ -328,9 +328,24 @@ router.get("/getAssignmentsForStudentAndCriteria/", cors(), (req, res) => {
   if (typeof(req.cookies.token !== 'undefined')) {
     const authData = getRoleAndId(req.cookies.token)
     if (authData.role ==='teacher') {
+      // there's a way to send named parameters to mysql, look into it
+      const sql = "SELECT theory_assignment.theory_assignment_id,\
+       theory_assignment.submission AS theory_submission, \
+       theory_assignment.submission_time as theory_submission_time, \
+       theory.text as theory_text, problem_assignment.problem_assignment_id,\
+       problem_assignment.submission AS problem_submission, \
+       problem_assignment.submission_date as problem_submission_time, \
+       problem.text as problem_text \
+       FROM theory_assignment, theory, problem_assignment, problem \
+       WHERE theory_assignment.theory_id = ? \
+       AND theory.criteria_id = ? \
+       AND theory.teacher_id = ? \
+       AND theory_assignment.student_id = ? \
+       AND problem_assignment.student_id = ? \
+       AND problem_assignment.problem_id = ? \
+       AND problem.criteria_Id = ? \
+       AND problem.teacher_id = ?"
 
-      /*SELECT problem_assignment.problem_assignment_id as problem_assignment_id, problem_assignment.problem_id as problem_id, problem_assignment.assign_date as problem_assign_date, problem.text as problem_text, theory_assignment.theory_assignment_id as theory_assignment_id, theory_assignment.theory_id as theory_id, theory_assignment.assign_date as theory_assign_date, theory.text as theory_text from problem_assignment, problem, theory_assignment, theory where problem.criteria_Id = 1 and problem_assignment.teacher_id = 3 and problem_assignment.student_id = 2 and problem_assignment.problem_id = problem.problem_id and theory_assignment.teacher_id = 3 and theory_assignment.student_id = 2 and theory_assignment.theory_id = theory.theory_id and theory.criteria_Id = 1*/
-    } else {
       // not a teacher
       res.status(403).end()
     }
@@ -339,6 +354,6 @@ router.get("/getAssignmentsForStudentAndCriteria/", cors(), (req, res) => {
     res.status(403).end()
   }
 })
-})
+
 /*SELECT problem_assignment.problem_assignment_id as problem_assignment_id, problem_assignment.problem_id as problem_id, problem_assignment.assign_date as problem_assign_date, problem.text as problem_text, theory_assignment.theory_assignment_id as theory_assignment_id, theory_assignment.theory_id as theory_id, theory_assignment.assign_date as theory_assign_date, theory.text as theory_text from problem_assignment, problem, theory_assignment, theory where problem.criteria_Id = 1 and problem_assignment.teacher_id = 3 and problem_assignment.student_id = 2 and problem_assignment.problem_id = problem.problem_id and theory_assignment.teacher_id = 3 and theory_assignment.student_id = 2 and theory_assignment.theory_id = theory.theory_id and theory.criteria_Id = 1*/
 module.exports = router
