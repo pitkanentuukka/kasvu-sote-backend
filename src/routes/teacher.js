@@ -345,6 +345,19 @@ router.get("/getAssignmentsForStudentAndCriteria/", cors(), (req, res) => {
        AND problem_assignment.problem_id = ? \
        AND problem.criteria_Id = ? \
        AND problem.teacher_id = ?"
+       config.sql_pool().getConnection((err, connection) => {
+         connection.query(sql, inserts, (err, results, fields) => {
+
+           if (err) {
+             console.log(err);
+             res.status(500).end()
+           } else {
+             console.log(results);
+             res.status(200).json({id: results.insertId}).end()
+           }
+         })
+       })
+       
 
       // not a teacher
       res.status(403).end()
