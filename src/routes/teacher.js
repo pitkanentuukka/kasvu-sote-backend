@@ -324,5 +324,33 @@ router.get("deleteTheory", cors(), (req, res) => {
  }
 })
 
+router.get("deleteProblem", cors(), (req, res) => {
+  if (typeof(req.cookies.token !== 'undefined')) {
+    const authData = getRoleAndId(req.cookies.token)
+    if (authData.role ==='teacher') {
+      const sql = "delete from problem where problem.problem_id = ? \
+      and problem.teacher_id = ?"
+      const inserts = [req.query.theory, authData.userId]
+      config.sql_pool().getConnection((err, connection) => {
+        connection.query(sql, inserts, (err, results, fields) => {
+
+          if (err) {
+            console.log(err);
+            res.status(500).end()
+          } else {
+            console.log(results);
+            res.status(200).json({id: results.insertId}).end()
+          }
+        })
+      })
+     // not a teacher
+     res.status(403).end()
+   }
+ } else {
+   // not logged in
+   res.status(403).end()
+ }
+})
+
 
 module.exports = router
