@@ -126,84 +126,6 @@ router.post('/addProblem', cors(), (req, res) => {
   }
 })
 
-/**
-* is this needed?
-*/
-
-router.post('/assignTheoryToStudent', cors(), (req, res) => {
-  if (typeof(req.cookies.token !== 'undefined')) {
-    const authData = getRoleAndId(req.cookies.token)
-    if (authData.role ==='teacher') {
-      if (req.body.student_id  && req.body.theory_id) {
-        const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        const inserts = [req.body.theory_id, req.body.student_id,
-          authData.userId, datetime]
-        const sql = "INSERT INTO theory_assignment \
-          (theory_id, student_id, teacher_id, assign_date) \
-          VALUES (?, ?, ?, ?)"
-          config.sql_pool().getConnection((err, connection) => {
-            connection.query(sql, inserts, (err, results, fields) => {
-              if (err) {
-                res.status(500).end()
-              } else {
-                res.status(200).json({id: results.insertId})
-              }
-            })
-          })
-      } else {
-        // missing parameters
-        res.status(400).end()
-      }
-
-
-    } else {
-      // not a teacher
-      res.status(403).end()
-    }
-  } else {
-    // not logged in
-    res.status(403).end()
-
-  }
-})
-
-router.post('/assignProblemToStudent', cors(), (req, res) => {
-  if (typeof(req.cookies.token !== 'undefined')) {
-    const authData = getRoleAndId(req.cookies.token)
-    if (authData.role ==='teacher') {
-      if (Boolean(req.body.student_id) && Boolean(req.body.problem_id)) {
-
-        const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        const inserts = [req.body.problem_id, req.body.student_id,
-          authData.userId, datetime]
-        const sql = "INSERT INTO problem_assignment \
-          (problem_id, student_id, teacher_id, assign_date) \
-          VALUES (?, ?, ?, ?)"
-          config.sql_pool().getConnection((err, connection) => {
-            connection.query(sql, inserts, (err, results, fields) => {
-
-              if (err) {
-                console.log(err);
-                res.status(500).end()
-              } else {
-                console.log(results);
-                res.status(200).json({id: results.insertId}).end()
-              }
-            })
-          })
-      } else {
-        // missing parameters
-        res.status(400).end()
-      }
-    } else {
-      // not a teacher
-      res.status(403).end()
-    }
-  } else {
-    // not logged in
-    res.status(403).end()
-  }
-})
 
 router.get('/getTheoryAssignmentsForEvaluation/:id', cors(), (req, res) => {
   if (typeof(req.cookies.token !== 'undefined')) {
@@ -357,7 +279,7 @@ router.get("/getAssignmentsForStudentAndCriteria/", cors(), (req, res) => {
            }
          })
        })
-       
+
 
       // not a teacher
       res.status(403).end()
