@@ -4,6 +4,8 @@ const cors = require('cors')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 const { config } = require('../config')
+const { authUser } = require('../auth')
+const {getRoleAndId} = require('../cookie-helper')
 
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
@@ -48,7 +50,19 @@ router.post('/login', bodyParser(), (req, res) => {
     } else {
       res.status(400).json({"msg": "missing email or password"}).end()
     }
+})
 
+router.get('/auth', cors(), (req, res) => {
+  if (req.cookies.token) {
+    const authData = getRoleAndId(req.cookies.token)
+    res.status(200).json({"userid": authData.userId, "role": authData.role}).end()
+
+  } else {
+    res.status(403).end()
+  }
 
 })
+
+
+
 module.exports = router
