@@ -5,8 +5,7 @@ Esittely/Demo versio Stadin AOlle.
 
 ### Config.js
 
-Tarkista että ``` src/config.js ```tiedostossa on kaikki tarvittavat tiedot että pystyy yhdistämään MongoDBhen.
-Salasanan saa Mongo tietokantaan tarvittaessa Teamsin kautta :)
+Tarkista että ``` src/config.js ```tiedostossa on kaikki tarvittavat tiedot
 
 ### Käynnistys
 
@@ -15,3 +14,22 @@ Asenna tarvittavat paketit:
 
 Käynnistä sovellus komennolla:
 ```npm run devStart```
+
+### Tällä hetkellä toimivat API-kutsut
+
+- POST /api/user/login/ {email, password}
+- GET /api/user/logout/
+- GET /api/user/auth
+
+## teacher
+
+- GET /api/teacher/students/
+palauttaa listan sisäänkirjautuneen opettajan oppilaista
+- POST /api/teacher/addProblem
+- POST /api/teacher/addTheory
+lisää teoria / ongelmanratkaisutehtävän
+GET /api/teacher/getAssignmentsForStudentAndCriteria
+hae tietyn oppilaan kriteerikohtaiset tehtävät, sekä teoria että ongelmanratkaisu
+GET /api/teacher/deleteTheory
+GET /api/teacher/deleteProblem
+poista teoria- tai ongelmanratkaisutehtävä
