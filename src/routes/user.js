@@ -36,6 +36,7 @@ router.post('/login', bodyParser(), (req, res) => {
                 expiresIn: '365d'}
               )
               res.status(200).cookie('token', token, {httpOnly : true})
+              res.json({"userid": results[0].user_id, "role": results[0].role})
               res.end()
             } else {
                 res.status(403).json({"msg": "invalid username or password"}).end()
