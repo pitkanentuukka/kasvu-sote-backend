@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const { config } = require('../config')
 const { authUser } = require('../auth')
 const {getRoleAndId} = require('../cookie-helper')
+const nodemailer = require('nodemailer')
 
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
@@ -19,8 +20,8 @@ router.post('/login', bodyParser(), (req, res) => {
   if (email && password) {
 
 
-    let sql = "select * from user where email = ?"
-    let inserts = email;
+    const sql = "select * from user where email = ?"
+    const inserts = email;
 
     config.sql_pool().getConnection((err, connection) => {
 
@@ -68,5 +69,56 @@ router.get('/logout', cors(), (req, res) => {
   res.status(200).end()
 })
 
+router.post('/sendLink', cors(), (req, res) =>  {
+  if (typeof(req.cookies.token !== 'undefined')) {
+    const authData = getRoleAndId(req.cookies.token)
+    if (authData.role ==='teacher') {
+      const recipientEmail = req.body.email
+      const token = jwt.sign({recipientEmail}, process.env.JWT_KEY, { expiresIn: '7d' })
+      const host = req.get('Host')
+      const api = '/api/user/register/'
+      const completeURL = host + api + token
+
+      const sql = "select email from user where user.user_id = ?"
+      const inserts = [authData.userId]
+      config.sql_pool().getConnection((err, connection) => {
+         connection.query(sql, inserts, (error, results, fields) =>{
+          if (results.length > 0) {
+            sendEmail(results[0], recipientEmail, completeURL).catch(console.error)
+
+
+          }
+
+        })
+
+      })
+      res.status(200).end()
+
+
+    }
+  }
+})
+
+const sendEmail = async (from, to, completeURL) => {
+
+  const transport = nodemailer.createTransport({
+    host: process.env.EMAIL_SERVER,
+    port: process.env.EMAIL_PORT,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD
+    }
+
+  });
+
+  const email = await transport.sendMail({
+    from,
+    to,
+    subject: "registration link",
+    text: completeURL,
+    html: `<a href="${completeURL}">${completeURL}</a>`
+  })
+
+}
 
 module.exports = router
