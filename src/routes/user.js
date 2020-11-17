@@ -63,7 +63,7 @@ router.get('/auth', cors(), (req, res) => {
 
 })
 
-router.get('logout', cors(), (req, res) => {
+router.get('/logout', cors(), (req, res) => {
   res.clearCookie('token')
   res.status(200).end()
 })
