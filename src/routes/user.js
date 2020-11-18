@@ -4,7 +4,6 @@ const cors = require('cors')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 const { config } = require('../config')
-const { authUser } = require('../auth')
 const {getRoleAndId} = require('../cookie-helper')
 const nodemailer = require('nodemailer')
 
@@ -12,21 +11,15 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 
 
-
 router.post('/login', bodyParser(), (req, res) => {
 
   const email = req.body.email
   const password = req.body.password
   if (email && password) {
-
-
     const sql = "select * from user where email = ?"
     const inserts = email;
-
     config.sql_pool().getConnection((err, connection) => {
-
       connection.query(sql, inserts, (error, results, fields) =>{
-
         if (results.length === 0) {
           res.status(403).json({"message": "invalid username or password"}).end()
         } else {
@@ -42,15 +35,15 @@ router.post('/login', bodyParser(), (req, res) => {
               res.json({"userid": results[0].user_id, "role": results[0].role})
               res.end()
             } else {
-                res.status(403).json({"msg": "invalid username or password"}).end()
+              res.status(403).json({"msg": "invalid username or password"}).end()
             }
           })
-          }
-        })
+        }
       })
-    } else {
-      res.status(400).json({"msg": "missing email or password"}).end()
-    }
+    })
+  } else {
+    res.status(400).json({"msg": "missing email or password"}).end()
+  }
 })
 
 router.get('/auth', cors(), (req, res) => {
@@ -76,7 +69,7 @@ router.post('/sendLink', cors(), (req, res) =>  {
       const recipientEmail = req.body.email
       const token = jwt.sign({recipientEmail}, process.env.JWT_KEY, { expiresIn: '7d' })
       const host = req.get('Host')
-      const api = '/api/user/register/'
+      const api = '/api/user/validateLink/'
       const completeURL = host + api + token
 
       const sql = "select email from user where user.user_id = ?"
@@ -85,19 +78,18 @@ router.post('/sendLink', cors(), (req, res) =>  {
          connection.query(sql, inserts, (error, results, fields) =>{
           if (results.length > 0) {
             sendEmail(results[0], recipientEmail, completeURL).catch(console.error)
-
-
+            res.status(200).json({"link" : completeURL}).end()
           }
-
         })
-
       })
-      res.status(200).end()
-
-
+    } else {
+      res.status(403).end()
     }
+  } else {
+    res.status(403).end()
   }
 })
+
 
 const sendEmail = async (from, to, completeURL) => {
 
@@ -108,7 +100,6 @@ const sendEmail = async (from, to, completeURL) => {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASSWORD
     }
-
   });
 
   const email = await transport.sendMail({
@@ -118,7 +109,34 @@ const sendEmail = async (from, to, completeURL) => {
     text: completeURL,
     html: `<a href="${completeURL}">${completeURL}</a>`
   })
-
 }
+
+
+
+router.get('/validateLink/:code', cors(), (req, res) => {
+    const code = req.params.code
+    let validationData = {};
+     jwt.verify(code, process.env.JWT_KEY, (err, authData) => {
+      if(err) {
+        res.send(401).json("invalid validation key").end()
+      } else {
+        validationData = authData;
+      }
+    })
+    email = validationData.recipientEmail
+
+    const sql = "select * from user where email = ?"
+    const inserts = [email]
+    config.sql_pool().getConnection((err, connection) => {
+     connection.query(sql, inserts, (error, results, fields) =>{
+      if (results.length > 0) {
+        console.log(results);
+        res.status(401).json({"msg":"email already exists"}).end()
+      } else {
+        res.status(200).json(email).end()
+      }
+    })
+  })
+})
 
 module.exports = router
