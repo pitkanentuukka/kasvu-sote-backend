@@ -307,11 +307,9 @@ router.get("/deleteTheory/", cors(), (req, res) => {
         connection.query(sql, inserts, (err, results, fields) => {
 
           if (err) {
-            console.log(err);
             res.status(500).end()
           } else {
-            console.log(results);
-            res.status(200).json({id: results.insertId}).end()
+            res.status(200).json({"deleted": results.affectedRows}).end()
           }
         })
       })
@@ -335,11 +333,9 @@ router.get("/deleteProblem/", cors(), (req, res) => {
         connection.query(sql, inserts, (err, results, fields) => {
 
           if (err) {
-            console.log(err);
             res.status(500).end()
           } else {
-            console.log(results);
-            res.status(200).json({id: results.insertId}).end()
+            res.status(200).json({"deleted": results.affectedRows}).end()
           }
         })
       })
