@@ -353,4 +353,28 @@ router.get("/deleteProblem/", cors(), (req, res) => {
 })
 
 
+router.get('/getUsers/:email', cors(),  async (req, res) => {
+  const email = req.params.email
+  result = await getUserByEmail(email)
+  res.status(200).json(result).end()
+
+
+})
+
+
+const  getUserByEmail = async email => {
+  try {
+
+    const pool = await config.sql_pool()
+    const inserts = [email]
+    const result = await pool.execute("SELECT * FROM `user` where `email` = ?", [email])
+    console.log(result);
+    return result[0]
+  } catch(e) {
+    console.log(e);
+    return
+  }
+}
+
+
 module.exports = router
