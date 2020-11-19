@@ -3,7 +3,7 @@ const router = express.Router()
 const { config } = require('../config')
 const { authUser } = require('../auth')
 const cors = require('cors')
-const mysql = require('mysql');
+const mysql = require('mysql2/promise');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser')
 const {getRoleAndId} = require('../cookie-helper')
@@ -296,7 +296,7 @@ router.get("/getAssignmentsForStudentAndCriteria/", cors(), (req, res) => {
   }
 })
 
-router.get("deleteTheory", cors(), (req, res) => {
+router.get("/deleteTheory/", cors(), (req, res) => {
   if (typeof(req.cookies.token !== 'undefined')) {
     const authData = getRoleAndId(req.cookies.token)
     if (authData.role ==='teacher') {
@@ -324,7 +324,7 @@ router.get("deleteTheory", cors(), (req, res) => {
  }
 })
 
-router.get("deleteProblem", cors(), (req, res) => {
+router.get("/deleteProblem/", cors(), (req, res) => {
   if (typeof(req.cookies.token !== 'undefined')) {
     const authData = getRoleAndId(req.cookies.token)
     if (authData.role ==='teacher') {
