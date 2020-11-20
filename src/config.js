@@ -13,7 +13,7 @@ const config = {
     sql_pool() {
         return mysql.createPool(this.sql_connection);
     },
-    portNumber: "3000"
+    portNumber: "4000"
 }
 
 module.exports = { config };
