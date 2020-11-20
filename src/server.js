@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const { config } = require('./config');
+
 const { authUser } = require('./auth');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser')
 const dotenv = require('dotenv')
 dotenv.config()
 
+const { config } = require('./config');
 const app = express();
 app.use(cookieParser())
 app.use(bodyParser())
