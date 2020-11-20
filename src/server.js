@@ -10,13 +10,12 @@ const cookieParser = require('cookie-parser')
 const dotenv = require('dotenv')
 dotenv.config()
 
-const { config } = require('./config');
 const app = express();
 app.use(cookieParser())
 app.use(bodyParser())
 
-
-app.listen(config.portNumber, err => {console.log(err ? `Serveri ei lähtenyt pyörimään` : `Serveri pyörii localhost:${config.portNumber}`)});
+app.listen(process.env.SERVER_PORT, err =>
+  {console.log(err ? `Serveri ei lähtenyt pyörimään` : `Serveri pyörii localhost:${process.env.SERVER_PORT}`)});
 app.use('/api/user', require('./routes/user'))
 app.use('/api/tasks', require('./routes/tasks'))
 app.use('/api/teacher', require('./routes/teacher'))
