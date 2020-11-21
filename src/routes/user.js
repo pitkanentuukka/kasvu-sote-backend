@@ -127,30 +127,24 @@ const sendEmail = async (from, to, completeURL) => {
 
 
 
-router.get('/validateLink/:code', cors(), (req, res) => {
-    const code = req.params.code
-    let validationData = {};
-     jwt.verify(code, process.env.JWT_KEY, (err, authData) => {
-      if(err) {
-        res.send(401).json("invalid validation key").end()
-      } else {
-        validationData = authData;
-      }
-    })
-    email = validationData.recipientEmail
-
-    const sql = "select * from user where email = ?"
-    const inserts = [email]
-    config.sql_pool().getConnection((err, connection) => {
-     connection.query(sql, inserts, (error, results, fields) =>{
-      if (results.length > 0) {
-        console.log(results);
-        res.status(401).json({"msg":"email already exists"}).end()
-      } else {
-        res.status(200).json(email).end()
-      }
-    })
+router.get('/validateLink/:code', cors(), async (req, res) => {
+  const code = req.params.code
+  let validationData = {};
+  jwt.verify(code, process.env.JWT_KEY, (err, authData) => {
+    if(err) {
+      res.send(401).json("invalid validation key").end()
+    } else {
+      validationData = authData;
+    }
   })
+  email = validationData.recipientEmail
+  result = await user.getUserByEmail(email)
+  if (result[0]) {
+    res.status(401).json({"msg":"email already exists"}).end()
+  } else {
+    res.status(200).json(email).end()
+  }
+
 })
 
 module.exports = router
