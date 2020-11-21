@@ -64,26 +64,38 @@ router.get('/logout', cors(), (req, res) => {
   res.status(200).end()
 })
 
-router.post('/sendLink', cors(), (req, res) =>  {
+router.post('/sendLink', cors(), async (req, res) =>  {
   if (typeof(req.cookies.token !== 'undefined')) {
     const authData = getRoleAndId(req.cookies.token)
     if (authData.role ==='teacher') {
       const recipientEmail = req.body.email
-      const token = jwt.sign({recipientEmail}, process.env.JWT_KEY, { expiresIn: '7d' })
-      const host = req.get('Host')
-      const api = '/api/user/validateLink/'
-      const completeURL = host + api + token
-
-      const sql = "select email from user where user.user_id = ?"
-      const inserts = [authData.userId]
-      config.sql_pool().getConnection((err, connection) => {
-         connection.query(sql, inserts, (error, results, fields) =>{
-          if (results.length > 0) {
-            sendEmail(results[0], recipientEmail, completeURL).catch(console.error)
-            res.status(200).json({"link" : completeURL}).end()
+      try {
+        const results = await user.getUserByEmail(recipientEmail)
+        if (!results[0]) {
+          const token = jwt.sign({recipientEmail}, process.env.JWT_KEY, { expiresIn: '7d' })
+          const host = req.get('Host')
+          const api = '/api/user/validateLink/'
+          const completeURL = host + api + token
+          try {
+            teacher = await user.getUserById(authData.userId)
+            if (teacher[0]) {
+              try {
+                sendEmail(teacher[0].email, recipientEmail, completeURL)
+                res.status(200).json({"link" : completeURL,
+                "email": recipientEmail}).end()
+              } catch (error) {
+                res.status(500).json(error).end()
+              }
+            }
+          } catch (error) {
+            res.status(500).json(error).end()
           }
-        })
-      })
+        } else {
+          res.status(401).json({"message": "user already exists"}).end()
+        }
+      } catch (error) {
+        res.status(500).json(error).end()
+      }
     } else {
       res.status(403).end()
     }

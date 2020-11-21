@@ -10,3 +10,13 @@ exports.getUserByEmail = async (email) => {
     throw (error)
   }
 }
+
+exports.getUserById = async (id) => {
+  try {
+    results = await pool.query("select * from user where user_id = ?", id)
+    return results[0]
+  }
+  catch (error) {
+    throw (error)
+  }
+}
