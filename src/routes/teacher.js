@@ -1,7 +1,6 @@
+const dotenv = require('dotenv')
 const express = require('express')
 const router = express.Router()
-const { config } = require('../config')
-const { authUser } = require('../auth')
 const cors = require('cors')
 const mysql = require('mysql2/promise');
 const bcrypt = require('bcrypt');
@@ -9,39 +8,26 @@ const bodyParser = require('body-parser')
 const {getRoleAndId} = require('../cookie-helper')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
-const dotenv = require('dotenv')
+const user = require('../db/user.js')
 
 
 /**
 * get all students of a currently logged in teacher
 */
-router.get("/students", cors(), (req, res) => {
+router.get("/students", cors(), async (req, res) => {
 
   if (req.cookies.token) {
 
     const authData = getRoleAndId(req.cookies.token)
 
     if (authData.role ==='teacher') {
-      const inserts = [authData.userId]
-      const sql = "select user_id, email, first_name, last_name\
-      from user, teacher_student_module \
-      where user.user_id = teacher_student_module.student_id \
-      and teacher_student_module.teacher_id = ? "
-      config.sql_pool().getConnection((err, connection) => {
-        connection.query(sql, inserts, (err, results, fields) => {
-          connection.release()
-          if (err) {
-            res.status(500).end()
-          }else if (results.length > 0) {
+      try {
+        students = await user.getStudentsForTeacher(authData.userId)
+        res.status(200).json(students).end()
 
-            res.status(200).json(results).end()
-          } else {
-            res.status(200).json({"msg": "no students found"}).end()
-          }
-
-        })
-      })
-
+      } catch (e) {
+        res.status(500).json(e).end()
+      }
 
     } else {
       // not a teacher

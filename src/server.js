@@ -1,14 +1,12 @@
+const dotenv = require('dotenv')
+dotenv.config()
 const express = require('express');
 const path = require('path');
 
-const { authUser } = require('./auth');
-const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
-const dotenv = require('dotenv')
-dotenv.config()
 
 const app = express();
 app.use(cookieParser())
