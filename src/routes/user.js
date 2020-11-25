@@ -3,19 +3,14 @@ const router = express.Router()
 const cors = require('cors')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
-const pool = require('../db/mysql.js').pool
-const user = require('../db/user.js')
-
-//const { config } = require('../config')
 const {getRoleAndId} = require('../cookie-helper')
+const user = require('../db/user')
 const nodemailer = require('nodemailer')
-
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 
 
 router.post('/login', bodyParser(), async (req, res) => {
-
   const email = req.body.email
   const password = req.body.password
   if (email && password) {
@@ -41,6 +36,7 @@ router.post('/login', bodyParser(), async (req, res) => {
         })
       }
     } catch (error) {
+      console.log(error);
       res.status(500).json(error).end()
     }
   } else {
@@ -124,7 +120,6 @@ const sendEmail = async (from, to, completeURL) => {
     html: `<a href="${completeURL}">${completeURL}</a>`
   })
 }
-
 
 
 router.get('/validateLink/:code', cors(), async (req, res) => {
