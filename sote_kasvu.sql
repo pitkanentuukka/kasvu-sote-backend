@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 10, 2020 at 04:49 PM
+-- Generation Time: Nov 25, 2020 at 12:15 PM
 -- Server version: 10.1.44-MariaDB-0+deb9u1
 -- PHP Version: 7.0.33-0+deb9u7
 
@@ -58,6 +58,7 @@ INSERT INTO `category` (`category_id`, `module_id`, `name`) VALUES
 (19, 2, 'Opiskelija ohjaa apuvälineiden ja hyvinvointia tukevan teknologian käytössä ja huollossa.'),
 (20, 2, 'Opiskelija ylläpitää turvallisuutta, työkykyään ja työhyvinvointiaan.'),
 (21, 2, 'Opiskelija kehittää toimintaansa ja perustelee ratkaisujaan ammatillisella tiedolla.');
+
 
 -- --------------------------------------------------------
 
@@ -141,7 +142,10 @@ CREATE TABLE `problem` (
 
 INSERT INTO `problem` (`problem_id`, `criteria_Id`, `text`, `teacher_id`) VALUES
 (1, 1, 'tähän tulisi joku ongelmanratkaisutehtävä', 3),
-(2, 2, 'tähän tulisi joku toinen ongelmanratkaisutehtävä', 3);
+(2, 2, 'tähän tulisi joku toinen ongelmanratkaisutehtävä', 3),
+(3, 1, 'testiteksti', 3),
+(4, 1, 'testataan ongelman lisäystä', 3),
+(5, 1, 'testataan vielä ongelman lisäystä', 3);
 
 -- --------------------------------------------------------
 
@@ -209,7 +213,12 @@ CREATE TABLE `theory` (
 
 INSERT INTO `theory` (`theory_id`, `criteria_Id`, `text`, `teacher_id`) VALUES
 (1, 1, 'tähän voisi tulla joku tehtävä', 3),
-(2, 2, 'tässä on esimerkkitehtävä toiselle kriteerille', 3);
+(2, 2, 'tässä on esimerkkitehtävä toiselle kriteerille', 3),
+(3, 2, 'tämän tehtävän tehtävä on testata tehtävänlisäysAPIa', 3),
+(5, 1, 'testataan vielä teoriatehtävän lisäystä', 3),
+(6, 1, 'testataan vielä teoriatehtävän lisäystä', 3),
+(7, 1, 'testataan vielä teoriatehtävän lisäystä', 3),
+(8, 1, 'testataan vielä teoriatehtävän lisäystä', 3);
 
 -- --------------------------------------------------------
 
@@ -374,7 +383,7 @@ ALTER TABLE `module`
 -- AUTO_INCREMENT for table `problem`
 --
 ALTER TABLE `problem`
-  MODIFY `problem_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `problem_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `problem_assignment`
 --
@@ -384,7 +393,7 @@ ALTER TABLE `problem_assignment`
 -- AUTO_INCREMENT for table `theory`
 --
 ALTER TABLE `theory`
-  MODIFY `theory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `theory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `theory_assignment`
 --
