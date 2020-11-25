@@ -57,7 +57,7 @@ router.get("/criteria/:id", cors(), async (req, res) => {
   } else {
     try {
       const inserts = [req.params.id]
-      const result = await common.getCriterias(inserts)
+      const results = await common.getCriterias(inserts)
       if (results[0].length === 0) {
         res.status(403).json({"message": "no criterias found"}).end()
       } else if (results.length > 0) {
