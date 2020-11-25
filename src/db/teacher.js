@@ -41,10 +41,33 @@ exports.getAssignmentsForStudentAndCriteria = async (
     and problem.criteria_Id = ?"
     const inserts = [criteria_id, student_id, teacher_id,
       student_id, teacher_id, criteria_id]
-    try {
-      results = await pool.query(sql, inserts)
-      return results[0]
-    } catch (e) {
-      throw e
+      try {
+        results = await pool.query(sql, inserts)
+        return results[0]
+      } catch (e) {
+        throw (e)
+      }
     }
+
+exports.deleteTheory = async (id, teacher_id) => {
+  try {
+    result = await pool.query("delete from theory\
+     where theory_id = ? and teacher_id = ?", [id, teacher_id])
+
+    return result[0]
+  } catch (e) {
+    throw (e)
   }
+}
+
+
+exports.deleteProblem = async (id, teacher_id) => {
+  try {
+    result = await pool.query("delete from problem\
+     where problem_id = ? and teacher_id = ?", [id, teacher_id])
+
+    return result[0]
+  } catch (e) {
+    throw (e)
+  }
+}

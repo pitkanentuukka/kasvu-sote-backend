@@ -246,53 +246,41 @@ router.get("/getAssignmentsForStudentAndCriteria/", cors(), async (req, res) => 
   }
 })
 
-router.get("/deleteTheory/", cors(), (req, res) => {
+router.get("/deleteTheory/:id", cors(), async (req, res) => {
   if (typeof(req.cookies.token !== 'undefined')) {
     const authData = getRoleAndId(req.cookies.token)
     if (authData.role ==='teacher') {
-      const sql = "delete from theory where theory.theory_id = ? \
-      and theory.teacher_id = ?"
-      const inserts = [req.query.theory, authData.userId]
-      config.sql_pool().getConnection((err, connection) => {
-        connection.query(sql, inserts, (err, results, fields) => {
+      try {
+        result = await teacher.deleteTheory(req.params.id, authData.userId)
+        res.status(200).json(result.affectedRows).end()
+      } catch (e) {
+        res.status(500).json(e).end()
+      }
 
-          if (err) {
-            res.status(500).end()
-          } else {
-            res.status(200).json({"deleted": results.affectedRows}).end()
-          }
-        })
-      })
+    } else {}
      // not a teacher
      res.status(403).end()
-   }
- } else {
+   } else {
    // not logged in
    res.status(403).end()
  }
 })
 
-router.get("/deleteProblem/", cors(), (req, res) => {
+router.get("/deleteProblem/:id", cors(), async (req, res) => {
   if (typeof(req.cookies.token !== 'undefined')) {
     const authData = getRoleAndId(req.cookies.token)
     if (authData.role ==='teacher') {
-      const sql = "delete from problem where problem.problem_id = ? \
-      and problem.teacher_id = ?"
-      const inserts = [req.query.theory, authData.userId]
-      config.sql_pool().getConnection((err, connection) => {
-        connection.query(sql, inserts, (err, results, fields) => {
+      try {
+        result = await teacher.deleteProblem(req.params.id, authData.userId)
+        res.status(200).json(result.affectedRows).end()
+      } catch (e) {
+        res.status(500).json(e).end()
+      }
 
-          if (err) {
-            res.status(500).end()
-          } else {
-            res.status(200).json({"deleted": results.affectedRows}).end()
-          }
-        })
-      })
+    } else {}
      // not a teacher
      res.status(403).end()
-   }
- } else {
+   } else {
    // not logged in
    res.status(403).end()
  }
