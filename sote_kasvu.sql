@@ -46,7 +46,18 @@ INSERT INTO `category` (`category_id`, `module_id`, `name`) VALUES
 (7, 1, 'Opiskelija huolehtii asiakkaan hyvinvoinnista, terveydestä ja turvallisuudesta.'),
 (8, 1, 'Opiskelija antaa tietoa palveluista.'),
 (9, 1, 'Opiskelija ylläpitää turvallisuutta, työkykyään ja työhyvinvointiaan.'),
-(10, 1, 'Opiskelija arvioi ja kehittää toimintaansa.');
+(10, 1, 'Opiskelija arvioi ja kehittää toimintaansa.'),
+(11, 2, 'Opiskelija työskentelee lähihoitajan työtä ohjaavien säädösten ja ohjeiden mukaan.'),
+(12, 2, 'Opiskelija suunnittelee työtään.'),
+(13, 2, 'Opiskelija toimii vuorovaikutuksessa asiakkaan kanssa.'),
+(14, 2, 'Opiskelija käyttää asiakkaan toimintakykyä edistävää ja voimavaralähtöistä työotetta.'),
+(15, 2, 'Opiskelija motivoi asiakasta terveyttä ja hyvinvointia edistävään omahoitoon ja ehkäisemään riskejä.'),
+(16, 2, 'Opiskelija ohjaa asiakasta toiminnallisuuteen.'),
+(17, 2, 'Opiskelija käyttää alan työmenetelmiä, -välineitä ja materiaaleja asiakkaan perushoidossa ja huolenpidossa, saattohoidossa ja lääkehoidossa.'),
+(18, 2, 'Opiskelija antaa tietoa palveluista.'),
+(19, 2, 'Opiskelija ohjaa apuvälineiden ja hyvinvointia tukevan teknologian käytössä ja huollossa.'),
+(20, 2, 'Opiskelija ylläpitää turvallisuutta, työkykyään ja työhyvinvointiaan.'),
+(21, 2, 'Opiskelija kehittää toimintaansa ja perustelee ratkaisujaan ammatillisella tiedolla.');
 
 -- --------------------------------------------------------
 
