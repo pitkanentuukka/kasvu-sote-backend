@@ -9,7 +9,7 @@ const {getRoleAndId} = require('../cookie-helper')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 const user = require('../db/user.js')
-const Teacher = require('../db/Teacher.js')
+const teacher = require('../db/teacher.js')
 
 /**
 * get all students of a currently logged in teacher
@@ -43,34 +43,21 @@ router.get("/students", cors(), async (req, res) => {
 /**
 * teacher adds a Theory task linked to his uid & posted criteria
 */
-router.post('/addTheory', cors(), (req, res) => {
+router.post('/addTheory', cors(), async (req, res) => {
   if (typeof(req.cookies.token !== 'undefined')) {
     const authData = getRoleAndId(req.cookies.token)
     if (authData.role ==='teacher') {
       if (req.body.criteria_id !== null && req.body.text !==null) {
+
         try {
-          const results = postTheory(req.body.criteria_id, req.body.text, authData.userId)
-          if (results[0].length === 0) {
-            res.status(500).json({"message": "adding theory was unsuccessful"}).end()
-          } else {
-            res.status(200).json({id: results.insertId, text: req.body.text})
-          }
+          const result = await teacher.addTheory(req.body.criteria_id, req.body.text, authData.userId)
+          res.status(200).json({"id": result.insertId, "text": req.body.text}).end()
+
         }
         catch (error) {
           res.status(500).json(error).end
         }
-        /*const inserts = [req.body.criteria_id, req.body.text, authData.userId]
-        const sql = "insert into theory (criteria_id, text, teacher_id ) \
-        values (?, ?, ?)"
-        config.sql_pool().getConnection((err, connection) => {
-          connection.query(sql, inserts, (err, results, fields) => {
-            if (err) {
-              res.status(500).end()
-            } else {
-              res.status(200).json({id: results.insertId, text: req.body.text})
-            }
-          })
-        })*/
+
       } else {
         // bad request, missing parameters
         res.status(400).end()
@@ -90,24 +77,17 @@ router.post('/addTheory', cors(), (req, res) => {
 * teacher adds a problem task linked to his uid & posted criteria
 */
 
-router.post('/addProblem', cors(), (req, res) => {
+router.post('/addProblem', cors(), async (req, res) => {
   if (typeof(req.cookies.token !== 'undefined')) {
     const authData = getRoleAndId(req.cookies.token)
     if (authData.role ==='teacher') {
       if (req.body.criteria_id !== null && req.body.text !==null) {
-        const inserts = [req.body.criteria_id, req.body.text, authData.userId]
-        const sql = "INSERT INTO problem \
-          (criteria_id, text, teacher_id ) \
-          VALUES (?, ?, ?)"
-        config.sql_pool().getConnection((err, connection) => {
-          connection.query(sql, inserts, (err, results, fields) => {
-            if (err) {
-              res.status(500).end()
-            } else {
-              res.status(200).json({id: results.insertId, text: req.body.text})
-            }
-          })
-        })
+        try {
+          result = await teacher.addProblem(req.body.criteria_id, req.body.text, authData.userId)
+          res.status(200).json({"id": result.insertId, "text": req.body.text}).end()
+        } catch(error) {
+          res.status(500).json(error).end()
+        }
       } else {
         res.status(400).end()
       }
