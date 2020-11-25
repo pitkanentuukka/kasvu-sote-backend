@@ -102,7 +102,9 @@ router.post('/addProblem', cors(), async (req, res) => {
   }
 })
 
-
+/**
+* this is not necessary right now
+*/
 router.get('/getTheoryAssignmentsForEvaluation/:id', cors(), (req, res) => {
   if (typeof(req.cookies.token !== 'undefined')) {
     const authData = getRoleAndId(req.cookies.token)
@@ -222,47 +224,19 @@ router.get('/getProblemAssignmentsForEvaluation/:id', cors(), (req, res) => {
 })
 
 
-router.get("/getAssignmentsForStudentAndCriteria/", cors(), (req, res) => {
+router.get("/getAssignmentsForStudentAndCriteria/", cors(), async (req, res) => {
   if (typeof(req.cookies.token !== 'undefined')) {
     const authData = getRoleAndId(req.cookies.token)
     if (authData.role ==='teacher') {
-      // there's a way to send named parameters to mysql, look into it
-      const sql ="SELECT theory_assignment.theory_assignment_id, \
-      theory_assignment.submission AS theory_submission, \
-      theory_assignment.submission_time as theory_submission_time, \
-      theory.text as theory_text, problem_assignment.problem_assignment_id, \
-      problem_assignment.submission AS problem_submission, \
-      problem_assignment.submission_date as problem_submission_time, \
-      problem.text as problem_text\
-      FROM `theory_assignment`, theory, problem_assignment, problem\
-      WHERE theory.criteria_id = ?\
-      and theory_assignment.student_id = ?\
-      and theory.teacher_id = ?\
-      and problem_assignment.student_id = ?\
-      and problem_assignment.problem_id = problem.problem_id\
-      and problem.teacher_id = ?\
-      and problem.criteria_Id = ?"
+      try {
+        results = await teacher.getAssignmentsForStudentAndCriteria(
+          req.query.criteria, req.query.student, authData.userId)
+        res.status(200).json(results).end();
+      } catch (e) {
+        res.status(500).json(e).end()
+      }
 
-       const criteria_id = req.query.criteria
-       const student_id = req.query.student
-       const inserts = [criteria_id, student_id, authData.userId,
-         student_id, authData.userId, criteria_id]
-
-       config.sql_pool().getConnection((err, connection) => {
-         connection.query(sql, inserts, (err, results, fields) => {
-
-           if (err) {
-             console.log(err);
-             res.status(500).end()
-           } else if (results.length > 0) {
-
-             res.status(200).json(results).end()
-           } else {
-             res.status(200).json({"msg": "no students found"}).end()
-           }
-
-         })
-       })
+    } else {
       // not a teacher
       res.status(403).end()
     }
