@@ -34,3 +34,13 @@ exports.getStudentsForTeacher = async (id) => {
     throw (error)
   }
 }
+
+exports.add = async (email, password, role, first_name, last_name) => {
+  try {
+    result = await pool.query("insert into user values (?, ?, ?, ?, ?)",
+      email, password, role, first_name, last_name)
+    return result;
+  } catch (e) {
+    throw (e)
+  }
+}
