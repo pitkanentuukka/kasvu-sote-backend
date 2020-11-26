@@ -223,17 +223,27 @@ router.get('/getProblemAssignmentsForEvaluation/:id', cors(), (req, res) => {
   }
 })
 
-
+/**
+* this takes a query string
+* ?criteria=criteria_id&student=student_id
+* if they're missing it'll respond with 400 (bad request)
+*/
 router.get("/getAssignmentsForStudentAndCriteria/", cors(), async (req, res) => {
   if (typeof(req.cookies.token !== 'undefined')) {
     const authData = getRoleAndId(req.cookies.token)
     if (authData.role ==='teacher') {
-      try {
-        results = await teacher.getAssignmentsForStudentAndCriteria(
-          req.query.criteria, req.query.student, authData.userId)
-        res.status(200).json(results).end();
-      } catch (e) {
-        res.status(500).json(e).end()
+      if (req.query.criteria && req.query.student){
+
+        try {
+          results = await teacher.getAssignmentsForStudentAndCriteria(
+            req.query.criteria, req.query.student, authData.userId)
+          res.status(200).json(results).end();
+        } catch (e) {
+          res.status(500).json(e).end()
+        }
+      } else {
+        // missing parameters
+        res.status(400).end()
       }
 
     } else {
