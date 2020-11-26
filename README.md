@@ -3,9 +3,15 @@ Esittely/Demo versio Stadin AOlle.
 
 ## Kuinka tätä Appia käytetään?
 
-### Config.js
+### tietokanta
 
-Tarkista että ``` src/config.js ```tiedostossa on kaikki tarvittavat tiedot
+Luo mysql-tietokanta ja käyttäjä. Skeema ja testidataa löytyy  ```kasvu_sote.sql ```-tiedostosta. Tallenna tietokannan nimi, luomasi käyttäjä ja sen salasana ``` .env ``` -tiedostoon
+
+
+### .env
+
+Tarkista että ``` .env ``` -tiedostossa on kaikki tarvittavat tiedot, katso mallia ```.env-example``` -tiedostosta
+
 
 ### Käynnistys
 
