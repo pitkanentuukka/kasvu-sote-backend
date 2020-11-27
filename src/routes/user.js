@@ -146,7 +146,7 @@ router.get('/validateLink/:code', cors(), async (req, res) => {
   result = await user.getUserByEmail(email)
   console.log(result);
   if (result[0]) {
-    res.status(401)
+    res.status(403)
     res.json({"msg":"email already exists"}).end()
   } else {
     res.status(200).json({email, role}).end()
@@ -167,7 +167,7 @@ router.post('/register/', cors(), async (req, res) => {
     const hashedPassword = await bcrypt.hash(plainPassword, saltRounds)
     try {
       result = await user.add(email, hashedPassword, role, first_name, last_name)
-      res.status(200).json(result.insertId).end()
+      res.status(200).json(result[0].insertId).end()
     } catch (e) {
       res.status(500).json(e).end()
     }
