@@ -9,38 +9,32 @@ const {getRoleAndId} = require('../cookie-helper')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 const dotenv = require('dotenv')
+const student = require('../db/student.js')
 
 
 /**
 * gets open theory assignments for logged in student
 */
-router.get('/opentheory', cors(), (req, res) => {
+router.get('/opentheory', cors(), async (req, res) => {
   if (req.cookies.token) {
 
     const authData = getRoleAndId(req.cookies.token)
     console.log(authData);
 
     if (authData.role ==='student') {
-      const inserts = [authData.userId]
-      const sql = "SELECT * FROM theory_assignment, theory, criteria\
-        WHERE student_id = ? \
-        AND submission IS NULL \
-        AND theory_assignment.theory_id = theory.theory_id \
-        AND theory.criteria_id = criteria.criteria_id"
-
-        console.log(sql);
-        config.sql_pool().getConnection((err, connection) => {
-          connection.query(sql, inserts, (err, results, fields) => {
-            if (err) {
-              res.status(500).end()
-            }else if (results.length > 0) {
-
-              res.status(200).json(results).end()
-            } else {
-              res.status(200).json({"msg": "no assingments found"}).end()
-            }
-          })
-        })
+      try {
+        const results = await student.getOpenTheory([authData.userId])
+        if (results[0].length === 0) {
+          res.status(200).json({"message": "no theory found"}).end()
+        }else if (results.length > 0) {
+          res.status(200).json(results).end()
+        } else {
+          res.status(200).json({"message": "no theory found"}).end()
+        }
+      }
+      catch (error) {
+        res.status(500).json(error).end
+      }
     } else {
       // not a student
       res.status(403).end()
@@ -55,32 +49,26 @@ router.get('/opentheory', cors(), (req, res) => {
 /**
 * gets open problem assignments for logged in student
 */
-router.get('/openproblem', cors(), (req, res) => {
+router.get('/openproblem', cors(), async (req, res) => {
   if (req.cookies.token) {
 
     const authData = getRoleAndId(req.cookies.token)
     console.log(authData);
 
     if (authData.role ==='student') {
-      const inserts = [authData.userId]
-      const sql = "SELECT * FROM problem_assignment, problem, criteria\
-        WHERE student_id = ? \
-        AND submission IS NULL \
-        AND problem_assignment.problem_id = problem.problem_id \
-        AND problem.criteria_id = criteria.criteria_id"
-
-        config.sql_pool().getConnection((err, connection) => {
-          connection.query(sql, inserts, (err, results, fields) => {
-            if (err) {
-              res.status(500).end()
-            }else if (results.length > 0) {
-
-              res.status(200).json(results).end()
-            } else {
-              res.status(200).json({"msg": "no assingments found"}).end()
-            }
-          })
-        })
+      try {
+        const results = await student.getOpenProblem([authData.userId]);
+        if (results[0].length === 0) {
+          res.status(200).json({"message": "no problem found"}).end()
+        } else if (results.length > 0) {
+          res.status(200).json(results).end()
+        } else {
+          res.status(200).json({"message": "no problem found"}).end()
+        }
+      }
+      catch (error) {
+        res.status(500).json(error).end
+      }
     } else {
       // not a student
       res.status(403).end()
@@ -91,16 +79,33 @@ router.get('/openproblem', cors(), (req, res) => {
   }
 })
 
-router.get('/getAssignmentsForCriteria/:id', cors(), (req, res) => {
+router.get('/getAssignmentsForCriteria/:id', cors(), async (req, res) => {
   if (req.cookies.token) {
 
     const authData = getRoleAndId(req.cookies.token)
 
     if (authData.role ==='student') {
       if (req.params.id) {
-        const inserts = [authData.userId, req.params.id,
+        //console.log("userId", authData.userId)
+        //console.log("cri_id", req.params.id)
+        try {
+          const results = await student.getAssignmentsForCriteria(authData.userId, req.params.id);
+          if (results[0].length === 0) {
+            res.status(200).json({"message": "no assignment found"}).end()
+          } else if (results.length > 0) {
+            console.log("results.length", results.length)
+            res.status(200).json(results).end()
+          } else {
+            res.status(200).json({"message": "no assingments found"}).end()
+          }
+        }
+        catch (error) {
+          //console.log("1. catch error")
+          res.status(500).json(error).end
+        }
+        /*const inserts = [authData.userId, req.params.id,
                         authData.userId, req.params.id]
-        const sql = "select theory_assignment.theory_assignment_id,\
+        *const sql = "select theory_assignment.theory_assignment_id,\
         theory_assignment.assign_date as theory_assign_date,\
         theory_assignment.submission as theory_submission,\
         theory_assignment.submission_time as theory_submission_time,\
@@ -125,19 +130,19 @@ router.get('/getAssignmentsForCriteria/:id', cors(), (req, res) => {
         and theory_assignment.student_id = ?\
         and theory_assignment.theory_id = theory.theory_id\
         and theory.criteria_Id = ?"
+        console.log("ennen sql yhteyden avausta")
         config.sql_pool().getConnection((err, connection) => {
+          console.log("ennen sql kyselya")
           connection.query(sql, inserts, (err, results, fields) => {
             if (err) {
               res.status(500).end()
             }else if (results.length > 0) {
-
               res.status(200).json(results).end()
             } else {
               res.status(200).json({"msg": "no assingments found"}).end()
             }
           })
-        })
-
+        })*/
       } else {
         // missing id param
         res.status(400).end()
