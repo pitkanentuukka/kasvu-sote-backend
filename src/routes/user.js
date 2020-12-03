@@ -67,7 +67,7 @@ router.post('/sendLink', cors(), async (req, res) =>  {
     if (authData.role ==='teacher' || authData.role === 'student') {
       const recipientEmail = req.body.email
       if (!req.body.role) {
-        role = student
+        role = "student"
       } else {
         role = req.body.role
       }
@@ -144,7 +144,6 @@ router.get('/validateLink/:code', cors(), async (req, res) => {
   email = validationData.recipientEmail
   role = validationData.role
   result = await user.getUserByEmail(email)
-  console.log(result);
   if (result[0]) {
     res.status(403)
     res.json({"msg":"email already exists"}).end()
@@ -158,6 +157,7 @@ router.post('/register/', cors(), async (req, res) => {
   if (req.body.email && req.body.password && req.body.firstName
       && req.body.lastName && req.body.role) {
 
+
     const email = req.body.email
     const plainPassword = req.body.password
     const first_name = req.body.firstName
@@ -166,8 +166,14 @@ router.post('/register/', cors(), async (req, res) => {
     const saltRounds = 10
     const hashedPassword = await bcrypt.hash(plainPassword, saltRounds)
     try {
-      result = await user.add(email, hashedPassword, role, first_name, last_name)
-      res.status(200).json(result[0].insertId).end()
+
+      const existingUser = await user.getUserByEmail(email)
+      if (!existingUser[0]) {
+        result = await user.add(email, hashedPassword, role, first_name, last_name)
+        res.status(200).json(result[0].insertId).end()
+      } else {
+        res.status(403).json({"message": "user already exists"}).end()
+      }
     } catch (e) {
       res.status(500).json(e).end()
     }
