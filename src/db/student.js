@@ -57,11 +57,9 @@ exports.getAssignmentsForCriteria = async (userId, criteria_Id) => {
       and theory_assignment.student_id = ?\
       and theory_assignment.theory_id = theory.theory_id\
       and theory.criteria_Id = ?", [userId, criteria_Id, userId, criteria_Id])
-    return result[0]
+    return results[0]
   }
   catch (error) {
-    console.log("2. catch error")
     throw (error)
   }
 }
-
