@@ -29,7 +29,7 @@ exports.getAssignmentsForStudentAndCriteria = async (
     theory_assignment.submission_time as theory_submission_time, \
     theory.text as theory_text, problem_assignment.problem_assignment_id, \
     problem_assignment.submission AS problem_submission, \
-    problem_assignment.submission_date as problem_submission_time, \
+    problem_assignment.submission_time as problem_submission_time, \
     problem.text as problem_text\
     FROM `theory_assignment`, theory, problem_assignment, problem\
     WHERE theory.criteria_id = ?\
