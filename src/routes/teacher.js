@@ -174,7 +174,7 @@ router.get('/getProblemAssignmentsForEvaluation/:id', cors(), (req, res) => {
         const sql ="SELECT problem_assignment.problem_assignment_id,\
          problem_assignment.problem_id, problem_assignment.student_id,\
          problem_assignment.assign_date, problem_assignment.submission,\
-         problem_assignment.submission_date, problem.text, problem.criteria_id,\
+         problem_assignment.submission_time, problem.text, problem.criteria_id,\
          problem.problem_id, criteria.criteria_id, criteria.text, user.email,\
          user.first_name, user.last_name \
          FROM problem_assignment, problem, criteria, user \
@@ -190,6 +190,7 @@ router.get('/getProblemAssignmentsForEvaluation/:id', cors(), (req, res) => {
          problem_assignment.problem_id, problem_assignment.student_id,\
          problem_assignment.assign_date, problem_assignment.submission,\
          problem_assignment.submission_date, problem.text, problem.criteria_id,\
+         problem_assignment.submission_time, problem.text, problem.criteria_id,\
          problem.problem_id, criteria.criteria_id, criteria.text\
          FROM problem_assignment, problem, criteria, \
          WHERE user.user_id = problem_assignment.student_id \

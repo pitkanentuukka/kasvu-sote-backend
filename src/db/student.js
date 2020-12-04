@@ -45,7 +45,6 @@ exports.getAssignmentsForCriteria = async (userId, criteria_Id) => {
       problem_assignment.problem_id,\
       problem_assignment.assign_date as problem_assign_date,\
       problem_assignment.submission as problem_submission,\
-      problem_assignment.submission_date as problem_submission_time,\
       problem_assignment.grade as problem_grade,\
       problem_assignment.evaluation as problem_evaluation,\
       problem_assignment.evaluation_datetime,\
