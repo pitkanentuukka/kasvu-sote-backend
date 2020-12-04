@@ -41,6 +41,7 @@ exports.getAssignmentsForCriteria = async (userId, criteria_Id) => {
       theory_assignment.grade as theory_grade,\
       theory_assignment.evaluation as theory_evaluation,\
       theory_assignment.evaluation_datetime as theory_evaluation_datetime,\
+      theory.text as theory_text, \
       problem_assignment.problem_id,\
       problem_assignment.assign_date as problem_assign_date,\
       problem_assignment.submission as problem_submission,\
@@ -48,7 +49,8 @@ exports.getAssignmentsForCriteria = async (userId, criteria_Id) => {
       problem_assignment.grade as problem_grade,\
       problem_assignment.evaluation as problem_evaluation,\
       problem_assignment.evaluation_datetime,\
-      problem_assignment.grader_id as problem_grader_id\
+      problem_assignment.grader_id as problem_grader_id,\
+      problem.text as problem_text\
       from theory_assignment, problem_assignment, theory, problem\
       where problem_assignment.student_id = ?\
       and problem_assignment.problem_id = problem.problem_id\
