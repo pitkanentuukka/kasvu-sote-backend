@@ -7,10 +7,14 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
+const fileUpload = require('express-fileupload');
+
 
 const app = express();
 app.use(cookieParser())
 app.use(bodyParser())
+app.use(fileUpload())
+
 
 app.listen(process.env.SERVER_PORT, err =>
   {console.log(err ? `Serveri ei lähtenyt pyörimään` : `Serveri pyörii localhost:${process.env.SERVER_PORT}`)});

@@ -1,8 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { config } = require('../config')
 const cors = require('cors')
-const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser')
 const {getRoleAndId} = require('../cookie-helper')
@@ -10,6 +8,7 @@ const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 const dotenv = require('dotenv')
 const student = require('../db/student.js')
+const uuidv4 = require('uuid').v4
 
 
 /**
@@ -53,7 +52,6 @@ router.get('/openproblem', cors(), async (req, res) => {
   if (req.cookies.token) {
 
     const authData = getRoleAndId(req.cookies.token)
-    console.log(authData);
 
     if (authData.role ==='student') {
       try {
@@ -81,9 +79,7 @@ router.get('/openproblem', cors(), async (req, res) => {
 
 router.get('/getAssignmentsForCriteria/:id', cors(), async (req, res) => {
   if (req.cookies.token) {
-
     const authData = getRoleAndId(req.cookies.token)
-
     if (authData.role ==='student') {
       if (req.params.id) {
         try {
@@ -115,6 +111,81 @@ router.get('/getAssignmentsForCriteria/:id', cors(), async (req, res) => {
   }
 })
 
+router.post("/submittheory/:id", cors(), async (req, res) => {
+  if (req.cookies.token) {
+    const authData = getRoleAndId(req.cookies.token)
+    if (authData.role ==='student') {
+      if (req.params.id) {
+        if (req.files) {
+
+          const file = req.files.submission
+          // make sure all file names are completely unique
+          const newName = uuidv4() + file.name
+          const completePath = process.env.FILE_UPLOAD_PATH + newName;
+
+          try {
+            file.mv(completePath)
+            student.addTheorySubmission(authData.userId, req.params.id, completePath)
+          } catch (e) {
+            res.status(500).json(e).end()
+          }
+          res.status(200).end()
+        } else {
+          // file not found
+          res.status(400).json({"msg": "no file"}).end()
+        }
+
+      } else {
+        // missing id param
+        res.status(400).json({"msg": "no assignment id"}).end()
+      }
+    } else {
+      // not a student
+      res.status(403).end()
+    }
+  } else {
+    // not logged in
+    res.status(403).end()
+  }
+})
+
+router.post("/submitproblem/:id", cors(), async (req, res) => {
+  console.log(req.params.id);
+  if (req.cookies.token) {
+    const authData = getRoleAndId(req.cookies.token)
+    if (authData.role ==='student') {
+      if (req.params.id) {
+        if (req.files) {
+          console.log(req.files);
+          const file = req.files.submission
+          // make sure all file names are completely unique
+          const newName = uuidv4() + file.name
+          const completePath = process.env.FILE_UPLOAD_PATH + newName;
+          try {
+            file.mv(completePath)
+            student.addProblemSubmission(authData.userId, req.params.id, completePath)
+          } catch (e) {
+            res.status(500).json(e).end()
+          }
+          res.status(200).end()
+        } else {
+          // file not found
+          res.status(400).json({"msg": "no file"}).end()
+        }
+
+      } else {
+        // missing id param
+        res.status(400).json({"msg": "no assignment id"}).end()
+      }
+    } else {
+      // not a student
+      res.status(403).end()
+    }
+  } else {
+    // not logged in
+    res.status(403).end()
+  }
+})
 
 
 module.exports = router

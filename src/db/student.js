@@ -1,4 +1,5 @@
 const pool = require('../db/mysql.js').pool
+const MySQLDateTime = require('../db/mysql.js').datetime
 
 exports.getOpenTheory = async (id) => {
   try {
@@ -29,8 +30,6 @@ exports.getOpenProblem = async (id) => {
 }
 
 exports.getAssignmentsForCriteria = async (userId, criteria_Id) => {
-  console.log("DB_userId", userId)
-  console.log("DB_cri_id", criteria_Id)
   try {
     results = await pool.query("select theory_assignment.theory_assignment_id,\
       theory_assignment.assign_date as theory_assign_date,\
@@ -45,6 +44,7 @@ exports.getAssignmentsForCriteria = async (userId, criteria_Id) => {
       problem_assignment.problem_id,\
       problem_assignment.assign_date as problem_assign_date,\
       problem_assignment.submission as problem_submission,\
+      problem_assignment.submission_time as problem_submission_time,\
       problem_assignment.grade as problem_grade,\
       problem_assignment.evaluation as problem_evaluation,\
       problem_assignment.evaluation_datetime,\
@@ -60,5 +60,33 @@ exports.getAssignmentsForCriteria = async (userId, criteria_Id) => {
   }
   catch (error) {
     throw (error)
+  }
+}
+
+exports.addTheorySubmission = async (user_id, assignment_id, path_to_file) => {
+  try {
+    // this converts javascript date objects to MySQL datetime format
+    const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const sql = "update theory_assignment set submission = ?, submission_time= ?\
+        where theory_assignment_id = ? and student_id = ?"
+    const inserts = [path_to_file, datetime, assignment_id, user_id]
+    result = await pool.query(sql, inserts)
+    return result[0]
+  } catch (e) {
+    throw (e)
+  }
+}
+
+exports.addProblemSubmission = async (user_id, assignment_id, path_to_file) => {
+  try {
+    // this converts javascript date objects to MySQL datetime format
+    const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const sql = "update problem_assignment set submission = ?, submission_time= ?\
+        where problem_assignment_id = ? and student_id = ?"
+    const inserts = [path_to_file, datetime, assignment_id, user_id]
+    result = await pool.query(sql, inserts)
+    return result[0]
+  } catch (e) {
+    throw (e)
   }
 }
