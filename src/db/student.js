@@ -92,3 +92,18 @@ exports.addProblemSubmission = async (user_id, assignment_id, path_to_file) => {
     throw (e)
   }
 }
+
+exports.addSelfEvaluation = async (user_id, submission_id, evaluation_text, grade) => {
+  const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  try {
+    const result = await pool.query("update theory_assignment \
+      set self_evaluation_text = ?, self_evaluation_datetime = ?, \
+      self_grade = ? where theory_assignment_id = ? and student_id = ?\
+      and submission is not null",
+      evaluation_text, datetime, grade, submission_id, user_id)
+    return result[0]
+
+  } catch (e) {
+    throw (e)
+  }
+}

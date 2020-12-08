@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const { config } = require('../config')
-const { authUser } = require('../auth')
 const cors = require('cors')
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
@@ -10,6 +9,7 @@ const {getRoleAndId} = require('../cookie-helper')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 const dotenv = require('dotenv')
+const { checkRole } = require('../auth.js')
 
 
 /**
