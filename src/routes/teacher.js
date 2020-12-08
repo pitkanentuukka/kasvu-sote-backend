@@ -62,56 +62,6 @@ router.post('/addProblem', cors(), checkRole('teacher'), async (req, res) => {
   }
 })
 
-/**
-* this is not necessary right now
-*/
-router.get('/getTheoryAssignmentsForEvaluation/:id', cors(), checkRole('teacher'), (req, res) => {
-  if (!req.params.id) {
-    // gotta catch them all
-    const inserts = [req.authData.userId]
-    const sql ="SELECT theory_assignment.theory_assignment_id,\
-    theory_assignment.theory_id, theory_assignment.student_id,\
-    theory_assignment.assign_date, theory_assignment.submission,\
-    theory_assignment.submission_time, theory.text, theory.criteria_id,\
-    theory.theory_id, criteria.criteria_id, criteria.text, user.email,\
-    user.first_name, user.last_name \
-    FROM theory_assignment, theory, criteria, user \
-    WHERE user.user_id = theory_assignment.student_id \
-    AND theory.theory_id = theory_assignment.theory_assignment_id \
-    AND criteria.criteria_id = theory.criteria_id AND theory_assignment.grade IS NULL \
-    AND theory_assignment.submission IS NOT NULL \
-    AND theory_assignment.teacher_id = ?"
-  } else {
-    // there can be only one
-    const inserts = [req.authData.userId, req.parans.id]
-    const sql ="SELECT problem_assignment.problem_assignment_id,\
-    problem_assignment.problem_id, problem_assignment.student_id,\
-    problem_assignment.assign_date, problem_assignment.submission,\
-    problem_assignment.submission_time, problem.text, problem.criteria_id,\
-    problem.problem_id, criteria.criteria_id, criteria.text\
-    FROM problem_assignment, problem, criteria, \
-    WHERE user.user_id = problem_assignment.student_id \
-    AND problem.problem_id = problem_assignment.problem_assignment_id \
-    AND criteria.criteria_id = problem.criteria_id AND problem_assignment.grade IS NULL \
-    AND problem_assignment.submission IS NOT NULL \
-    AND problem_assignment.teacher_id = ? \
-    AND problem_assignment.student_id = ?"
-    config.sql_pool().getConnection((err, connection) => {
-      connection.query(sql, inserts, (err, results, fields) => {
-
-        if (err) {
-          console.log(err);
-          res.status(500).end()
-        } else {
-          console.log(results);
-          res.status(200).json({id: results.insertId}).end()
-        }
-      })
-    })
-
-  }
-
-})
 
 router.get('/getProblemAssignmentsForEvaluation/:id', cors(), checkRole('teacher'), (req, res) => {
   if (!req.params.id) {
@@ -166,10 +116,11 @@ router.get('/getProblemAssignmentsForEvaluation/:id', cors(), checkRole('teacher
 * ?criteria=criteria_id&student=student_id
 * if they're missing it'll respond with 400 (bad request)
 */
-router.get("/getAssignmentsForStudentAndCriteria/", cors(), checkRole('teacher'), async (req, res) => {
+
+router.get("/getTheoryAssignmentsForStudentAndCriteria/", cors(), checkRole('teacher'), async (req, res) => {
   if (req.query.criteria && req.query.student){
     try {
-      results = await teacher.getAssignmentsForStudentAndCriteria(
+      results = await teacher.getTheoryAssignmentsForStudentAndCriteria(
         req.query.criteria, req.query.student, req.authData.userId)
         res.status(200).json(results).end();
       } catch (e) {
@@ -179,6 +130,21 @@ router.get("/getAssignmentsForStudentAndCriteria/", cors(), checkRole('teacher')
       // missing parameters
       res.status(400).end()
     }
+})
+
+router.get("/getProblemAssignmentsForStudentAndCriteria/", cors(), checkRole('teacher'), async (req, res) => {
+  if (req.query.criteria && req.query.student){
+    try {
+      results = await teacher.getProblemAssignmentsForStudentAndCriteria(
+        req.query.criteria, req.query.student, req.authData.userId)
+        res.status(200).json(results).end();
+    } catch (e) {
+      res.status(500).json(e).end()
+    }
+  } else {
+    // missing parameters
+    res.status(400).end()
+  }
 })
 
 router.get("/deleteTheory/:id", cors(), checkRole('teacher'), async (req, res) => {
