@@ -79,17 +79,22 @@ router.post("/submittheory/:id", cors(), checkRole('student'), async (req, res) 
     if (req.files) {
 
       const file = req.files.submission
-      // make sure all file names are completely unique
-      const newName = uuidv4() + file.name
-      const completePath = process.env.FILE_UPLOAD_PATH + newName;
+      if (file.mimetype !== "application/pdf") {
+        res.status(400).json({"msg": "please send a pdf file"}).end
+      } else {
 
-      try {
-        file.mv(completePath)
-        student.addTheorySubmission(req.authData.userId, req.params.id, completePath)
-      } catch (e) {
-        res.status(500).json(e).end()
+        // make sure all file names are completely unique
+        const newName = uuidv4() + file.name
+        const completePath = process.env.FILE_UPLOAD_PATH + newName;
+
+        try {
+          file.mv(completePath)
+          student.addTheorySubmission(req.authData.userId, req.params.id, completePath)
+        } catch (e) {
+          res.status(500).json(e).end()
+        }
+        res.status(200).json({"msg": "submission saved" }).end()
       }
-      res.status(200).end()
     } else {
       // file not found
       res.status(400).json({"msg": "no file"}).end()
