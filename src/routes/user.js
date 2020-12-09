@@ -8,6 +8,7 @@ const user = require('../db/user')
 const nodemailer = require('nodemailer')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
+const { checkRole } = require('../auth.js')
 
 
 router.post('/login', bodyParser(), async (req, res) => {
@@ -59,50 +60,41 @@ router.get('/logout', cors(), (req, res) => {
   res.status(200).end()
 })
 
-router.post('/sendLink', cors(), async (req, res) =>  {
-  if (typeof(req.cookies.token !== 'undefined')) {
-    let role = ""
-    const authData = getRoleAndId(req.cookies.token)
-    if (authData.role ==='teacher' || authData.role === 'student') {
-      const recipientEmail = req.body.email
-      if (!req.body.role) {
-        role = "student"
-      } else {
-        role = req.body.role
-      }
+router.post('/sendLink', cors(), checkRole(['teacher', 'student']), async (req, res) =>  {
+  const recipientEmail = req.body.email
+  if (!req.body.role) {
+    role = "student"
+  } else {
+    role = req.body.role
+  }
+  try {
+    const results = await user.getUserByEmail(recipientEmail)
+    if (!results[0]) {
+      const token = jwt.sign({recipientEmail, role}, process.env.JWT_KEY, { expiresIn: '7d' })
+      const host = req.hostname
+      const route = '/register/'
+      const completeURL = "http://" + host + route + token
       try {
-        const results = await user.getUserByEmail(recipientEmail)
-        if (!results[0]) {
-          const token = jwt.sign({recipientEmail, role}, process.env.JWT_KEY, { expiresIn: '7d' })
-          const host = req.hostname
-          const route = '/register/'
-          const completeURL = "http://" + host + route + token
+        teacher = await user.getUserById(req.authData.userId)
+        if (teacher[0]) {
           try {
-            teacher = await user.getUserById(authData.userId)
-            if (teacher[0]) {
-              try {
-                sendEmail(teacher[0].email, recipientEmail, completeURL)
-                res.status(200).json({"link" : completeURL,
-                "email": recipientEmail}).end()
-              } catch (error) {
-                res.status(500).json(error).end()
-              }
-            }
+            sendEmail(teacher[0].email, recipientEmail, completeURL)
+            res.status(200).json({"link" : completeURL,
+            "email": recipientEmail}).end()
           } catch (error) {
             res.status(500).json(error).end()
           }
-        } else {
-          res.status(401).json({"message": "user already exists"}).end()
         }
       } catch (error) {
         res.status(500).json(error).end()
       }
     } else {
-      res.status(403).end()
+      res.status(401).json({"message": "user already exists"}).end()
     }
-  } else {
-    res.status(403).end()
+  } catch (error) {
+    res.status(500).json(error).end()
   }
+
 })
 
 
