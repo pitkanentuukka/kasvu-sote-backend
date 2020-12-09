@@ -2,10 +2,8 @@ const express = require('express')
 const router = express.Router()
 const cors = require('cors')
 const bodyParser = require('body-parser')
-const {getRoleAndId} = require('../cookie-helper')
 const dotenv = require('dotenv')
 const student = require('../db/student.js')
-const uuidv4 = require('uuid').v4
 const { checkRole } = require('../auth.js')
 const { uploadFile } = require('../uploadFile.js')
 
