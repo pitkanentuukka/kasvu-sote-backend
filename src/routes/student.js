@@ -7,7 +7,7 @@ const dotenv = require('dotenv')
 const student = require('../db/student.js')
 const uuidv4 = require('uuid').v4
 const { checkRole } = require('../auth.js')
-
+const { uploadFile } = require('../uploadFile.js')
 
 /**
 * gets open theory assignments for logged in student
@@ -74,57 +74,30 @@ router.get('/getAssignmentsForCriteria/:id', cors(), checkRole('student'), async
 
 })
 
-router.post("/submittheory/:id", cors(), checkRole('student'), async (req, res) => {
+
+
+router.post("/submitTheory/:id", cors(), checkRole('student'), uploadFile, async (req, res) => {
   if (req.params.id) {
-    if (req.files) {
-
-      const file = req.files.submission
-      if (file.mimetype !== "application/pdf") {
-        res.status(400).json({"msg": "please send a pdf file"}).end
-      } else {
-
-        // make sure all file names are completely unique
-        const newName = uuidv4() + file.name
-        const completePath = process.env.FILE_UPLOAD_PATH + newName;
-
-        try {
-          file.mv(completePath)
-          student.addTheorySubmission(req.authData.userId, req.params.id, completePath)
-        } catch (e) {
-          res.status(500).json(e).end()
-        }
-        res.status(200).json({"msg": "submission saved" }).end()
-      }
-    } else {
-      // file not found
-      res.status(400).json({"msg": "no file"}).end()
+    try {
+      student.addTheorySubmission(req.authData.userId, req.params.id, req.filePath)
+    } catch (e) {
+      res.status(500).json(e).end()
     }
-
+    res.status(200).json({"msg": "submission saved" }).end()
   } else {
     // missing id param
     res.status(400).json({"msg": "no assignment id"}).end()
   }
 })
 
-router.post("/submitproblem/:id", cors(), checkRole('student'), async (req, res) => {
+router.post("/submitProblem/:id", cors(), checkRole('student'), uploadFile, async (req, res) => {
   if (req.params.id) {
-    if (req.files) {
-      console.log(req.files);
-      const file = req.files.submission
-      // make sure all file names are completely unique
-      const newName = uuidv4() + file.name
-      const completePath = process.env.FILE_UPLOAD_PATH + newName;
       try {
-        file.mv(completePath)
-        student.addProblemSubmission(req.authData.userId, req.params.id, completePath)
+        student.addProblemSubmission(req.authData.userId, req.params.id, req.filePath)
       } catch (e) {
         res.status(500).json(e).end()
       }
-      res.status(200).end()
-    } else {
-      // file not found
-      res.status(400).json({"msg": "no file"}).end()
-    }
+      res.status(200).json({"msg": "submission saved" }).end()
 
   } else {
     // missing id param
@@ -150,5 +123,8 @@ router.post("/addselfeval/:id", cors(), checkRole('student'), async (req, res) =
   }
 
 })
+
+
+
 
 module.exports = router

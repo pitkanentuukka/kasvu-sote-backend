@@ -36,7 +36,6 @@ router.post('/login', bodyParser(), async (req, res) => {
         })
       }
     } catch (error) {
-      console.log(error);
       res.status(500).json(error).end()
     }
   } else {
@@ -75,11 +74,9 @@ router.post('/sendLink', cors(), async (req, res) =>  {
         const results = await user.getUserByEmail(recipientEmail)
         if (!results[0]) {
           const token = jwt.sign({recipientEmail, role}, process.env.JWT_KEY, { expiresIn: '7d' })
-          //const host = req.get('Host')
           const host = req.hostname
-          //const api = '/api/user/validateLink/'
-          const api = '/register/'
-          const completeURL = host + api + token
+          const route = '/register/'
+          const completeURL = "http://" + host + route + token
           try {
             teacher = await user.getUserById(authData.userId)
             if (teacher[0]) {
@@ -88,7 +85,6 @@ router.post('/sendLink', cors(), async (req, res) =>  {
                 res.status(200).json({"link" : completeURL,
                 "email": recipientEmail}).end()
               } catch (error) {
-                console.log(error);
                 res.status(500).json(error).end()
               }
             }
