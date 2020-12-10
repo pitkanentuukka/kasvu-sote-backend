@@ -72,7 +72,51 @@ router.get('/getAssignmentsForCriteria/:id', cors(), checkRole('student'), async
 
 })
 
+router.get('/getTheoryAssignmentsForCriteria/:id', cors(), checkRole('student'), async (req, res) => {
+  if (req.params.id) {
+    try {
+      const results = await student.getTheoryAssignmentsForCriteria(req.authData.userId, req.params.id);
+      if (results[0].length === 0) {
+        res.status(200).json({"message": "no assignment found"}).end()
+      } else if (results.length > 0) {
+        console.log("results.length", results.length)
+        res.status(200).json(results).end()
+      } else {
+        res.status(200).json({"message": "no assingments found"}).end()
+      }
+    }
+    catch (error) {
+      res.status(500).json(error).end
+    }
 
+  } else {
+    // missing id param
+    res.status(400).end()
+  }
+})
+
+router.get('/getProblemAssignmentsForCriteria/:id', cors(), checkRole('student'), async (req, res) => {
+  if (req.params.id) {
+    try {
+      const results = await student.getProblemAssignmentsForCriteria(req.authData.userId, req.params.id);
+      if (results[0].length === 0) {
+        res.status(200).json({"message": "no assignment found"}).end()
+      } else if (results.length > 0) {
+        console.log("results.length", results.length)
+        res.status(200).json(results).end()
+      } else {
+        res.status(200).json({"message": "no assingments found"}).end()
+      }
+    }
+    catch (error) {
+      res.status(500).json(error).end
+    }
+
+  } else {
+    // missing id param
+    res.status(400).end()
+  }
+})
 
 router.post("/submitTheory/:id", cors(), checkRole('student'), uploadFile, async (req, res) => {
   if (req.params.id) {
