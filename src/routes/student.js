@@ -77,7 +77,8 @@ router.get('/getTheoryAssignmentsForCriteria/:id', cors(), checkRole('student'),
     try {
       const results = await student.getTheoryAssignmentsForCriteria(req.authData.userId, req.params.id);
       if (results.length === 0) {
-        res.status(200).json({"message": "no assignment found"}).end()
+      //res.status(200).json({"message": "no assignment found"}).end()
+        res.status(204).end()
       } else if (results.length > 0) {
         console.log("results.length", results.length)
         res.status(200).json(results).end()
@@ -98,7 +99,8 @@ router.get('/getProblemAssignmentsForCriteria/:id', cors(), checkRole('student')
     try {
       const results = await student.getProblemAssignmentsForCriteria(req.authData.userId, req.params.id);
       if (results.length === 0) {
-        res.status(200).json({"message": "no assignment found"}).end()
+        //res.status(200).json({"message": "no assignment found"}).end()
+        res.status(204).end()
       } else if (results.length > 0) {
         console.log("results.length", results.length)
         res.status(200).json(results).end()

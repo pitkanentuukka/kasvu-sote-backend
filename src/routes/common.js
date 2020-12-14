@@ -14,7 +14,7 @@ router.get("/modules", cors(), async (req, res) => {
   try {
     const results = await common.getModules()
     if (results.length === 0) {
-      res.status(200).json({"message": "no modules found"}).end()
+      res.status(204).end()
     } else if (results.length > 0) {
       res.status(200).json(results).end()
     }
@@ -33,7 +33,7 @@ router.get("/categories/:id", cors(), async (req, res) => {
       const results =  await common.getGategories(inserts)
 
       if (results.length === 0) {
-        res.status(200).json({"message": "no categories found"}).end()
+        res.status(204).end()
       } else if (results.length > 0) {
         res.status(200).json(results).end()
       }
@@ -56,7 +56,7 @@ router.get("/criteria/:id", cors(), async (req, res) => {
       const inserts = [req.params.id]
       const results = await common.getCriterias(inserts)
       if (results.length === 0) {
-        res.status(200).json({"message": "no criterias found"}).end()
+        res.status(204).end()
       } else if (results.length > 0) {
         res.status(200).json(results).end()
       }
