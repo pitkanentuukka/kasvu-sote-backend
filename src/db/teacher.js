@@ -83,3 +83,58 @@ exports.deleteProblem = async (id, teacher_id) => {
     throw (e)
   }
 }
+
+/*
+  Get all theory tasks by criteria_id that teacher has added
+*/
+exports.getAllTheoryTasks = async (userId, criteria_id) => {
+  if (criteria_id) {
+    const inserts = [userId, criteria_id];
+    const sql ="SELECT theory.theory_id, theory.text AS theory_text \
+     FROM theory \
+     WHERE theory.teacher_id = ? \
+     AND theory.criteria_Id = ?";
+    try {
+      results = await pool.query(sql, inserts);
+      return results[0];
+    }
+    catch (error) {
+      throw (error);
+    }
+  }
+}
+
+/*
+  Get all problem tasks by criteria_id that teacher has added
+*/
+exports.getAllProblemTasks = async (userId, criteria_id) => {
+  if (criteria_id) {
+    const inserts = [userId, criteria_id];
+    const sql ="SELECT problem.problem_id, problem.text AS problem_text \
+      FROM problem \
+      WHERE problem.teacher_id = ? \
+      AND problem.criteria_Id = ?";
+    try {
+      results = await pool.query(sql, inserts);
+      return results[0];
+    }
+    catch (error) {
+      throw (error);
+    }
+  }
+}
+
+/*  !!!! WIP !!!!
+  Add Evaluation For Theory: grade and evaluation as inputs and date will be added from system
+*/
+exports.addEvaluationForTheory = async (grade, evaluation, theory_assignment_id) => {
+  try { 
+    results = await pool.query("INSERT INTO theory_assignment (grade, evaluation, evaluation_datetime) \
+    VALUES (?, ?, CURRENT_DATE()) \
+    WHERE theory_assignment.theory_assignment_id = ?", [grade, evaluation, theory_assignment_id]);
+    return results[0];
+  } catch (error) {
+    throw (error)
+  }
+}
+

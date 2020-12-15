@@ -166,4 +166,46 @@ router.get("/deleteProblem/:id", cors(), checkRole('teacher'), async (req, res) 
   }
 })
 
+/*
+  Get all theory tasks by criteria_id that teacher has added
+*/
+router.get('/getAllTheoryTasks/:id', cors(), checkRole('teacher'), async (req, res) => {
+  try {
+    results = await teacher.getAllTheoryTasks(authData.userId, req.params.id)
+    res.status(200).json(results).end()
+
+  } catch (error) {
+    res.status(500).json(error).end()
+  }
+})
+
+/*
+  Get all problem tasks by criteria_id that teacher has added
+*/
+router.get('/getAllProblemTasks/:id', cors(), checkRole('teacher'), async (req, res) => {
+  try {
+    results = await teacher.getAllProblemTasks(authData.userId, req.params.id)
+    res.status(200).json(results).end()
+
+  } catch (error) {
+    res.status(500).json(error).end()
+  }
+})
+
+/*  !!!! WIP !!!!
+  Add Evaluation for theory task by ???????
+*/
+router.post('/addEvaluationForTheory/:id', cors(), checkRole('teacher'), async (req, res) => {
+  if (req.body.grade !== null && req.body.evaluation !==null) {
+    try {
+      result = await teacher.addEvaluationForTheory(req.body.grade, req.body.evaluation, req.params.id)
+      res.status(200).json({"id": result.insertId, "text": req.body.text}).end()
+    } catch(error) {
+      res.status(500).json(error).end()
+    }
+  } else {
+    res.status(400).end()
+  }
+})
+
 module.exports = router
