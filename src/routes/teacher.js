@@ -208,4 +208,32 @@ router.post('/addEvaluationForTheory/:id', cors(), checkRole('teacher'), async (
   }
 })
 
+router.get('/getTheoryTasksPerCriteria/:id', cors(), checkRole('teacher'), async (req, res) => {
+  if (req.params.id) {
+    try {
+      result = await teacher.getTheoryTasks(req.authData.userId, req.params.id)
+      res.status(200).json(result).end()
+    } catch(e) {
+      res.status(500).json(e).end()
+    }
+  } else {
+    res.status(400).end()
+  }
+})
+
+
+router.get('/getProblemTasksPerCriteria/:id', cors(), checkRole('teacher'), async (req, res) => {
+  if (req.params.id) {
+    try {
+      result = await teacher.getProblemTasks(req.authData.userId, req.params.id)
+      res.status(200).json(result).end()
+    } catch(e) {
+      res.status(500).json(e).end()
+    }
+  } else {
+    res.status(400).end()
+  }
+})
+
+
 module.exports = router

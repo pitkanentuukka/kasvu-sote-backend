@@ -128,7 +128,7 @@ exports.getAllProblemTasks = async (userId, criteria_id) => {
   Add Evaluation For Theory: grade and evaluation as inputs and date will be added from system
 */
 exports.addEvaluationForTheory = async (grade, evaluation, theory_assignment_id) => {
-  try { 
+  try {
     results = await pool.query("INSERT INTO theory_assignment (grade, evaluation, evaluation_datetime) \
     VALUES (?, ?, CURRENT_DATE()) \
     WHERE theory_assignment.theory_assignment_id = ?", [grade, evaluation, theory_assignment_id]);
@@ -138,3 +138,20 @@ exports.addEvaluationForTheory = async (grade, evaluation, theory_assignment_id)
   }
 }
 
+exports.getTheoryTasks = async(user_id, criteria_id) => {
+  try {
+    results = await pool.query("select * from theory where teacher_id = ? and criteria_id = ?", [user_id, criteria_id])
+    return results[0]
+  } catch (error) {
+    throw error
+  }
+}
+
+exports.getProblemTasks = async(user_id, criteria_id) => {
+  try {
+    results = await pool.query("select * from problem where teacher_id = ? and criteria_id = ?", [user_id, criteria_id])
+    return results[0]
+  } catch (error) {
+    throw error
+  }
+}
