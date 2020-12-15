@@ -159,7 +159,8 @@ router.get("/deleteTheory/:id", cors(), checkRole('teacher'), async (req, res) =
 
 router.get("/deleteProblem/:id", cors(), checkRole('teacher'), async (req, res) => {
   try {
-    result = await teacher.deleteProblem(req.params.id, authData.userId)
+
+    result = await teacher.deleteProblem(req.params.id, req.authData.userId)
     res.status(200).json(result.affectedRows).end()
   } catch (e) {
     res.status(500).json(e).end()
@@ -171,7 +172,7 @@ router.get("/deleteProblem/:id", cors(), checkRole('teacher'), async (req, res) 
 */
 router.get('/getAllTheoryTasks/:id', cors(), checkRole('teacher'), async (req, res) => {
   try {
-    results = await teacher.getAllTheoryTasks(authData.userId, req.params.id)
+    results = await teacher.getAllTheoryTasks(req.authData.userId, req.params.id)
     res.status(200).json(results).end()
 
   } catch (error) {
@@ -184,7 +185,7 @@ router.get('/getAllTheoryTasks/:id', cors(), checkRole('teacher'), async (req, r
 */
 router.get('/getAllProblemTasks/:id', cors(), checkRole('teacher'), async (req, res) => {
   try {
-    results = await teacher.getAllProblemTasks(authData.userId, req.params.id)
+    results = await teacher.getAllProblemTasks(req.authData.userId, req.params.id)
     res.status(200).json(results).end()
 
   } catch (error) {
