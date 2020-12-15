@@ -1,0 +1,2 @@
+ALTER TABLE `problem` ADD `hidden` BOOLEAN NOT NULL DEFAULT FALSE AFTER `teacher_id`;
+ALTER TABLE `theory` ADD `hidden` BOOLEAN NOT NULL DEFAULT FALSE AFTER `teacher_id`; 
