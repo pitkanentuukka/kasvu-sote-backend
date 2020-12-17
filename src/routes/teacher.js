@@ -192,14 +192,14 @@ router.get('/getAllProblemTasks/:id', cors(), checkRole('teacher'), async (req, 
   }
 })
 
-/*  !!!! WIP !!!!
-  Add Evaluation for theory task by ???????
+/*
+  Add Evaluation for theory task by theory_assignment_id (as input in procedure call (req.params.id))
 */
 router.post('/addEvaluationForTheory/:id', cors(), checkRole('teacher'), async (req, res) => {
   if (req.body.grade !== null && req.body.evaluation !==null) {
     try {
       result = await teacher.addEvaluationForTheory(req.body.grade, req.body.evaluation, req.params.id)
-      res.status(200).json({"id": result.insertId, "text": req.body.text}).end()
+      res.status(200).json(result).end()
     } catch(error) {
       res.status(500).json(error).end()
     }
