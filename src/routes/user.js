@@ -78,7 +78,7 @@ router.post('/sendLink', cors(), checkRole(['teacher', 'student']), async (req, 
         teacher = await user.getUserById(req.authData.userId)
         if (teacher[0]) {
           try {
-            sendEmail(teacher[0].email, recipientEmail, completeURL)
+            sendEmail(teacher[0].email, recipientEmail, completeURL, "registration link")
             res.status(200).json({"link" : completeURL,
             "email": recipientEmail}).end()
           } catch (error) {
@@ -98,7 +98,7 @@ router.post('/sendLink', cors(), checkRole(['teacher', 'student']), async (req, 
 })
 
 
-const sendEmail = async (from, to, completeURL) => {
+const sendEmail = async (from, to, completeURL, subject) => {
 
   const transport = nodemailer.createTransport({
     host: process.env.EMAIL_SERVER,
@@ -168,6 +168,40 @@ router.post('/register/', cors(), async (req, res) => {
   } else {
     res.status(400).json({"message": "missing data"})
   }
+})
+
+router.post('resetPassword', cors(), async (req, res) => {
+  if (req.body.email) {
+    try {
+      const existingUser = await user.getUserByEmail(req.body.email)
+      if (existingUser[0]) {
+        userId = existingUser[0][0].user_id
+        payload =  {email, userId}
+        const token = jwt.sign(payload, process.env.JWT_KEY, {
+          expiresIn: '7d'}
+        )
+        const host = req.hostname
+        const route = '/resetPassword/'
+        const completeURL = "http://" + host + route + token
+        sendEmail(process.env.SYSTEM_EMAIL, req.body.email, completeURL, "password reset link")
+      } else {
+        res.status(403).json({"message": "user not found"})
+      }
+    } catch (e) {
+      res.status(500).json(e).end()
+    }
+  } else {
+    res.status(400).json({"message": "missing email"})
+  }
+})
+
+router.get('/validatePasswordReset/:code', cors(), (req, res) => {
+  if (req.params.code) {
+
+  } else {
+    res.status(400).json({"message": "missing code"})    
+  }
+
 })
 
 module.exports = router
