@@ -63,8 +63,8 @@ exports.getProblemAssignmentsForStudentAndCriteria = async(criteria_id, student_
 
 exports.deleteTheory = async (id, teacher_id) => {
   try {
-    result = await pool.query("delete from theory\
-     where theory_id = ? and teacher_id = ?", [id, teacher_id])
+    result = await pool.query("update theory\
+      set hidden=true where theory_id = ? and teacher_id = ?", [id, teacher_id])
 
     return result[0]
   } catch (e) {
@@ -75,8 +75,8 @@ exports.deleteTheory = async (id, teacher_id) => {
 
 exports.deleteProblem = async (id, teacher_id) => {
   try {
-    result = await pool.query("delete from problem\
-     where problem_id = ? and teacher_id = ?", [id, teacher_id])
+    result = await pool.query("update problem\
+      set hidden=true where problem_id = ? and teacher_id = ?", [id, teacher_id])
 
     return result[0]
   } catch (e) {
@@ -137,3 +137,20 @@ exports.addEvaluationForTheory = async (grade, evaluation, theory_assignment_id)
   }
 }
 
+exports.getTheoryTasks = async(user_id, criteria_id) => {
+  try {
+    results = await pool.query("select * from theory where teacher_id = ? and criteria_id = ?", [user_id, criteria_id])
+    return results[0]
+  } catch (error) {
+    throw error
+  }
+}
+
+exports.getProblemTasks = async(user_id, criteria_id) => {
+  try {
+    results = await pool.query("select * from problem where teacher_id = ? and criteria_id = ?", [user_id, criteria_id])
+    return results[0]
+  } catch (error) {
+    throw error
+  }
+}
