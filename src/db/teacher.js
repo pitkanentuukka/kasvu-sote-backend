@@ -1,9 +1,9 @@
 const pool = require('../db/mysql.js').pool
 
-exports.addTheory = async (criteria_id, text, teacher_id) => {
+exports.addTheory = async (criteria_id, file, text, teacher_id) => {
   try {
-    results = await pool.query("insert into theory (criteria_id, text, teacher_id ) \
-    values (?, ?, ?)", [criteria_id, text, teacher_id]);
+    results = await pool.query("insert into theory (criteria_id, file, text, teacher_id ) \
+    values (?, ?, ?, ?)", [criteria_id, file, text, teacher_id]);
     return results[0]
   }
   catch (error) {
@@ -11,10 +11,10 @@ exports.addTheory = async (criteria_id, text, teacher_id) => {
   }
 }
 
-exports.addProblem = async (criteria_id, text, teacher_id) => {
+exports.addProblem = async (criteria_id, file, text, teacher_id) => {
   try {
-    results = await pool.query("insert into problem (criteria_id, text, teacher_id)\
-    values (?, ?, ?)", [criteria_id, text, teacher_id])
+    results = await pool.query("insert into problem (criteria_id, file, text, teacher_id)\
+    values (?, ?, ?, ?)", [criteria_id, file, text, teacher_id])
     return results[0];
   } catch (e) {
     throw (e)
@@ -124,11 +124,11 @@ exports.getAllProblemTasks = async (userId, criteria_id) => {
   }
 }
 
-/* 
+/*
   Add Evaluation For Theory: grade and evaluation as inputs and date will be added from system
 */
 exports.addEvaluationForTheory = async (grade, evaluation, theory_assignment_id) => {
-  try { 
+  try {
     results = await pool.query("UPDATE theory_assignment SET grade = ?, evaluation = ?, evaluation_datetime = NOW() \
     WHERE theory_assignment.theory_assignment_id = ?", [grade, evaluation, theory_assignment_id]);
     return results[0];

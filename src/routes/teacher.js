@@ -11,6 +11,8 @@ const {getRoleAndId} = require('../cookie-helper')
 const user = require('../db/user.js')
 const teacher = require('../db/teacher.js')
 const { checkRole } = require('../auth.js')
+const { uploadFile } = require('../uploadFile.js')
+
 
 /**
 * get all students of a currently logged in teacher
@@ -27,21 +29,23 @@ router.get("/students", cors(), checkRole('teacher'), async (req, res) => {
 /**
 * teacher adds a Theory task linked to his uid & posted criteria
 */
-router.post('/addTheory', cors(), checkRole('teacher'), async (req, res) => {
-  if (req.body.criteria_id !== null && req.body.text !==null) {
+router.post('/addTheory', cors(), checkRole('teacher'), uploadFile, async (req, res) => {
+  if (req.body.criteria_id !== null) {
+    if (req.filePath || req.body.text){
+      try {
+        const result = await teacher.addTheory(req.body.criteria_id, req.filePath, req.body.text, req.authData.userId)
+        res.status(200).json({"id": result.insertId, "text": req.body.text, "file": req.filePath}).end()
 
-    try {
-      const result = await teacher.addTheory(req.body.criteria_id, req.body.text, req.authData.userId)
-      res.status(200).json({"id": result.insertId, "text": req.body.text}).end()
-
+      }
+      catch (error) {
+        res.status(500).json(error).end
+      }
+    } else {
+      res.status(400).json({"msg":"missing task"}).end()
     }
-    catch (error) {
-      res.status(500).json(error).end
-    }
-
   } else {
     // bad request, missing parameters
-    res.status(400).end()
+    res.status(400).json({"msg":"missing criteria"}).end()
   }
 })
 
@@ -49,16 +53,24 @@ router.post('/addTheory', cors(), checkRole('teacher'), async (req, res) => {
 * teacher adds a problem task linked to his uid & posted criteria
 */
 
-router.post('/addProblem', cors(), checkRole('teacher'), async (req, res) => {
-  if (req.body.criteria_id !== null && req.body.text !==null) {
-    try {
-      result = await teacher.addProblem(req.body.criteria_id, req.body.text, req.authData.userId)
-      res.status(200).json({"id": result.insertId, "text": req.body.text}).end()
-    } catch(error) {
-      res.status(500).json(error).end()
+router.post('/addProblem', cors(), checkRole('teacher'), uploadFile, async (req, res) => {
+  console.log(req.body);
+  if (req.body.criteria_id) {
+    if (req.filePath || req.body.text){
+      try {
+        const result = await teacher.addProblem(req.body.criteria_id, req.filePath, req.body.text, req.authData.userId)
+        res.status(200).json({"id": result.insertId, "text": req.body.text, "file": req.filePath}).end()
+
+      }
+      catch (error) {
+        res.status(500).json(error).end
+      }
+    } else {
+      res.status(400).json({"msg":"missing task"}).end()
     }
   } else {
-    res.status(400).end()
+    // bad request, missing parameters
+    res.status(400).json({"msg":"missing criteria"}).end()
   }
 })
 
