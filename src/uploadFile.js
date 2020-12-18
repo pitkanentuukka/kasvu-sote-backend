@@ -33,6 +33,7 @@ const allowedFiles = [
 
 
 module.exports.uploadFile = (req, res, next) => {
+  
   if (req.files) {
 
     const file = req.files.submission
@@ -55,7 +56,8 @@ module.exports.uploadFile = (req, res, next) => {
 
   } else {
     // file not found
-    res.status(400).json({"msg": "no file"}).end()
+    req.filePath = null
+    next()
   }
 
 }

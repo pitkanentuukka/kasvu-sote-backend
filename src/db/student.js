@@ -112,13 +112,13 @@ exports.getProblemAssignmentsForCriteria = async (userId, criteria_Id) => {
 }
 
 
-exports.addTheorySubmission = async (user_id, assignment_id, path_to_file) => {
+exports.addTheorySubmission = async (user_id, assignment_id, path_to_file, text) => {
   try {
     // this converts javascript date objects to MySQL datetime format
     const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    const sql = "update theory_assignment set submission = ?, submission_time= ?\
+    const sql = "update theory_assignment set submission_file = ?, submission_text = ?, submission_time= ?\
         where theory_assignment_id = ? and student_id = ?"
-    const inserts = [path_to_file, datetime, assignment_id, user_id]
+    const inserts = [path_to_file, text,  datetime, assignment_id, user_id]
     result = await pool.query(sql, inserts)
     return result[0]
   } catch (e) {
@@ -126,13 +126,13 @@ exports.addTheorySubmission = async (user_id, assignment_id, path_to_file) => {
   }
 }
 
-exports.addProblemSubmission = async (user_id, assignment_id, path_to_file) => {
+exports.addProblemSubmission = async (user_id, assignment_id, path_to_file, text) => {
   try {
     // this converts javascript date objects to MySQL datetime format
     const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    const sql = "update problem_assignment set submission = ?, submission_time= ?\
+    const sql = "update problem_assignment set submission_file = ?, submission_text = ?, submission_time = ?\
         where problem_assignment_id = ? and student_id = ?"
-    const inserts = [path_to_file, datetime, assignment_id, user_id]
+    const inserts = [path_to_file, text, datetime, assignment_id, user_id]
     result = await pool.query(sql, inserts)
     return result[0]
   } catch (e) {

@@ -120,12 +120,16 @@ router.get('/getProblemAssignmentsForCriteria/:id', cors(), checkRole('student')
 
 router.post("/submitTheory/:id", cors(), checkRole('student'), uploadFile, async (req, res) => {
   if (req.params.id) {
-    try {
-      student.addTheorySubmission(req.authData.userId, req.params.id, req.filePath)
-    } catch (e) {
-      res.status(500).json(e).end()
+    if (req.filePath || req.body.text){
+      try {
+        student.addTheorySubmission(req.authData.userId, req.params.id, req.filePath, req.body.text)
+      } catch (e) {
+        res.status(500).json(e).end()
+      }
+      res.status(200).json({"msg": "submission saved" }).end()
+    } else {
+      res.status(400).json({"msg": "no submission"})
     }
-    res.status(200).json({"msg": "submission saved" }).end()
   } else {
     // missing id param
     res.status(400).json({"msg": "no assignment id"}).end()
@@ -134,13 +138,16 @@ router.post("/submitTheory/:id", cors(), checkRole('student'), uploadFile, async
 
 router.post("/submitProblem/:id", cors(), checkRole('student'), uploadFile, async (req, res) => {
   if (req.params.id) {
+    if (req.filePath || req.body.text){
       try {
-        student.addProblemSubmission(req.authData.userId, req.params.id, req.filePath)
+        student.addProblemSubmission(req.authData.userId, req.params.id, req.filePath, req.body.text)
       } catch (e) {
         res.status(500).json(e).end()
       }
       res.status(200).json({"msg": "submission saved" }).end()
-
+    } else {
+      res.status(400).json({"msg": "no submission"})
+    }
   } else {
     // missing id param
     res.status(400).json({"msg": "no assignment id"}).end()
