@@ -248,5 +248,18 @@ router.get('/getProblemTasksPerCriteria/:id', cors(), checkRole('teacher'), asyn
   }
 })
 
+router.get('/getStudentsNotInModule/:id', cors(), checkRole('teacher'), async (req, res) => {
+  if (req.params.id) {
+    try {
+      result = await teacher.getStudentsNotInModule(req.params.id)
+      res.status(200).json(result).end()
+    } catch (e) {
+    res.status(500).json(e).end()
+    }
+
+  } else {
+    res.status(400).end()
+  }
+})
 
 module.exports = router

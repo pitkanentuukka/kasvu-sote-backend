@@ -137,7 +137,7 @@ exports.addEvaluationForTheory = async (grade, evaluation, theory_assignment_id)
   }
 }
 
-exports.getTheoryTasks = async(user_id, criteria_id) => {
+exports.getTheoryTasks = async (user_id, criteria_id) => {
   try {
     results = await pool.query("select * from theory where teacher_id = ? and criteria_id = ?", [user_id, criteria_id])
     return results[0]
@@ -146,11 +146,26 @@ exports.getTheoryTasks = async(user_id, criteria_id) => {
   }
 }
 
-exports.getProblemTasks = async(user_id, criteria_id) => {
+exports.getProblemTasks = async (user_id, criteria_id) => {
   try {
     results = await pool.query("select * from problem where teacher_id = ? and criteria_id = ?", [user_id, criteria_id])
     return results[0]
   } catch (error) {
     throw error
+  }
+}
+
+exports.getStudentsNotInModule = async (module_id) => {
+  try {
+    results = await pool.query("SELECT user_id, email,\
+     concat (last_name, \' \', first_name\) as name\
+      FROM `user` where not exists \
+      (select * from teacher_student_module \
+      where teacher_student_module.student_id = user.user_id \
+      and teacher_student_module.module_id = ?) \
+      and user.role = 'student'", module_id)
+    return results[0]
+  } catch (error) {
+    throw (error)
   }
 }
