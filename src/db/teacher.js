@@ -24,7 +24,8 @@ exports.addProblem = async (criteria_id, file, text, teacher_id) => {
 
 exports.getTheoryAssignmentsForStudentAndCriteria = async(criteria_id, student_id, teacher_id) => {
   const sql = "SELECT theory_assignment.theory_assignment_id, \
-  theory_assignment.submission AS theory_submission, \
+  theory_assignment.submission_file AS theory_submission_file, \
+  theory_assignment.submission_text AS theory_submission_text, \
   theory_assignment.submission_time as theory_submission_time, \
   theory.text as theory_text \
   FROM theory_assignment, theory \
@@ -43,7 +44,8 @@ exports.getTheoryAssignmentsForStudentAndCriteria = async(criteria_id, student_i
 
 exports.getProblemAssignmentsForStudentAndCriteria = async(criteria_id, student_id, teacher_id) => {
   const sql = "SELECT problem_assignment.problem_assignment_id, \
-  problem_assignment.submission AS problem_submission, \
+  problem_assignment.submission_file AS problem_submission_file, \
+  problem_assignment.submission_text AS problem_submission_text, \
   problem_assignment.submission_time as problem_submission_time, \
   problem.text as problem_text\
   FROM problem_assignment, problem\
