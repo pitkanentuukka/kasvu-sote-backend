@@ -117,40 +117,47 @@ const sendEmail = async (from, to, completeURL) => {
     html: `<a href="${completeURL}">${completeURL}</a>`
   })
 }
+const validateCode = async (req, res, next) => {
 
-
-router.get('/validateLink/:code', cors(), async (req, res) => {
   const code = req.params.code
-  let validationData = {};
-  jwt.verify(code, process.env.JWT_KEY, (err, authData) => {
+  console.log(code);
+  jwt.verify(code, process.env.JWT_KEY, async (err, authData) => {
     if(err) {
       res.status(401).json({"message":"invalid validation key"}).end()
     } else {
-      validationData = authData;
+      req.validationData = authData;
+      console.log(authData);
+      result = await user.getUserByEmail(authData.recipientEmail)
+      if (result[0]) {
+        res.status(403)
+        res.json({"msg":"email already exists"}).end()
+      } else {
+        next()
+      }
+
+
     }
   })
-  email = validationData.recipientEmail
-  role = validationData.role
-  result = await user.getUserByEmail(email)
-  if (result[0]) {
-    res.status(403)
-    res.json({"msg":"email already exists"}).end()
-  } else {
-    res.status(200).json({email, role}).end()
-  }
+
+}
+
+router.get('/validateLink/:code', cors(), validateCode, async (req, res) => {
+  email = req.validationData.recipientEmail
+  role = req.validationData.role
+  res.status(200).json({email, role}).end()
 
 })
 
-router.post('/register/', cors(), async (req, res) => {
+router.post('/register/:code', cors(), validateCode, async (req, res) => {
   if (req.body.email && req.body.password && req.body.firstName
       && req.body.lastName && req.body.role) {
 
 
-    const email = req.body.email
+    const email = req.validationData.recipientEmail
     const plainPassword = req.body.password
     const first_name = req.body.firstName
     const last_name = req.body.lastName
-    const role = req.body.role
+    const role = req.validationData.role
     const saltRounds = 10
     const hashedPassword = await bcrypt.hash(plainPassword, saltRounds)
     try {
