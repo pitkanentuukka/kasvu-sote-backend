@@ -11,6 +11,8 @@ const {getRoleAndId} = require('../cookie-helper')
 const user = require('../db/user.js')
 const teacher = require('../db/teacher.js')
 const { checkRole } = require('../auth.js')
+const { uploadFile } = require('../uploadFile.js')
+
 
 /**
 * get all students of a currently logged in teacher
@@ -27,21 +29,23 @@ router.get("/students", cors(), checkRole('teacher'), async (req, res) => {
 /**
 * teacher adds a Theory task linked to his uid & posted criteria
 */
-router.post('/addTheory', cors(), checkRole('teacher'), async (req, res) => {
-  if (req.body.criteria_id !== null && req.body.text !==null) {
+router.post('/addTheory', cors(), checkRole('teacher'), uploadFile, async (req, res) => {
+  if (req.body.criteria_id !== null) {
+    if (req.filePath || req.body.text){
+      try {
+        const result = await teacher.addTheory(req.body.criteria_id, req.filePath, req.body.text, req.authData.userId)
+        res.status(200).json({"id": result.insertId, "text": req.body.text, "file": req.filePath}).end()
 
-    try {
-      const result = await teacher.addTheory(req.body.criteria_id, req.body.text, req.authData.userId)
-      res.status(200).json({"id": result.insertId, "text": req.body.text}).end()
-
+      }
+      catch (error) {
+        res.status(500).json(error).end
+      }
+    } else {
+      res.status(400).json({"msg":"missing task"}).end()
     }
-    catch (error) {
-      res.status(500).json(error).end
-    }
-
   } else {
     // bad request, missing parameters
-    res.status(400).end()
+    res.status(400).json({"msg":"missing criteria"}).end()
   }
 })
 
@@ -49,16 +53,24 @@ router.post('/addTheory', cors(), checkRole('teacher'), async (req, res) => {
 * teacher adds a problem task linked to his uid & posted criteria
 */
 
-router.post('/addProblem', cors(), checkRole('teacher'), async (req, res) => {
-  if (req.body.criteria_id !== null && req.body.text !==null) {
-    try {
-      result = await teacher.addProblem(req.body.criteria_id, req.body.text, req.authData.userId)
-      res.status(200).json({"id": result.insertId, "text": req.body.text}).end()
-    } catch(error) {
-      res.status(500).json(error).end()
+router.post('/addProblem', cors(), checkRole('teacher'), uploadFile, async (req, res) => {
+  console.log(req.body);
+  if (req.body.criteria_id) {
+    if (req.filePath || req.body.text){
+      try {
+        const result = await teacher.addProblem(req.body.criteria_id, req.filePath, req.body.text, req.authData.userId)
+        res.status(200).json({"id": result.insertId, "text": req.body.text, "file": req.filePath}).end()
+
+      }
+      catch (error) {
+        res.status(500).json(error).end
+      }
+    } else {
+      res.status(400).json({"msg":"missing task"}).end()
     }
   } else {
-    res.status(400).end()
+    // bad request, missing parameters
+    res.status(400).json({"msg":"missing criteria"}).end()
   }
 })
 
@@ -193,14 +205,14 @@ router.get('/getAllProblemTasks/:id', cors(), checkRole('teacher'), async (req, 
   }
 })
 
-/*  !!!! WIP !!!!
-  Add Evaluation for theory task by ???????
+/*
+  Add Evaluation for theory task by theory_assignment_id (as input in procedure call (req.params.id))
 */
 router.post('/addEvaluationForTheory/:id', cors(), checkRole('teacher'), async (req, res) => {
   if (req.body.grade !== null && req.body.evaluation !==null) {
     try {
       result = await teacher.addEvaluationForTheory(req.body.grade, req.body.evaluation, req.params.id)
-      res.status(200).json({"id": result.insertId, "text": req.body.text}).end()
+      res.status(200).json(result).end()
     } catch(error) {
       res.status(500).json(error).end()
     }
@@ -236,5 +248,18 @@ router.get('/getProblemTasksPerCriteria/:id', cors(), checkRole('teacher'), asyn
   }
 })
 
+router.get('/getStudentsNotInModule/:id', cors(), checkRole('teacher'), async (req, res) => {
+  if (req.params.id) {
+    try {
+      result = await teacher.getStudentsNotInModule(req.params.id)
+      res.status(200).json(result).end()
+    } catch (e) {
+    res.status(500).json(e).end()
+    }
+
+  } else {
+    res.status(400).end()
+  }
+})
 
 module.exports = router

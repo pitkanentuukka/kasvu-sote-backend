@@ -1,9 +1,9 @@
 const pool = require('../db/mysql.js').pool
 
-exports.addTheory = async (criteria_id, text, teacher_id) => {
+exports.addTheory = async (criteria_id, file, text, teacher_id) => {
   try {
-    results = await pool.query("insert into theory (criteria_id, text, teacher_id ) \
-    values (?, ?, ?)", [criteria_id, text, teacher_id]);
+    results = await pool.query("insert into theory (criteria_id, file, text, teacher_id ) \
+    values (?, ?, ?, ?)", [criteria_id, file, text, teacher_id]);
     return results[0]
   }
   catch (error) {
@@ -11,10 +11,10 @@ exports.addTheory = async (criteria_id, text, teacher_id) => {
   }
 }
 
-exports.addProblem = async (criteria_id, text, teacher_id) => {
+exports.addProblem = async (criteria_id, file, text, teacher_id) => {
   try {
-    results = await pool.query("insert into problem (criteria_id, text, teacher_id)\
-    values (?, ?, ?)", [criteria_id, text, teacher_id])
+    results = await pool.query("insert into problem (criteria_id, file, text, teacher_id)\
+    values (?, ?, ?, ?)", [criteria_id, file, text, teacher_id])
     return results[0];
   } catch (e) {
     throw (e)
@@ -24,7 +24,8 @@ exports.addProblem = async (criteria_id, text, teacher_id) => {
 
 exports.getTheoryAssignmentsForStudentAndCriteria = async(criteria_id, student_id, teacher_id) => {
   const sql = "SELECT theory_assignment.theory_assignment_id, \
-  theory_assignment.submission AS theory_submission, \
+  theory_assignment.submission_file AS theory_submission_file, \
+  theory_assignment.submission_text AS theory_submission_text, \
   theory_assignment.submission_time as theory_submission_time, \
   theory.text as theory_text \
   FROM theory_assignment, theory \
@@ -43,7 +44,8 @@ exports.getTheoryAssignmentsForStudentAndCriteria = async(criteria_id, student_i
 
 exports.getProblemAssignmentsForStudentAndCriteria = async(criteria_id, student_id, teacher_id) => {
   const sql = "SELECT problem_assignment.problem_assignment_id, \
-  problem_assignment.submission AS problem_submission, \
+  problem_assignment.submission_file AS problem_submission_file, \
+  problem_assignment.submission_text AS problem_submission_text, \
   problem_assignment.submission_time as problem_submission_time, \
   problem.text as problem_text\
   FROM problem_assignment, problem\
@@ -124,13 +126,12 @@ exports.getAllProblemTasks = async (userId, criteria_id) => {
   }
 }
 
-/*  !!!! WIP !!!!
+/*
   Add Evaluation For Theory: grade and evaluation as inputs and date will be added from system
 */
 exports.addEvaluationForTheory = async (grade, evaluation, theory_assignment_id) => {
   try {
-    results = await pool.query("INSERT INTO theory_assignment (grade, evaluation, evaluation_datetime) \
-    VALUES (?, ?, CURRENT_DATE()) \
+    results = await pool.query("UPDATE theory_assignment SET grade = ?, evaluation = ?, evaluation_datetime = NOW() \
     WHERE theory_assignment.theory_assignment_id = ?", [grade, evaluation, theory_assignment_id]);
     return results[0];
   } catch (error) {
@@ -138,7 +139,7 @@ exports.addEvaluationForTheory = async (grade, evaluation, theory_assignment_id)
   }
 }
 
-exports.getTheoryTasks = async(user_id, criteria_id) => {
+exports.getTheoryTasks = async (user_id, criteria_id) => {
   try {
     results = await pool.query("select * from theory where teacher_id = ? and criteria_id = ?", [user_id, criteria_id])
     return results[0]
@@ -147,11 +148,26 @@ exports.getTheoryTasks = async(user_id, criteria_id) => {
   }
 }
 
-exports.getProblemTasks = async(user_id, criteria_id) => {
+exports.getProblemTasks = async (user_id, criteria_id) => {
   try {
     results = await pool.query("select * from problem where teacher_id = ? and criteria_id = ?", [user_id, criteria_id])
     return results[0]
   } catch (error) {
     throw error
+  }
+}
+
+exports.getStudentsNotInModule = async (module_id) => {
+  try {
+    results = await pool.query("SELECT user_id, email,\
+     concat (last_name, \' \', first_name\) as name\
+      FROM `user` where not exists \
+      (select * from teacher_student_module \
+      where teacher_student_module.student_id = user.user_id \
+      and teacher_student_module.module_id = ?) \
+      and user.role = 'student'", module_id)
+    return results[0]
+  } catch (error) {
+    throw (error)
   }
 }

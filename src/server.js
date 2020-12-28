@@ -9,7 +9,6 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const fileUpload = require('express-fileupload');
 
-
 const app = express();
 app.use(cookieParser())
 app.use(bodyParser())
@@ -23,3 +22,6 @@ app.use('/api/teacher', require('./routes/teacher'))
 app.use('/api/instructor', require('./routes/instructor'))
 app.use('/api/student', require('./routes/student'))
 app.use('/api/common', require('./routes/common'))
+
+
+app.use('/uploads', express.static('uploads'))
