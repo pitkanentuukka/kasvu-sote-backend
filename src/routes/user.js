@@ -112,78 +112,81 @@ const sendEmail = async (from, to, completeURL, subject) => {
   const email = await transport.sendMail({
     from,
     to,
-    subject: "registration link",
+    subject,
     text: completeURL,
     html: `<a href="${completeURL}">${completeURL}</a>`
   })
 }
-const validateCode = async (req, res, next) => {
 
+const validateCode = async (req, res, next) => {
   const code = req.params.code
-  console.log(code);
   jwt.verify(code, process.env.JWT_KEY, async (err, authData) => {
     if(err) {
       res.status(401).json({"message":"invalid validation key"}).end()
     } else {
       req.validationData = authData;
-      console.log(authData);
-      result = await user.getUserByEmail(authData.recipientEmail)
-      if (result[0]) {
-        res.status(403)
-        res.json({"msg":"email already exists"}).end()
-      } else {
-        next()
-      }
-
-
+      next()
     }
   })
-
 }
 
 router.get('/validateLink/:code', cors(), validateCode, async (req, res) => {
   email = req.validationData.recipientEmail
   role = req.validationData.role
-  res.status(200).json({email, role}).end()
+  result = await user.getUserByEmail(req.validationData.recipientEmail)
+  if (result[0]) {
+    res.status(403)
+    res.json({"msg":"email already exists"}).end()
+  } else {
+    res.status(200).json({email, role}).end()
+  }
 
 })
 
 router.post('/register/:code', cors(), validateCode, async (req, res) => {
-  if (req.body.email && req.body.password && req.body.firstName
-      && req.body.lastName && req.body.role) {
-
-
-    const email = req.validationData.recipientEmail
-    const plainPassword = req.body.password
-    const first_name = req.body.firstName
-    const last_name = req.body.lastName
-    const role = req.validationData.role
-    const saltRounds = 10
-    const hashedPassword = await bcrypt.hash(plainPassword, saltRounds)
-    try {
-
-      const existingUser = await user.getUserByEmail(email)
-      if (!existingUser[0]) {
-        result = await user.add(email, hashedPassword, role, first_name, last_name)
-        res.status(200).json(result[0].insertId).end()
-      } else {
-        res.status(403).json({"message": "user already exists"}).end()
-      }
-    } catch (e) {
-      res.status(500).json(e).end()
-    }
+  result = await user.getUserByEmail(req.validationData.recipientEmail)
+  if (result[0]) {
+    res.status(403)
+    res.json({"msg":"email already exists"}).end()
   } else {
-    res.status(400).json({"message": "missing data"})
+
+    if (req.body.email && req.body.password && req.body.firstName
+        && req.body.lastName && req.body.role) {
+
+
+      const email = req.validationData.recipientEmail
+      const plainPassword = req.body.password
+      const first_name = req.body.firstName
+      const last_name = req.body.lastName
+      const role = req.validationData.role
+      const saltRounds = 10
+      const hashedPassword = await bcrypt.hash(plainPassword, saltRounds)
+      try {
+
+        const existingUser = await user.getUserByEmail(email)
+        if (!existingUser[0]) {
+          result = await user.add(email, hashedPassword, role, first_name, last_name)
+          res.status(200).json(result[0].insertId).end()
+        } else {
+          res.status(403).json({"message": "user already exists"}).end()
+        }
+      } catch (e) {
+        res.status(500).json(e).end()
+      }
+    } else {
+      res.status(400).json({"message": "missing data"})
+    }
   }
 })
 
-router.post('resetPassword', cors(), async (req, res) => {
+router.post('/resetPassword', cors(), async (req, res) => {
   if (req.body.email) {
     try {
       const existingUser = await user.getUserByEmail(req.body.email)
       if (existingUser[0]) {
-        userId = existingUser[0][0].user_id
-        payload =  {email, userId}
+        userId = existingUser[0].user_id
+        recipientEmail = req.body.email
+        payload =  {recipientEmail, userId}
         const token = jwt.sign(payload, process.env.JWT_KEY, {
           expiresIn: '7d'}
         )
@@ -191,6 +194,7 @@ router.post('resetPassword', cors(), async (req, res) => {
         const route = '/resetPassword/'
         const completeURL = "http://" + host + route + token
         sendEmail(process.env.SYSTEM_EMAIL, req.body.email, completeURL, "password reset link")
+        res.status(200).end()
       } else {
         res.status(403).json({"message": "user not found"})
       }
@@ -202,13 +206,27 @@ router.post('resetPassword', cors(), async (req, res) => {
   }
 })
 
-router.get('/validatePasswordReset/:code', cors(), (req, res) => {
-  if (req.params.code) {
+router.get('/validatePasswordReset/:code', cors(), validateCode, (req, res) => {
+  res.status(200).end()
+})
 
-  } else {
-    res.status(400).json({"message": "missing code"})    
+router.post('/setNewPassword/:code', cors(), validateCode, async (req, res) => {
+  const plainPassword = req.body.password
+  const saltRounds = 10
+  const hashedPassword = await bcrypt.hash(plainPassword, saltRounds)
+  const userId = req.validationData.userId
+  try {
+    result = await user.setPassword(userId, hashedPassword)
+    res.status(200).json(result)
+
+  } catch (e) {
+    res.status(500).json(e).end()
+
   }
 
 })
+
+
+
 
 module.exports = router
