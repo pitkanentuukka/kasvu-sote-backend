@@ -186,7 +186,8 @@ router.post('/resetPassword', cors(), async (req, res) => {
       if (existingUser[0]) {
         userId = existingUser[0].user_id
         recipientEmail = req.body.email
-        payload =  {recipientEmail, userId}
+        password = existingUser[0].password
+        payload =  {recipientEmail, userId, password}
         const token = jwt.sign(payload, process.env.JWT_KEY, {
           expiresIn: '7d'}
         )
@@ -206,8 +207,19 @@ router.post('/resetPassword', cors(), async (req, res) => {
   }
 })
 
-router.get('/validatePasswordReset/:code', cors(), validateCode, (req, res) => {
-  res.status(200).end()
+router.get('/validatePasswordReset/:code', cors(), validateCode, async (req, res) => {
+  try {
+    result = await user.getUserById(req.validationData.userId)
+    if (result[0].password === req.validationData.password) {
+      res.status(200).end()
+
+    } else {
+      res.status(401).end()
+    }
+  } catch (e) {
+    res.status(500).json(e).end()
+  }
+
 })
 
 router.post('/setNewPassword/:code', cors(), validateCode, async (req, res) => {
@@ -217,8 +229,7 @@ router.post('/setNewPassword/:code', cors(), validateCode, async (req, res) => {
   const userId = req.validationData.userId
   try {
     result = await user.setPassword(userId, hashedPassword)
-    res.status(200).json(result)
-
+    res.status(200).json(result).end()
   } catch (e) {
     res.status(500).json(e).end()
 
