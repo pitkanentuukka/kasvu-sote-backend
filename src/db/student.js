@@ -148,8 +148,8 @@ exports.addSelfEvaluation = async (user_id, submission_id, evaluation_text, grad
     const result = await pool.query("update theory_assignment \
       set self_evaluation_text = ?, self_evaluation_datetime = ?, \
       self_grade = ? where theory_assignment_id = ? and student_id = ?\
-      and submission is not null",
-      evaluation_text, datetime, grade, submission_id, user_id)
+      and submission_text is not null or submission_file is not null",
+      [evaluation_text, datetime, grade, submission_id, user_id])
     return result[0]
 
   } catch (e) {
@@ -162,7 +162,7 @@ exports.addEvaluation = async (criteria_id, student_id, instructor_id, evaluatio
   try {
     const result = await pool.query("INSERT INTO evaluation \
     (criteria_id, student_id, instructor_id, evaluation_text, evaluation_date) \
-    values (?, ?, ?, ?)", criteria_id, student_id, instructor_id, evaluation_text, datetime)
+    values (?, ?, ?, ?)", [criteria_id, student_id, instructor_id, evaluation_text, datetime])
     return result[0]
   } catch(e) {
     throw (e)
