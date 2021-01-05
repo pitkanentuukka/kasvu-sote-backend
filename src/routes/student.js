@@ -156,9 +156,9 @@ router.post("/submitProblem/:id", cors(), checkRole('student'), uploadFile, asyn
 
 router.post("/addselfeval/:id", cors(), checkRole('student'), async (req, res) => {
   if (req.params.id) {
-    if (req.body.evaluation_text !== null && req.body.grade !==null) {
+    if (req.body.evaluation !== null && req.body.grade !==null) {
       try {
-        const result = student.addSelfEvaluation(req.authData.userId, req.param.id, req.body.evaluation_text,req.body.grade)
+        const result = student.addSelfEvaluation(req.authData.userId, req.params.id, req.body.evaluation,req.body.grade)
         res.status(200).json(result).end()
       } catch (e) {
         res.status(500).json(e).end()
