@@ -27,6 +27,11 @@ exports.getTheoryAssignmentsForStudentAndCriteria = async(criteria_id, student_i
   theory_assignment.submission_file AS theory_submission_file, \
   theory_assignment.submission_text AS theory_submission_text, \
   theory_assignment.submission_time as theory_submission_time, \
+  self_grade as theory_self_grade, \
+  self_evaluation_text as theory_self_evaluation, \
+  self_evaluation_datetime as theory_self_evaluation_datetime, \
+  grade as theory_grade, \
+  evaluation as theory_evaluation, \
   theory.text as theory_text \
   FROM theory_assignment, theory \
   WHERE theory.criteria_id = ? \
@@ -47,7 +52,10 @@ exports.getProblemAssignmentsForStudentAndCriteria = async(criteria_id, student_
   problem_assignment.submission_file AS problem_submission_file, \
   problem_assignment.submission_text AS problem_submission_text, \
   problem_assignment.submission_time as problem_submission_time, \
-  problem.text as problem_text\
+  problem.text as problem_text, \
+  problem_assignment.grade as problem_grade, \
+  problem_assignment.evaluation as problem_evaluation, \
+  problem_assignment.grader_id as ptoblem_grader_id \
   FROM problem_assignment, problem\
   WHERE problem_assignment.student_id = ?\
   and problem_assignment.problem_id = problem.problem_id\
