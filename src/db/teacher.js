@@ -24,8 +24,14 @@ exports.addProblem = async (criteria_id, file, text, teacher_id) => {
 
 exports.getTheoryAssignmentsForStudentAndCriteria = async(criteria_id, student_id, teacher_id) => {
   const sql = "SELECT theory_assignment.theory_assignment_id, \
-  theory_assignment.submission AS theory_submission, \
+  theory_assignment.submission_file AS theory_submission_file, \
+  theory_assignment.submission_text AS theory_submission_text, \
   theory_assignment.submission_time as theory_submission_time, \
+  self_grade as theory_self_grade, \
+  self_evaluation_text as theory_self_evaluation, \
+  self_evaluation_datetime as theory_self_evaluation_datetime, \
+  grade as theory_grade, \
+  evaluation as theory_evaluation, \
   theory.text as theory_text \
   FROM theory_assignment, theory \
   WHERE theory.criteria_id = ? \
@@ -43,9 +49,13 @@ exports.getTheoryAssignmentsForStudentAndCriteria = async(criteria_id, student_i
 
 exports.getProblemAssignmentsForStudentAndCriteria = async(criteria_id, student_id, teacher_id) => {
   const sql = "SELECT problem_assignment.problem_assignment_id, \
-  problem_assignment.submission AS problem_submission, \
+  problem_assignment.submission_file AS problem_submission_file, \
+  problem_assignment.submission_text AS problem_submission_text, \
   problem_assignment.submission_time as problem_submission_time, \
-  problem.text as problem_text\
+  problem.text as problem_text, \
+  problem_assignment.grade as problem_grade, \
+  problem_assignment.evaluation as problem_evaluation, \
+  problem_assignment.grader_id as ptoblem_grader_id \
   FROM problem_assignment, problem\
   WHERE problem_assignment.student_id = ?\
   and problem_assignment.problem_id = problem.problem_id\
@@ -137,7 +147,7 @@ exports.addEvaluationForTheory = async (grade, evaluation, theory_assignment_id)
   }
 }
 
-exports.getTheoryTasks = async(user_id, criteria_id) => {
+exports.getTheoryTasks = async (user_id, criteria_id) => {
   try {
     results = await pool.query("select * from theory where teacher_id = ? and criteria_id = ?", [user_id, criteria_id])
     return results[0]
@@ -146,7 +156,7 @@ exports.getTheoryTasks = async(user_id, criteria_id) => {
   }
 }
 
-exports.getProblemTasks = async(user_id, criteria_id) => {
+exports.getProblemTasks = async (user_id, criteria_id) => {
   try {
     results = await pool.query("select * from problem where teacher_id = ? and criteria_id = ?", [user_id, criteria_id])
     return results[0]
@@ -191,3 +201,17 @@ exports.addStudentAndModule = async (teacher_id, module_id, student_id) => {
   }
 } 
 
+exports.getStudentsNotInModule = async (module_id) => {
+  try {
+    results = await pool.query("SELECT user_id, email,\
+     concat (last_name, \' \', first_name\) as name\
+      FROM `user` where not exists \
+      (select * from teacher_student_module \
+      where teacher_student_module.student_id = user.user_id \
+      and teacher_student_module.module_id = ?) \
+      and user.role = 'student'", module_id)
+    return results[0]
+  } catch (error) {
+    throw (error)
+  }
+}
