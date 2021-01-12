@@ -154,3 +154,40 @@ exports.getProblemTasks = async(user_id, criteria_id) => {
     throw error
   }
 }
+
+exports.getStudentsForModule = async(module_id) => {
+  console.log("sql module id: ", module_id)
+  try {
+    results = await pool.query("SELECT first_name, last_name FROM user, teacher_student_module  \
+    WHERE user.role = 'student' \
+    AND user.user_id <> teacher_student_module.student_id \
+    AND teacher_student_module.module_id = ?;", [module_id])
+  } catch (error) {
+    throw error
+  }
+}
+
+exports.assignStudentAndTheoryForTeacher = async(userId, module_id, student_id) => {
+  console.log("tuli tänne 2, id=", student_id)
+  /*try {
+    results = await pool.query("", [])
+  } catch (error) {
+    throw error
+  }*/
+}
+
+exports.addStudentAndModule = async (teacher_id, module_id, student_id) => {
+  console.log("tuli tänne 1, id=", student_id)
+  try {
+/*    results = await pool.query( "INSERT IGNORE INTO teacher_student_module \
+    (teacher_id, student_id, module_id) VALUES (?,?,?);", [teacher_id, student_id, module_id])*/
+    results = await pool.query( "INSERT INTO teacher_student_module (teacher_id, student_id, module_id) \
+    SELECT (?,?,?) \
+    WHERE NOT EXIST student_id=? AND module_id=?;", [teacher_id, student_id, module_id, student_id, module_id])
+    return results[0]
+  }
+  catch (error) {
+    throw (error)
+  }
+} 
+
