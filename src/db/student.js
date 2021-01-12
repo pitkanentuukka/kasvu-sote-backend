@@ -69,7 +69,8 @@ exports.getTheoryAssignmentsForCriteria = async (userId, criteria_Id) => {
   try {
     results = await pool.query("select theory_assignment.theory_assignment_id,\
     theory_assignment.assign_date as theory_assign_date,\
-    theory_assignment.submission as theory_submission,\
+    theory_assignment.submission_text as theory_submission_text,\
+    theory_assignment.submission_file as theory_submission_file,\
     theory_assignment.submission_time as theory_submission_time,\
     theory_assignment.self_grade as theory_self_grade,\
     theory_assignment.self_evaluation_text as theory_self_evaluation,\
@@ -93,7 +94,8 @@ exports.getProblemAssignmentsForCriteria = async (userId, criteria_Id) => {
   try {
     results = await pool.query("select problem_assignment.problem_id,\
         problem_assignment.assign_date as problem_assign_date,\
-        problem_assignment.submission as problem_submission,\
+        problem_assignment.submission_text as problem_submission_text,\
+        problem_assignment.submission_file as problem_submission_file,\
         problem_assignment.submission_time as problem_submission_time,\
         problem_assignment.grade as problem_grade,\
         problem_assignment.evaluation as problem_evaluation,\
@@ -146,8 +148,8 @@ exports.addSelfEvaluation = async (user_id, submission_id, evaluation_text, grad
     const result = await pool.query("update theory_assignment \
       set self_evaluation_text = ?, self_evaluation_datetime = ?, \
       self_grade = ? where theory_assignment_id = ? and student_id = ?\
-      and submission is not null",
-      evaluation_text, datetime, grade, submission_id, user_id)
+      and submission_text is not null or submission_file is not null",
+      [evaluation_text, datetime, grade, submission_id, user_id])
     return result[0]
 
   } catch (e) {
@@ -160,7 +162,7 @@ exports.addEvaluation = async (criteria_id, student_id, instructor_id, evaluatio
   try {
     const result = await pool.query("INSERT INTO evaluation \
     (criteria_id, student_id, instructor_id, evaluation_text, evaluation_date) \
-    values (?, ?, ?, ?)", criteria_id, student_id, instructor_id, evaluation_text, datetime)
+    values (?, ?, ?, ?)", [criteria_id, student_id, instructor_id, evaluation_text, datetime])
     return result[0]
   } catch(e) {
     throw (e)

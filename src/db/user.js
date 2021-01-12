@@ -44,3 +44,12 @@ exports.add = async (email, password, role, first_name, last_name) => {
     throw (e)
   }
 }
+
+exports.setPassword = async (userId, password) => {
+  try {
+    result = await pool.query("update user set password = ? where user_id = ?", [password, userId])
+    return result
+  } catch (e) {
+    throw e
+  }
+}
