@@ -263,17 +263,45 @@ router.get('/getStudentsNotInModule/:id', cors(), checkRole('teacher'), async (r
   }
 })
 
-router.get('/getStudentsForModule/:id', cors(), checkRole('teacher'), async (req, res) => {
-  if (req.params.id) {
+router.post('/addStudentToModule', cors(), checkRole('teacher'), async (req, res)=> {
+  if (req.body.student_id && req.body.module_id) {
+    student_id = req.body.student_id
+    module_id = req.body.module_id
+    teacher_id = req.authData.userId
     try {
-      results = await teacher.getStudentsForModule(req.params.id) /* parameter: module id */
-    } catch(error) {
-      res.status(500).json(error).end()
+      teacherForStudentAndModule = await teacher.getTeacherForStudentAndModule(student_id, module_id)
+      // either the student has currently logged in teacher for the module or there is no teacher at all
+      if (!teacherForStudentAndModule) {
+        await teacher.addStudentToModule(teacher_id, student_id, module_id)
+        await teacher.assignModuleTheoryForStudent(teacher_id, student_id, module_id)
+        res.status(200).end()
+
+      } else if (teacherForStudentAndModule === teacher_id) {
+
+        const result = await teacher.assignModuleTheoryForStudent(teacher_id, student_id, module_id)
+        console.log(result);
+        res.status(200).end()
+
+      } else {
+        // this student already has a teacher for this module
+        res.status(204).end()
+
+      }
     }
+    catch (e) {
+      res.status(500).json(e).end()
+
+    }
+
   } else {
     res.status(400).end()
   }
 })
+
+
+
+
+
 
 router.post('/assignStudentAndTheoryForTeacher/:id', cors(), checkRole('teacher'), async (req, res) => {
   console.log("aloitus, params ", req.params.id)

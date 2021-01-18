@@ -165,18 +165,6 @@ exports.getProblemTasks = async (user_id, criteria_id) => {
   }
 }
 
-exports.getStudentsForModule = async(module_id) => {
-  console.log("sql module id: ", module_id)
-  try {
-    results = await pool.query("SELECT first_name, last_name FROM user, teacher_student_module  \
-    WHERE user.role = 'student' \
-    AND user.user_id <> teacher_student_module.student_id \
-    AND teacher_student_module.module_id = ?;", [module_id])
-  } catch (error) {
-    throw error
-  }
-}
-
 exports.assignStudentAndTheoryForTeacher = async(userId, module_id, student_id) => {
   console.log("tuli tänne 2, id=", student_id)
   /*try {
@@ -199,7 +187,7 @@ exports.addStudentAndModule = async (teacher_id, module_id, student_id) => {
   catch (error) {
     throw (error)
   }
-} 
+}
 
 exports.getStudentsNotInModule = async (module_id) => {
   try {
@@ -213,5 +201,48 @@ exports.getStudentsNotInModule = async (module_id) => {
     return results[0]
   } catch (error) {
     throw (error)
+  }
+}
+
+
+exports.getTeacherForStudentAndModule = async(student_id, module_id) => {
+  try {
+    result = await pool.query("select * from teacher_student_module \
+    where student_id = ? and module_id = ?", [student_id, module_id])
+    if (result[0][0]) {
+      return result[0][0].teacher_id
+    } else {
+      return false
+    }
+  } catch (e) {
+    throw(e)
+  }
+}
+
+
+exports.addStudentToModule = async (teacher_id, student_id, module_id) => {
+  try {
+    result = await pool.query("insert into teacher_student_module values (?, ?, ?)", [teacher_id, student_id, module_id])
+    return result
+  } catch (e) {
+    throw e;
+  }
+}
+
+exports.assignModuleTheoryForStudent = async (teacher_id, student_id, module_id) => {
+  try {
+    const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+    const sql = "insert into theory_assignment (theory_id, student_id, assign_date) \
+        select theory_id, ?, ?  from theory, criteria, category \
+        where theory.criteria_id = criteria.criteria_id \
+        and criteria.category_id = category.category_id \
+        and category.module_id = ? \
+        and theory.teacher_id = ?"
+
+    result = await pool.query(sql, [student_id, datetime, module_id, teacher_id])
+    return result
+  } catch (e) {
+    throw (e)
   }
 }
