@@ -240,9 +240,25 @@ exports.assignModuleTheoryForStudent = async (teacher_id, student_id, module_id)
         and category.module_id = ? \
         and theory.teacher_id = ?"
 
-    result = await pool.query(sql, [student_id, datetime, module_id, teacher_id])
+    const result = await pool.query(sql, [student_id, datetime, module_id, teacher_id])
     return result
   } catch (e) {
     throw (e)
+  }
+}
+
+
+exports.assignModuleProblemForStudent = async (teacher_id, student_id, module_id) => {
+  try {
+    const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const sql = "insert into problem_assignment (problem_id, teacher_id, student_id, assign_date) \
+        select problem_id, ?, ?, ? from problem, criteria, category \
+        where problem.criteria_id = criteria.criteria_id \
+        and category.module_id = ? \
+        and problem.teacher_id = ?"
+    const result = await pool.query(sql, [teacher_id, student_id, datetime, module_id, teacher_id])
+    return result
+  } catch (e) {
+    throw e
   }
 }
