@@ -298,25 +298,14 @@ router.post('/addStudentToModule', cors(), checkRole('teacher'), async (req, res
   }
 })
 
-
-
-
-
-
-router.post('/assignStudentAndTheoryForTeacher/:id', cors(), checkRole('teacher'), async (req, res) => {
-  console.log("aloitus, params ", req.params.id)
-  console.log("aloitus, student id ", req.body.student_id)
-  if (req.params.id !== null && req.body.student_id !== null) {
-      console.log("a, student_id ", req.body.student_id)
-      try {
-        console.log("try sisalla", req.body.student_id)
-        results = await teacher.addStudentAndModule(req.authData.userId, req.params.id, req.body.student_id)
-        res.status(200).json(results)
-        results = await teacher.assignStudentAndTheoryForTeacher(req.authData.userId, req.params.id, req.body.student_id,)
-        res.status(200).json(results).end()
-      } catch (error) {
-        res.status(500).json(error).end()
-      }
+router.post("/assignModuleProblemForStudent", cors(), checkRole(['teacher', 'instructor']), async (req, res) => {
+  if (req.body.student_id && req.body.module_id) {
+    try {
+      const result = await teacher.assignModuleProblemForStudent(req.authData.userId, req.body.student_id, req.body.module_id)
+      res.status(200).json(result).end()
+    } catch (e) {
+      res.status(500).json(e).end()
+    }
   } else {
     res.status(400).end()
   }
