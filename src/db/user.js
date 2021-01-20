@@ -23,7 +23,7 @@ exports.getUserById = async (id) => {
 
 exports.getStudentsForTeacher = async (id) => {
   try {
-    results = await pool.query( "select user_id, email,\
+    results = await pool.query( "select distinct user_id, email,\
      concat (last_name, \' \', first_name\) as name\
     from user, teacher_student_module \
     where user.user_id = teacher_student_module.student_id \
