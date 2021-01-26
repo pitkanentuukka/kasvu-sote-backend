@@ -54,8 +54,7 @@ exports.getProblemAssignmentsForStudentAndCriteria = async(criteria_id, student_
   problem_assignment.submission_time as problem_submission_time, \
   problem.text as problem_text, \
   problem_assignment.grade as problem_grade, \
-  problem_assignment.evaluation as problem_evaluation, \
-  problem_assignment.grader_id as ptoblem_grader_id \
+  problem_assignment.evaluation as problem_evaluation \
   FROM problem_assignment, problem\
   WHERE problem_assignment.student_id = ?\
   and problem_assignment.problem_id = problem.problem_id\
