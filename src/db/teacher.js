@@ -123,7 +123,7 @@ exports.restoreProblem = async (id, teacher_id) => {
 exports.getAllTheoryTasks = async (userId, criteria_id) => {
   if (criteria_id) {
     const inserts = [userId, criteria_id];
-    const sql ="SELECT theory.theory_id, theory.text AS theory_text \
+    const sql ="SELECT theory.theory_id, theory.text AS theory_text, hidden \
      FROM theory \
      WHERE theory.teacher_id = ? \
      AND theory.criteria_Id = ?";
@@ -143,7 +143,7 @@ exports.getAllTheoryTasks = async (userId, criteria_id) => {
 exports.getAllProblemTasks = async (userId, criteria_id) => {
   if (criteria_id) {
     const inserts = [userId, criteria_id];
-    const sql ="SELECT problem.problem_id, problem.text AS problem_text \
+    const sql ="SELECT problem.problem_id, problem.text AS problem_text, hidden \
       FROM problem \
       WHERE problem.teacher_id = ? \
       AND problem.criteria_Id = ?";
