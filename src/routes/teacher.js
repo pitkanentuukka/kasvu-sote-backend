@@ -162,7 +162,7 @@ router.get("/getProblemAssignmentsForStudentAndCriteria/", cors(), checkRole('te
 
 router.get("/deleteTheory/:id", cors(), checkRole('teacher'), async (req, res) => {
   try {
-    result = await teacher.deleteTheory(req.params.id, req.authData.userId)
+    const result = await teacher.deleteTheory(req.params.id, req.authData.userId)
     res.status(200).json(result.affectedRows).end()
   } catch (e) {
     res.status(500).json(e).end()
@@ -170,13 +170,45 @@ router.get("/deleteTheory/:id", cors(), checkRole('teacher'), async (req, res) =
 
 })
 
+
+router.get('/restoreTheory/:id', cors(), checkRole('teacher'), async (req, res) => {
+  if (req.params.id) {
+    try {
+      const result = await teacher.restoreTheory(req.params.id, req.authData.userId)
+      res.status(200).end()
+
+    } catch (e) {
+      res.status(500).json(e).end()
+    }
+  } else {
+    res.status(400).end()
+
+  }
+})
+
+
 router.get("/deleteProblem/:id", cors(), checkRole('teacher'), async (req, res) => {
   try {
 
-    result = await teacher.deleteProblem(req.params.id, req.authData.userId)
+    const result = await teacher.deleteProblem(req.params.id, req.authData.userId)
     res.status(200).json(result.affectedRows).end()
   } catch (e) {
     res.status(500).json(e).end()
+  }
+})
+
+router.get('/restoreProblem/:id', cors(), checkRole('teacher'), async (req, res) => {
+  if (req.params.id) {
+    try {
+      const result = await teacher.restoreProblem(req.params.id, req.authData.userId)
+      res.status(200).end()
+
+    } catch (e) {
+      res.status(500).json(e).end()
+    }
+  } else {
+    res.status(400).end()
+
   }
 })
 
@@ -308,6 +340,21 @@ router.post("/assignModuleProblemForStudent", cors(), checkRole(['teacher', 'ins
     }
   } else {
     res.status(400).end()
+  }
+})
+
+router.get('/restoreTheory/:id', cors(), checkRole('teacher'), async (req, res) => {
+  if (req.params.id) {
+    try {
+      const result = await teacher.restoreTheory(req.params.id)
+      res.status(200).end()
+
+    } catch (e) {
+      res.status(500).json(e).end()
+    }
+  } else {
+    res.status(400).end()
+
   }
 })
 
