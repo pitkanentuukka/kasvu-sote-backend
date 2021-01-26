@@ -1,5 +1,4 @@
 const pool = require('../db/mysql.js').pool
-const MySQLDateTime = require('../db/mysql.js').datetime
 
 exports.getOpenTheory = async (id) => {
   try {
@@ -101,10 +100,13 @@ exports.getProblemAssignmentsForCriteria = async (userId, criteria_Id) => {
         problem_assignment.grade as problem_grade,\
         problem_assignment.evaluation as problem_evaluation,\
         problem_assignment.evaluation_datetime,\
-        problem.text as problem_text\
-        from problem_assignment, problem\
+        problem.text as problem_text, \
+        concat (user.last_name, \' \', user.first_name\) as grader_name, \
+        user.role as grader_role \
+        from problem_assignment, problem, user\
         where problem_assignment.student_id = ?\
         and problem_assignment.problem_id = problem.problem_id\
+        and user.user_id = problem.teacher_id \
         and problem.criteria_Id = ?", [userId, criteria_Id])
     return results[0]
   }
