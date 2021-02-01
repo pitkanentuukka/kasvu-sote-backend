@@ -3,7 +3,7 @@ const pool = require('../db/mysql.js').pool
 
 exports.getUserByEmail = async (email) => {
   try {
-    const results = await pool.query("select * from user where email = ?", email)
+    results = await pool.query("select * from user where email = ?", email)
     return results[0]
   }
   catch (error) {
@@ -13,7 +13,7 @@ exports.getUserByEmail = async (email) => {
 
 exports.getUserById = async (id) => {
   try {
-    const results = await pool.query("select * from user where user_id = ?", id)
+    results = await pool.query("select * from user where user_id = ?", id)
     return results[0]
   }
   catch (error) {
@@ -23,7 +23,7 @@ exports.getUserById = async (id) => {
 
 exports.getStudentsForTeacher = async (id) => {
   try {
-    const results = await pool.query( "select distinct user_id, email,\
+    results = await pool.query( "select distinct user_id, email,\
      concat (last_name, \' \', first_name\) as name\
     from user, teacher_student_module \
     where user.user_id = teacher_student_module.student_id \
@@ -38,7 +38,7 @@ exports.getStudentsForTeacher = async (id) => {
 exports.getStudentsForInstructor = async (id) => {
   console.log(id);
   try {
-    const results = await pool.query( "select distinct user_id, email,\
+    results = await pool.query( "select distinct user_id, email,\
     concat (last_name, \' \', first_name\) as name\
     from user, instructor_student_module \
     where user.user_id = instructor_student_module.student_id \

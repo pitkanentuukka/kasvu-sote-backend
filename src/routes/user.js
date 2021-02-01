@@ -17,7 +17,7 @@ router.post('/login', bodyParser(), async (req, res) => {
   if (email && password) {
     try {
       const result = await user.getUserByEmail(email)
-      if (results[0].length === 0) {
+      if (result[0].length === 0) {
         res.status(403).json({"message": "invalid username or password"}).end()
       } else {
         bcrypt.compare(password, results[0][0].password, (bcerr, bcres)=> {
