@@ -300,11 +300,12 @@ router.post('/addStudentToModule', cors(), checkRole('teacher'), async (req, res
     student_id = req.body.student_id
     module_id = req.body.module_id
     teacher_id = req.authData.userId
+    task_type = 't'; /* tämä muuttuu kunhan sovitaan tekotapa: frontend lähettää uuden parametrin task_type */
     try {
       teacherForStudentAndModule = await teacher.getTeacherForStudentAndModule(student_id, module_id)
       // either the student has currently logged in teacher for the module or there is no teacher at all
       if (!teacherForStudentAndModule) {
-        await teacher.addStudentToModule(teacher_id, student_id, module_id)
+        await teacher.addStudentToModule(teacher_id, student_id, module_id, task_type)
         await teacher.assignModuleTheoryForStudent(teacher_id, student_id, module_id)
         res.status(200).end()
 

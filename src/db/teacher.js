@@ -242,9 +242,9 @@ exports.getTeacherForStudentAndModule = async(student_id, module_id) => {
 }
 
 
-exports.addStudentToModule = async (teacher_id, student_id, module_id) => {
+exports.addStudentToModule = async (teacher_id, student_id, module_id, task_type) => {
   try {
-    result = await pool.query("insert into teacher_student_module values (?, ?, ?)", [teacher_id, student_id, module_id])
+    result = await pool.query("insert into teacher_student_module values (?, ?, ?, ?)", [teacher_id, student_id, module_id, task_type])
     return result
   } catch (e) {
     throw e;
