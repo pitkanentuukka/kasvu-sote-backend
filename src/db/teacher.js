@@ -196,14 +196,13 @@ exports.assignStudentAndTheoryForTeacher = async(userId, module_id, student_id) 
   }*/
 }
 
-exports.addStudentAndModule = async (teacher_id, module_id, student_id) => {
-  console.log("tuli tänne 1, id=", student_id)
+exports.addStudentAndModule = async (teacher_id, module_id, student_id, task_type) => {
   try {
 /*    results = await pool.query( "INSERT IGNORE INTO teacher_student_module \
     (teacher_id, student_id, module_id) VALUES (?,?,?);", [teacher_id, student_id, module_id])*/
-    results = await pool.query( "INSERT INTO teacher_student_module (teacher_id, student_id, module_id) \
-    SELECT (?,?,?) \
-    WHERE NOT EXIST student_id=? AND module_id=?;", [teacher_id, student_id, module_id, student_id, module_id])
+    results = await pool.query( "INSERT INTO teacher_student_module (teacher_id, student_id, module_id, task_type) \
+    SELECT (?,?,?,?) \
+    WHERE NOT EXIST student_id=? AND module_id=?;", [teacher_id, student_id, module_id, student_id, module_id, task_type])
     return results[0]
   }
   catch (error) {
