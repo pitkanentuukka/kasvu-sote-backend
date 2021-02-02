@@ -306,12 +306,22 @@ router.post('/addStudentToModule', cors(), checkRole('teacher'), async (req, res
       // either the student has currently logged in teacher for the module or there is no teacher at all
       if (!teacherForStudentAndModule) {
         await teacher.addStudentToModule(teacher_id, student_id, module_id, task_type)
-        await teacher.assignModuleTheoryForStudent(teacher_id, student_id, module_id)
+        if (task_type === 't')
+        {
+          await teacher.assignModuleTheoryForStudent(teacher_id, student_id, module_id)
+        }
+        else if (task_type === 'p')
+        {
+          /*await teacher.assignModuleProblemForStudent(teacher_id, student_id, module_id)*/
+        }
         res.status(200).end()
 
       } else if (teacherForStudentAndModule === teacher_id) {
-
-        const result = await teacher.assignModuleTheoryForStudent(teacher_id, student_id, module_id)
+        if (task_type === 't') {
+          const result = await teacher.assignModuleTheoryForStudent(teacher_id, student_id, module_id)
+        } else if (task_type === 'p') {
+          /*const result = await teacher.assignModuleProblemForStudent(teacher_id, student_id, module_id)*/
+        }
         console.log(result);
         res.status(200).end()
 
