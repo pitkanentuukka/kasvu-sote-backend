@@ -183,9 +183,10 @@ exports.getAssignerForProblem = async(problem_assignment_id) => {
 
 exports.addEvaluationForProblem = async (grade, evaluation, problem_assignment_id) => {
   try {
-    results = await pool.query("UPDATE problem_assignment SET grade = ?, evaluation = ?, evaluation_datetime = NOW() \
-    WHERE problem_assignment.problem_assignment_id = ?", [grade, evaluation, theory_assignment_id]);
-    return results[0];
+
+    const tulos = await pool.query("UPDATE problem_assignment SET grade = ?, evaluation = ?, evaluation_datetime = NOW() \
+    WHERE problem_assignment.problem_assignment_id = ?", [grade, evaluation, problem_assignment_id]);
+    return tulos[0];
   } catch (error) {
     throw (error)
   }

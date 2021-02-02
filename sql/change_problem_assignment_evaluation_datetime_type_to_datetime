@@ -1,0 +1,1 @@
+ALTER TABLE `problem_assignment` CHANGE `evaluation_datetime` `evaluation_datetime` DATETIME NULL DEFAULT NULL; 
