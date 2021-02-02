@@ -169,6 +169,28 @@ exports.addEvaluationForTheory = async (grade, evaluation, theory_assignment_id)
   }
 }
 
+exports.getAssignerForProblem = async(problem_assignment_id) => {
+  try {
+    results = await pool.query("select teacher_id from problem_assignment where problem_assignment_id = ?", problem_assignment_id)
+    return results[0]
+  } catch (e) {
+
+  } finally {
+
+  }
+}
+
+
+exports.addEvaluationForProblem = async (grade, evaluation, problem_assignment_id) => {
+  try {
+    results = await pool.query("UPDATE problem_assignment SET grade = ?, evaluation = ?, evaluation_datetime = NOW() \
+    WHERE problem_assignment.problem_assignment_id = ?", [grade, evaluation, theory_assignment_id]);
+    return results[0];
+  } catch (error) {
+    throw (error)
+  }
+}
+
 exports.getTheoryTasks = async (user_id, criteria_id) => {
   try {
     results = await pool.query("select * from theory where teacher_id = ? and criteria_id = ?", [user_id, criteria_id])

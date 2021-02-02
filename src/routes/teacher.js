@@ -254,6 +254,26 @@ router.post('/addEvaluationForTheory/:id', cors(), checkRole('teacher'), async (
   }
 })
 
+router.post('/addEvaluationForProblem/:id', cors(), checkRole(['teacher', 'instructor']), async (req, res) => {
+  if (req.body.grade !== null && req.body.evaluation !==null) {
+    try {
+      const problem_assigner = await teacher.getAssignerForProblem(req.params.id)
+      if (problem_assigner[0].teacher_id === req.authData.userId) {
+        result = await teacher.addEvaluationForProblem(req.body.grade, req.body.evaluation, req.params.id)
+        res.status(200).json(result).end()
+
+      } else {
+        res.status(403).end()
+      }
+    } catch(error) {
+      res.status(500).json(error).end()
+    }
+  } else {
+    res.status(400).end()
+  }
+})
+
+
 router.get('/getTheoryTasksPerCriteria/:id', cors(), checkRole('teacher'), async (req, res) => {
   if (req.params.id) {
     try {
