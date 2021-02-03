@@ -2,7 +2,7 @@ const pool = require('../db/mysql.js').pool
 
 exports.addTheory = async (criteria_id, file, text, teacher_id) => {
   try {
-    results = await pool.query("insert into theory (criteria_id, file, text, teacher_id ) \
+    const results = await pool.query("insert into theory (criteria_id, file, text, teacher_id ) \
     values (?, ?, ?, ?)", [criteria_id, file, text, teacher_id]);
     return results[0]
   }
@@ -13,7 +13,7 @@ exports.addTheory = async (criteria_id, file, text, teacher_id) => {
 
 exports.addProblem = async (criteria_id, file, text, teacher_id) => {
   try {
-    results = await pool.query("insert into problem (criteria_id, file, text, teacher_id)\
+    const results = await pool.query("insert into problem (criteria_id, file, text, teacher_id)\
     values (?, ?, ?, ?)", [criteria_id, file, text, teacher_id])
     return results[0];
   } catch (e) {
@@ -40,7 +40,7 @@ exports.getTheoryAssignmentsForStudentAndCriteria = async(criteria_id, student_i
   and theory_assignment.theory_id = theory.theory_id"
   const inserts = [criteria_id, student_id, teacher_id]
   try {
-    results = await pool.query(sql, inserts)
+    const results = await pool.query(sql, inserts)
     return results[0]
   } catch (e) {
     throw (e)
@@ -62,7 +62,7 @@ exports.getProblemAssignmentsForStudentAndCriteria = async(criteria_id, student_
   and problem.criteria_Id = ?"
   const inserts = [ student_id, teacher_id, criteria_id]
   try {
-    results = await pool.query(sql, inserts)
+    const results = await pool.query(sql, inserts)
     return results[0]
   } catch (e) {
     throw (e)
@@ -72,7 +72,7 @@ exports.getProblemAssignmentsForStudentAndCriteria = async(criteria_id, student_
 
 exports.deleteTheory = async (id, teacher_id) => {
   try {
-    result = await pool.query("update theory\
+    const result = await pool.query("update theory\
       set hidden=true where theory_id = ? and teacher_id = ?", [id, teacher_id])
 
     return result[0]
@@ -83,7 +83,7 @@ exports.deleteTheory = async (id, teacher_id) => {
 
 exports.restoreTheory = async (id, teacher_id) => {
   try {
-    result = await pool.query("update theory\
+    const result = await pool.query("update theory\
       set hidden=false where theory_id = ? and teacher_id = ?", [id, teacher_id])
 
     return result[0]
@@ -95,7 +95,7 @@ exports.restoreTheory = async (id, teacher_id) => {
 
 exports.deleteProblem = async (id, teacher_id) => {
   try {
-    result = await pool.query("update problem\
+    const result = await pool.query("update problem\
       set hidden=true where problem_id = ? and teacher_id = ?", [id, teacher_id])
 
     return result[0]
@@ -106,7 +106,7 @@ exports.deleteProblem = async (id, teacher_id) => {
 
 exports.restoreProblem = async (id, teacher_id) => {
   try {
-    result = await pool.query("update problem\
+    const result = await pool.query("update problem\
       set hidden=false where problem_id = ? and teacher_id = ?", [id, teacher_id])
 
     return result[0]
@@ -127,7 +127,7 @@ exports.getAllTheoryTasks = async (userId, criteria_id) => {
      WHERE theory.teacher_id = ? \
      AND theory.criteria_Id = ?";
     try {
-      results = await pool.query(sql, inserts);
+      const results = await pool.query(sql, inserts);
       return results[0];
     }
     catch (error) {
@@ -147,7 +147,7 @@ exports.getAllProblemTasks = async (userId, criteria_id) => {
       WHERE problem.teacher_id = ? \
       AND problem.criteria_Id = ?";
     try {
-      results = await pool.query(sql, inserts);
+      const results = await pool.query(sql, inserts);
       return results[0];
     }
     catch (error) {
@@ -161,7 +161,7 @@ exports.getAllProblemTasks = async (userId, criteria_id) => {
 */
 exports.addEvaluationForTheory = async (grade, evaluation, theory_assignment_id) => {
   try {
-    results = await pool.query("UPDATE theory_assignment SET grade = ?, evaluation = ?, evaluation_datetime = NOW() \
+    const results = await pool.query("UPDATE theory_assignment SET grade = ?, evaluation = ?, evaluation_datetime = NOW() \
     WHERE theory_assignment.theory_assignment_id = ?", [grade, evaluation, theory_assignment_id]);
     return results[0];
   } catch (error) {
@@ -171,7 +171,7 @@ exports.addEvaluationForTheory = async (grade, evaluation, theory_assignment_id)
 
 exports.getAssignerForProblem = async(problem_assignment_id) => {
   try {
-    results = await pool.query("select teacher_id from problem_assignment where problem_assignment_id = ?", problem_assignment_id)
+    const results = await pool.query("select teacher_id from problem_assignment where problem_assignment_id = ?", problem_assignment_id)
     return results[0]
   } catch (e) {
 
@@ -194,7 +194,7 @@ exports.addEvaluationForProblem = async (grade, evaluation, problem_assignment_i
 
 exports.getTheoryTasks = async (user_id, criteria_id) => {
   try {
-    results = await pool.query("select * from theory where teacher_id = ? and criteria_id = ?", [user_id, criteria_id])
+    const results = await pool.query("select * from theory where teacher_id = ? and criteria_id = ?", [user_id, criteria_id])
     return results[0]
   } catch (error) {
     throw error
@@ -203,7 +203,7 @@ exports.getTheoryTasks = async (user_id, criteria_id) => {
 
 exports.getProblemTasks = async (user_id, criteria_id) => {
   try {
-    results = await pool.query("select * from problem where teacher_id = ? and criteria_id = ?", [user_id, criteria_id])
+    const results = await pool.query("select * from problem where teacher_id = ? and criteria_id = ?", [user_id, criteria_id])
     return results[0]
   } catch (error) {
     throw error
@@ -223,7 +223,7 @@ exports.addStudentAndModule = async (teacher_id, module_id, student_id, task_typ
   try {
 /*    results = await pool.query( "INSERT IGNORE INTO teacher_student_module \
     (teacher_id, student_id, module_id) VALUES (?,?,?);", [teacher_id, student_id, module_id])*/
-    results = await pool.query( "INSERT INTO teacher_student_module (teacher_id, student_id, module_id, task_type) \
+    const results = await pool.query( "INSERT INTO teacher_student_module (teacher_id, student_id, module_id, task_type) \
     SELECT (?,?,?,?) \
     WHERE NOT EXIST student_id=? AND module_id=?;", [teacher_id, student_id, module_id, student_id, module_id, task_type])
     return results[0]
@@ -235,7 +235,7 @@ exports.addStudentAndModule = async (teacher_id, module_id, student_id, task_typ
 
 exports.getStudentsNotInModule = async (module_id) => {
   try {
-    results = await pool.query("SELECT user_id, email,\
+    const results = await pool.query("SELECT user_id, email,\
      concat (last_name, \' \', first_name\) as name\
       FROM `user` where not exists \
       (select * from teacher_student_module \
@@ -251,7 +251,7 @@ exports.getStudentsNotInModule = async (module_id) => {
 
 exports.getTeacherForStudentAndModule = async(student_id, module_id) => {
   try {
-    result = await pool.query("select * from teacher_student_module \
+    const result = await pool.query("select * from teacher_student_module \
     where student_id = ? and module_id = ?", [student_id, module_id])
     if (result[0][0]) {
       return result[0][0].teacher_id
@@ -266,7 +266,7 @@ exports.getTeacherForStudentAndModule = async(student_id, module_id) => {
 
 exports.addStudentToModule = async (teacher_id, student_id, module_id, task_type) => {
   try {
-    result = await pool.query("insert into teacher_student_module values (?, ?, ?, ?)", [teacher_id, student_id, module_id, task_type])
+    const result = await pool.query("insert into teacher_student_module values (?, ?, ?, ?)", [teacher_id, student_id, module_id, task_type])
     return result
   } catch (e) {
     throw e;

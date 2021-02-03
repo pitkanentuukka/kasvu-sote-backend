@@ -2,7 +2,7 @@ const pool = require('../db/mysql.js').pool
 
 exports.getModules = async () => {
   try {
-    results = await pool.query("select * from module")
+    const results = await pool.query("select * from module")
     return results[0]
   }
   catch (error) {
@@ -12,7 +12,7 @@ exports.getModules = async () => {
 
 exports.getGategories = async (id) => {
   try {
-    results = await pool.query("select * from category where module_id = ?", id)
+    const results = await pool.query("select * from category where module_id = ?", id)
     return results[0]
   }
   catch (error) {
@@ -22,11 +22,10 @@ exports.getGategories = async (id) => {
 
 exports.getCriterias = async (id) => {
   try {
-    results = await pool.query("select * from criteria where category_id = ?", id)
+    const results = await pool.query("select * from criteria where category_id = ?", id)
     return results[0]
   }
   catch (error) {
     throw (error)
   }
 }
-

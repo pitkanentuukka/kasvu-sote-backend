@@ -20,7 +20,7 @@ const { json } = require('body-parser')
 */
 router.get("/students", cors(), checkRole('teacher'), async (req, res) => {
   try {
-    students = await user.getStudentsForTeacher(req.authData.userId)
+    const students = await user.getStudentsForTeacher(req.authData.userId)
     res.status(200).json(students).end()
   } catch (e) {
     res.status(500).json(e).end()
@@ -55,7 +55,6 @@ router.post('/addTheory', cors(), checkRole('teacher'), uploadFile, async (req, 
 */
 
 router.post('/addProblem', cors(), checkRole('teacher'), uploadFile, async (req, res) => {
-  console.log(req.body);
   if (req.body.criteria_id) {
     if (req.filePath || req.body.text){
       try {
@@ -133,7 +132,7 @@ router.get('/getProblemAssignmentsForEvaluation/:id', cors(), checkRole('teacher
 router.get("/getTheoryAssignmentsForStudentAndCriteria/", cors(), checkRole('teacher'), async (req, res) => {
   if (req.query.criteria && req.query.student){
     try {
-      results = await teacher.getTheoryAssignmentsForStudentAndCriteria(
+      const results = await teacher.getTheoryAssignmentsForStudentAndCriteria(
         req.query.criteria, req.query.student, req.authData.userId)
         res.status(200).json(results).end();
       } catch (e) {
@@ -148,7 +147,7 @@ router.get("/getTheoryAssignmentsForStudentAndCriteria/", cors(), checkRole('tea
 router.get("/getProblemAssignmentsForStudentAndCriteria/", cors(), checkRole('teacher'), async (req, res) => {
   if (req.query.criteria && req.query.student){
     try {
-      results = await teacher.getProblemAssignmentsForStudentAndCriteria(
+      const results = await teacher.getProblemAssignmentsForStudentAndCriteria(
         req.query.criteria, req.query.student, req.authData.userId)
         res.status(200).json(results).end();
     } catch (e) {
@@ -217,7 +216,7 @@ router.get('/restoreProblem/:id', cors(), checkRole('teacher'), async (req, res)
 */
 router.get('/getAllTheoryTasks/:id', cors(), checkRole('teacher'), async (req, res) => {
   try {
-    results = await teacher.getAllTheoryTasks(req.authData.userId, req.params.id)
+    const results = await teacher.getAllTheoryTasks(req.authData.userId, req.params.id)
     res.status(200).json(results).end()
 
   } catch (error) {
@@ -230,7 +229,7 @@ router.get('/getAllTheoryTasks/:id', cors(), checkRole('teacher'), async (req, r
 */
 router.get('/getAllProblemTasks/:id', cors(), checkRole('teacher'), async (req, res) => {
   try {
-    results = await teacher.getAllProblemTasks(req.authData.userId, req.params.id)
+    const results = await teacher.getAllProblemTasks(req.authData.userId, req.params.id)
     res.status(200).json(results).end()
 
   } catch (error) {
@@ -244,7 +243,7 @@ router.get('/getAllProblemTasks/:id', cors(), checkRole('teacher'), async (req, 
 router.post('/addEvaluationForTheory/:id', cors(), checkRole('teacher'), async (req, res) => {
   if (req.body.grade !== null && req.body.evaluation !==null) {
     try {
-      result = await teacher.addEvaluationForTheory(req.body.grade, req.body.evaluation, req.params.id)
+      const result = await teacher.addEvaluationForTheory(req.body.grade, req.body.evaluation, req.params.id)
       res.status(200).json(result).end()
     } catch(error) {
       res.status(500).json(error).end()
@@ -259,7 +258,7 @@ router.post('/addEvaluationForProblem/:id', cors(), checkRole(['teacher', 'instr
     try {
       const problem_assigner = await teacher.getAssignerForProblem(req.params.id)
       if (problem_assigner[0].teacher_id === req.authData.userId) {
-        result = await teacher.addEvaluationForProblem(req.body.grade, req.body.evaluation, req.params.id)
+        const result = await teacher.addEvaluationForProblem(req.body.grade, req.body.evaluation, req.params.id)
         res.status(200).json(result).end()
 
       } else {
@@ -277,7 +276,7 @@ router.post('/addEvaluationForProblem/:id', cors(), checkRole(['teacher', 'instr
 router.get('/getTheoryTasksPerCriteria/:id', cors(), checkRole('teacher'), async (req, res) => {
   if (req.params.id) {
     try {
-      result = await teacher.getTheoryTasks(req.authData.userId, req.params.id)
+      const result = await teacher.getTheoryTasks(req.authData.userId, req.params.id)
       res.status(200).json(result).end()
     } catch(e) {
       res.status(500).json(e).end()
@@ -291,7 +290,7 @@ router.get('/getTheoryTasksPerCriteria/:id', cors(), checkRole('teacher'), async
 router.get('/getProblemTasksPerCriteria/:id', cors(), checkRole('teacher'), async (req, res) => {
   if (req.params.id) {
     try {
-      result = await teacher.getProblemTasks(req.authData.userId, req.params.id)
+      const result = await teacher.getProblemTasks(req.authData.userId, req.params.id)
       res.status(200).json(result).end()
     } catch(e) {
       res.status(500).json(e).end()
@@ -304,7 +303,7 @@ router.get('/getProblemTasksPerCriteria/:id', cors(), checkRole('teacher'), asyn
 router.get('/getStudentsNotInModule/:id', cors(), checkRole('teacher'), async (req, res) => {
   if (req.params.id) {
     try {
-      result = await teacher.getStudentsNotInModule(req.params.id)
+      const result = await teacher.getStudentsNotInModule(req.params.id)
       res.status(200).json(result).end()
     } catch (e) {
     res.status(500).json(e).end()
@@ -317,12 +316,12 @@ router.get('/getStudentsNotInModule/:id', cors(), checkRole('teacher'), async (r
 
 router.post('/addStudentToModule', cors(), checkRole('teacher'), async (req, res)=> {
   if (req.body.student_id && req.body.module_id) {
-    student_id = req.body.student_id
-    module_id = req.body.module_id
-    teacher_id = req.authData.userId
-    task_type = 't'; /* tämä muuttuu kunhan sovitaan tekotapa: frontend lähettää uuden parametrin task_type */
+    const student_id = req.body.student_id
+    const module_id = req.body.module_id
+    const teacher_id = req.authData.userId
+    const task_type = 't'; /* tämä muuttuu kunhan sovitaan tekotapa: frontend lähettää uuden parametrin task_type */
     try {
-      teacherForStudentAndModule = await teacher.getTeacherForStudentAndModule(student_id, module_id)
+      const teacherForStudentAndModule = await teacher.getTeacherForStudentAndModule(student_id, module_id)
       // either the student has currently logged in teacher for the module or there is no teacher at all
       if (!teacherForStudentAndModule) {
         await teacher.addStudentToModule(teacher_id, student_id, module_id, task_type)

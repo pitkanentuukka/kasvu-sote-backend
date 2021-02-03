@@ -18,18 +18,19 @@ router.post('/login', bodyParser(), async (req, res) => {
     try {
       const result = await user.getUserByEmail(email)
       if (result[0].length === 0) {
+
         res.status(403).json({"message": "invalid username or password"}).end()
       } else {
-        bcrypt.compare(password, results[0][0].password, (bcerr, bcres)=> {
+        bcrypt.compare(password, result[0].password, (bcerr, bcres)=> {
           if (bcres) {
-            const userId = results[0][0].user_id;
-            const role = results[0][0].role;
+            const userId = result[0].user_id;
+            const role = result[0].role;
             const payload = { email, role, userId }
             const token = jwt.sign(payload, process.env.JWT_KEY, {
               expiresIn: '365d'}
             )
             res.status(200).cookie('token', token, {httpOnly : true})
-            res.json({"userid": results[0][0].user_id, "role": results[0][0].role})
+            res.json({"userid": result[0].user_id, "role": result[0].role})
             res.end()
           } else {
             res.status(403).json({"msg": "invalid username or password"}).end()
@@ -75,7 +76,7 @@ router.post('/sendLink', cors(), checkRole(['teacher', 'student']), async (req, 
       const route = '/register/'
       const completeURL = "http://" + host + route + token
       try {
-        teacher = await user.getUserById(req.authData.userId)
+        const teacher = await user.getUserById(req.authData.userId)
         if (teacher[0]) {
           try {
             sendEmail(teacher[0].email, recipientEmail, completeURL, "registration link")
@@ -131,9 +132,9 @@ const validateCode = async (req, res, next) => {
 }
 
 router.get('/validateLink/:code', cors(), validateCode, async (req, res) => {
-  email = req.validationData.recipientEmail
-  role = req.validationData.role
-  result = await user.getUserByEmail(req.validationData.recipientEmail)
+  const email = req.validationData.recipientEmail
+  const role = req.validationData.role
+  const result = await user.getUserByEmail(req.validationData.recipientEmail)
   if (result[0]) {
     res.status(403)
     res.json({"msg":"email already exists"}).end()
@@ -144,7 +145,7 @@ router.get('/validateLink/:code', cors(), validateCode, async (req, res) => {
 })
 
 router.post('/register/:code', cors(), validateCode, async (req, res) => {
-  result = await user.getUserByEmail(req.validationData.recipientEmail)
+  const result = await user.getUserByEmail(req.validationData.recipientEmail)
   if (result[0]) {
     res.status(403)
     res.json({"msg":"email already exists"}).end()
@@ -165,7 +166,7 @@ router.post('/register/:code', cors(), validateCode, async (req, res) => {
 
         const existingUser = await user.getUserByEmail(email)
         if (!existingUser[0]) {
-          result = await user.add(email, hashedPassword, role, first_name, last_name)
+          const result = await user.add(email, hashedPassword, role, first_name, last_name)
           res.status(200).json(result[0].insertId).end()
         } else {
           res.status(403).json({"message": "user already exists"}).end()
@@ -184,10 +185,10 @@ router.post('/resetPassword', cors(), async (req, res) => {
     try {
       const existingUser = await user.getUserByEmail(req.body.email)
       if (existingUser[0]) {
-        userId = existingUser[0].user_id
-        recipientEmail = req.body.email
-        password = existingUser[0].password
-        payload =  {recipientEmail, userId, password}
+        const userId = existingUser[0].user_id
+        const recipientEmail = req.body.email
+        const password = existingUser[0].password
+        const payload =  {recipientEmail, userId, password}
         const token = jwt.sign(payload, process.env.JWT_KEY, {
           expiresIn: '7d'}
         )
@@ -209,7 +210,7 @@ router.post('/resetPassword', cors(), async (req, res) => {
 
 router.get('/validatePasswordReset/:code', cors(), validateCode, async (req, res) => {
   try {
-    result = await user.getUserById(req.validationData.userId)
+    const result = await user.getUserById(req.validationData.userId)
     if (result[0].password === req.validationData.password) {
       res.status(200).end()
 
@@ -228,7 +229,7 @@ router.post('/setNewPassword/:code', cors(), validateCode, async (req, res) => {
   const hashedPassword = await bcrypt.hash(plainPassword, saltRounds)
   const userId = req.validationData.userId
   try {
-    result = await user.setPassword(userId, hashedPassword)
+    const result = await user.setPassword(userId, hashedPassword)
     res.status(200).json(result).end()
   } catch (e) {
     res.status(500).json(e).end()

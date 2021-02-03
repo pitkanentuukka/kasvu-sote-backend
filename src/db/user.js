@@ -3,7 +3,7 @@ const pool = require('../db/mysql.js').pool
 
 exports.getUserByEmail = async (email) => {
   try {
-    results = await pool.query("select * from user where email = ?", email)
+    const results = await pool.query("select * from user where email = ?", email)
     return results[0]
   }
   catch (error) {
@@ -13,7 +13,7 @@ exports.getUserByEmail = async (email) => {
 
 exports.getUserById = async (id) => {
   try {
-    results = await pool.query("select * from user where user_id = ?", id)
+    const results = await pool.query("select * from user where user_id = ?", id)
     return results[0]
   }
   catch (error) {
@@ -23,7 +23,7 @@ exports.getUserById = async (id) => {
 
 exports.getStudentsForTeacher = async (id) => {
   try {
-    results = await pool.query( "select distinct user_id, email,\
+    const results = await pool.query( "select distinct user_id, email,\
      concat (last_name, \' \', first_name\) as name\
     from user, teacher_student_module \
     where user.user_id = teacher_student_module.student_id \
@@ -38,7 +38,7 @@ exports.getStudentsForTeacher = async (id) => {
 exports.getStudentsForInstructor = async (id) => {
   console.log(id);
   try {
-    results = await pool.query( "select distinct user_id, email,\
+    const results = await pool.query( "select distinct user_id, email,\
     concat (last_name, \' \', first_name\) as name\
     from user, instructor_student_module \
     where user.user_id = instructor_student_module.student_id \
@@ -47,7 +47,6 @@ exports.getStudentsForInstructor = async (id) => {
     return results[0]
   }
   catch (error) {
-    console.log(error);
     throw (error)
   }
 }
@@ -58,7 +57,7 @@ exports.getStudentsForInstructor = async (id) => {
 
 exports.add = async (email, password, role, first_name, last_name) => {
   try {
-    result = await pool.query("insert into user (email, password, role, first_name, last_name) \
+    const result = await pool.query("insert into user (email, password, role, first_name, last_name) \
     values (?, ?, ?, ?, ?)", [email, password, role, first_name, last_name])
     return result;
   } catch (e) {
@@ -68,7 +67,7 @@ exports.add = async (email, password, role, first_name, last_name) => {
 
 exports.setPassword = async (userId, password) => {
   try {
-    result = await pool.query("update user set password = ? where user_id = ?", [password, userId])
+    const result = await pool.query("update user set password = ? where user_id = ?", [password, userId])
     return result
   } catch (e) {
     throw e

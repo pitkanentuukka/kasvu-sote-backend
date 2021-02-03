@@ -2,7 +2,7 @@ const pool = require('../db/mysql.js').pool
 
 exports.getOpenTheory = async (id) => {
   try {
-    results = await pool.query("SELECT * FROM theory_assignment, theory, criteria\
+    const results = await pool.query("SELECT * FROM theory_assignment, theory, criteria\
       WHERE student_id = ? \
       AND submission IS NULL \
       AND theory_assignment.theory_id = theory.theory_id \
@@ -16,7 +16,7 @@ exports.getOpenTheory = async (id) => {
 
 exports.getOpenProblem = async (id) => {
   try {
-    results = await pool.query("SELECT * FROM problem_assignment, problem, criteria\
+    const results = await pool.query("SELECT * FROM problem_assignment, problem, criteria\
       WHERE student_id = ? \
       AND submission IS NULL \
       AND problem_assignment.problem_id = problem.problem_id \
@@ -30,7 +30,7 @@ exports.getOpenProblem = async (id) => {
 
 exports.getAssignmentsForCriteria = async (userId, criteria_Id) => {
   try {
-    results = await pool.query("select theory_assignment.theory_assignment_id,\
+    const results = await pool.query("select theory_assignment.theory_assignment_id,\
       theory_assignment.assign_date as theory_assign_date,\
       theory_assignment.submission_file as theory_submission_file,\
       theory_assignment.submission_text as theory_submission_text,\
@@ -67,7 +67,7 @@ exports.getAssignmentsForCriteria = async (userId, criteria_Id) => {
 
 exports.getTheoryAssignmentsForCriteria = async (userId, criteria_Id) => {
   try {
-    results = await pool.query("select theory_assignment.theory_assignment_id,\
+    const results = await pool.query("select theory_assignment.theory_assignment_id,\
     theory_assignment.assign_date as theory_assign_date,\
     theory_assignment.submission_text as theory_submission_text,\
     theory_assignment.submission_file as theory_submission_file,\
@@ -92,7 +92,7 @@ exports.getTheoryAssignmentsForCriteria = async (userId, criteria_Id) => {
 
 exports.getProblemAssignmentsForCriteria = async (userId, criteria_Id) => {
   try {
-    results = await pool.query("select problem_assignment.problem_id,\
+    const results = await pool.query("select problem_assignment.problem_id,\
         problem_assignment.assign_date as problem_assign_date,\
         problem_assignment.submission_text as problem_submission_text,\
         problem_assignment.submission_file as problem_submission_file,\
@@ -123,7 +123,7 @@ exports.addTheorySubmission = async (user_id, assignment_id, path_to_file, text)
     const sql = "update theory_assignment set submission_file = ?, submission_text = ?, submission_time= ?\
         where theory_assignment_id = ? and student_id = ?"
     const inserts = [path_to_file, text,  datetime, assignment_id, user_id]
-    result = await pool.query(sql, inserts)
+    const result = await pool.query(sql, inserts)
     return result[0]
   } catch (e) {
     throw (e)
@@ -137,7 +137,7 @@ exports.addProblemSubmission = async (user_id, assignment_id, path_to_file, text
     const sql = "update problem_assignment set submission_file = ?, submission_text = ?, submission_time = ?\
         where problem_assignment_id = ? and student_id = ?"
     const inserts = [path_to_file, text, datetime, assignment_id, user_id]
-    result = await pool.query(sql, inserts)
+    const result = await pool.query(sql, inserts)
     return result[0]
   } catch (e) {
     throw (e)
