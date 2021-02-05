@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 const { checkRole } = require('../auth.js')
 const student = require('../db/student.js')
 const user = require('../db/user.js')
+const teacher = require('../db/teacher.js')
+const instructor = require('../db/instructor.js')
 
 
 
@@ -23,22 +25,26 @@ router.post('/evaluateStudent', cors(), checkRole('instructor'), async (req, res
 })
 
 
-router.get('/getProblemsForStudent/:id', cors(), checkRole('instructor'), async (req, res) => {
-  if (req.params.id) {
+router.get('/getProblemsForStudent/', cors(), checkRole('instructor'), async (req, res) => {
+  if (req.query.criteria && req.query.student){
     try {
-      const results = await student.getProblemsByGrader(req.params.id, req.authData.userId)
-      res.status(200).json(results).end()
+      const results = await instructor.getProblemAssignmentsForStudentAndCriteria(
+        req.query.student, req.query.criteria, req.authData.userId)
+
+        res.status(200).json(results).end();
     } catch (e) {
       res.status(500).json(e).end()
     }
   } else {
-    res.status(400).json({"msg": "missing parameters"}).end()
+    // missing parameters
+    res.status(400).end()
   }
 })
 
+
 router.get("/students", cors(), checkRole('instructor'), async (req, res) => {
   try {
-    const students = await user.getStudentsForInstructor(req.authData.userId)
+    const students = await instructor.getStudentsForInstructor(req.authData.userId)
 
     res.status(200).json(students).end()
   } catch (e) {
