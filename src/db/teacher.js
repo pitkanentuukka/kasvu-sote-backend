@@ -47,23 +47,66 @@ exports.getTheoryAssignmentsForStudentAndCriteria = async(criteria_id, student_i
   }
 }
 
-exports.getProblemAssignmentsForStudentAndCriteria = async(criteria_id, student_id, teacher_id) => {
-  const sql = "SELECT problem_assignment.problem_assignment_id, \
-  problem_assignment.submission_file AS problem_submission_file, \
-  problem_assignment.submission_text AS problem_submission_text, \
-  problem_assignment.submission_time as problem_submission_time, \
-  problem.text as problem_text, \
-  problem_assignment.grade as problem_grade, \
-  problem_assignment.evaluation as problem_evaluation \
-  FROM problem_assignment, problem\
-  WHERE problem_assignment.student_id = ?\
-  and problem_assignment.problem_id = problem.problem_id\
-  and problem.teacher_id = ?\
-  and problem.criteria_Id = ?"
-  const inserts = [ student_id, teacher_id, criteria_id]
+exports.getStudentsForTeacher = async (id) => {
   try {
-    const results = await pool.query(sql, inserts)
+    const results = await pool.query( "select distinct user_id, email,\
+     concat (last_name, \' \', first_name\) as name\
+    from user, teacher_student_module \
+    where user.user_id = teacher_student_module.student_id \
+    and teacher_student_module.teacher_id = ? ", id)
     return results[0]
+  }
+  catch (error) {
+    throw (error)
+  }
+}
+
+
+exports.getProblemAssignmentsForStudentAndCriteria = async(criteria_id, student_id, teacher_id) => {
+  /*
+  * check if this teacher has assigned problems to this student
+  * if not, get problem tasks with assigner id & name
+  */
+
+  const problem_check_sql = "select task_type from teacher_student_module where student_id = ? and teacher_id = ? and task_type ='p'"
+  try {
+    const problem_check_result = await pool.query(problem_check_sql, [student_id, teacher_id])
+    if (problem_check_result[0].length > 0) {
+
+      // the teacher has assigned problems to this student & module
+      const sql = "SELECT problem_assignment.problem_assignment_id, \
+      problem_assignment.submission_file AS problem_submission_file, \
+      problem_assignment.submission_text AS problem_submission_text, \
+      problem_assignment.submission_time as problem_submission_time, \
+      problem.text as problem_text, \
+      problem_assignment.grade as problem_grade, \
+      problem_assignment.evaluation as problem_evaluation \
+      FROM problem_assignment, problem\
+      WHERE problem_assignment.student_id = ?\
+      and problem_assignment.problem_id = problem.problem_id\
+      and problem.teacher_id = ?\
+      and problem.criteria_Id = ?"
+      const inserts = [ student_id, teacher_id, criteria_id]
+        const results = await pool.query(sql, inserts)
+        return results[0]
+    } else {
+      const sql = "SELECT problem_assignment.problem_assignment_id, \
+      problem_assignment.submission_file AS problem_submission_file, \
+      problem_assignment.submission_text AS problem_submission_text, \
+      problem_assignment.submission_time as problem_submission_time, \
+      problem.text as problem_text, \
+      problem_assignment.grade as problem_grade, \
+      problem_assignment.evaluation as problem_evaluation, \
+      concat (user.last_name, \' \', user.first_name\) as assigner_name,\
+      user.user_id as assigner_id \
+      FROM problem_assignment, problem, user\
+      WHERE problem_assignment.student_id = ?\
+      and problem_assignment.problem_id = problem.problem_id\
+      and problem.teacher_id = ?\
+      and problem.criteria_Id = ?\
+      and user_id = problem.teacher_id"
+    }
+
   } catch (e) {
     throw (e)
   }

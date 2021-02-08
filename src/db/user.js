@@ -21,38 +21,6 @@ exports.getUserById = async (id) => {
   }
 }
 
-exports.getStudentsForTeacher = async (id) => {
-  try {
-    const results = await pool.query( "select distinct user_id, email,\
-     concat (last_name, \' \', first_name\) as name\
-    from user, teacher_student_module \
-    where user.user_id = teacher_student_module.student_id \
-    and teacher_student_module.teacher_id = ? ", id)
-    return results[0]
-  }
-  catch (error) {
-    throw (error)
-  }
-}
-
-exports.getStudentsForInstructor = async (id) => {
-  console.log(id);
-  try {
-    const results = await pool.query( "select distinct user_id, email,\
-    concat (last_name, \' \', first_name\) as name\
-    from user, instructor_student_module \
-    where user.user_id = instructor_student_module.student_id \
-    and instructor_student_module.instructor_id = ? ", id)
-
-    return results[0]
-  }
-  catch (error) {
-    throw (error)
-  }
-}
-
-
-
 
 
 exports.add = async (email, password, role, first_name, last_name) => {

@@ -20,7 +20,7 @@ const { json } = require('body-parser')
 */
 router.get("/students", cors(), checkRole('teacher'), async (req, res) => {
   try {
-    const students = await user.getStudentsForTeacher(req.authData.userId)
+    const students = await teacher.getStudentsForTeacher(req.authData.userId)
     res.status(200).json(students).end()
   } catch (e) {
     res.status(500).json(e).end()
@@ -287,7 +287,7 @@ router.get('/getTheoryTasksPerCriteria/:id', cors(), checkRole('teacher'), async
 })
 
 
-router.get('/getProblemTasksPerCriteria/:id', cors(), checkRole('teacher'), async (req, res) => {
+router.get('/getProblemTasksPerCriteria/:id', cors(), checkRole(['teacher', 'instructor']), async (req, res) => {
   if (req.params.id) {
     try {
       const result = await teacher.getProblemTasks(req.authData.userId, req.params.id)
