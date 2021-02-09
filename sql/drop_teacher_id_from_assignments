@@ -1,0 +1,3 @@
+ALTER TABLE problem_assignment DROP FOREIGN KEY problem_assignment_ibfk_1;
+ALTER TABLE problem_assignment DROP FOREIGN KEY teacher_id;
+ALTER TABLE `problem_assignment` DROP `teacher_id`;

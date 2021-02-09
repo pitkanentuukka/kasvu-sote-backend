@@ -214,7 +214,8 @@ exports.addEvaluationForTheory = async (grade, evaluation, theory_assignment_id)
 
 exports.getAssignerForProblem = async(problem_assignment_id) => {
   try {
-    const results = await pool.query("select teacher_id from problem_assignment where problem_assignment_id = ?", problem_assignment_id)
+    const results = await pool.query("select teacher_id from problem, problem_assignment \
+        where problem_assignment_id = ? and problem.problem_id = problem_assignment.problem_id", problem_assignment_id)
     return results[0]
   } catch (e) {
 
