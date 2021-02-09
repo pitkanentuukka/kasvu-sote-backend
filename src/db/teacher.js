@@ -292,6 +292,37 @@ exports.getStudentsNotInModule = async (module_id) => {
   }
 }
 
+exports.getStudentsInModule = async (module_id, teacher_id) => {
+  try {
+
+    const results = await pool.query("SELECT user_id, email, \
+      concat (last_name, \' \', first_name\) as name \
+      FROM `user`, teacher_student_module \
+      where user.user_id = teacher_student_module.student_id \
+      and teacher_student_module.module_id = ? \
+      and teacher_student_module.teacher_id = ?" , [module_id, teacher_id])
+    return results[0]
+  } catch (error) {
+    throw (error)
+  }
+}
+
+exports.getStudentsInProblemModule = async (module_id, teacher_id) => {
+  try {
+
+    const results = await pool.query("SELECT user_id, email,\
+     concat (last_name, \' \', first_name\) as name\
+      FROM `user`, teacher_student_module\
+      where user.user_id = teacher_student_module.student_id\
+      and teacher_student_module.module_id = ?\
+      and teacher_student_module.teacher_id = ?\
+      and teacher_student_module.task_type ='p'" , [module_id, teacher_id])
+    return results[0]
+  } catch (error) {
+    throw (error)
+  }
+}
+
 
 exports.getTeacherForStudentAndModule = async(student_id, module_id) => {
   try {

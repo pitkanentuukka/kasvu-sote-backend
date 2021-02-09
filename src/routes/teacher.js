@@ -300,11 +300,34 @@ router.get('/getProblemTasksPerCriteria/:id', cors(), checkRole(['teacher', 'ins
   }
 })
 
-router.get('/getStudentsNotInModule/:id', cors(), checkRole('teacher'), async (req, res) => {
+router.get('/getStudentsNotInModule/:id', cors(), checkRole(['teacher', 'instructor']), async (req, res) => {
   if (req.params.id) {
     try {
       const result = await teacher.getStudentsNotInModule(req.params.id)
       res.status(200).json(result).end()
+    } catch (e) {
+    res.status(500).json(e).end()
+    }
+
+  } else {
+    res.status(400).end()
+  }
+})
+
+
+router.get('/getStudentsInModule/:id', cors(), checkRole(['teacher', 'instructor']), async (req, res) => {
+  if (req.params.id) {
+
+    try {
+      if (req.authData.role === 'teacher') {
+
+      const result = await teacher.getStudentsInModule(req.params.id, req.authData.userId)
+      res.status(200).json(result).end()
+      } else if (req.authData.role === 'instructor') {
+
+        const result = await teacher.getStudentsInProblemModule(req.params.id, req.authData.userId)
+        res.status(200).json(result).end()
+      }
     } catch (e) {
     res.status(500).json(e).end()
     }
