@@ -411,4 +411,17 @@ router.get('/restoreTheory/:id', cors(), checkRole('teacher'), async (req, res) 
   }
 })
 
+router.get('/getAllEvaluations', cors(), checkRole('teacher'), async (req, res) => {
+  if (req.query.student && req.query.criteria) {
+    try {
+      const result = await teacher.getAllEvaluations(req.authData.userId, req.query.student, req.query.criteria)
+      res.status(200).json(result).end()
+    } catch (e) {
+      res.status(500).json(e).end()
+    }
+  } else {
+    res.status(400).end()
+  }
+})
+
 module.exports = router
