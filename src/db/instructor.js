@@ -42,3 +42,18 @@ exports.getProblemAssignmentsForStudentAndCriteria = async(student_id, criteria_
 
   }
 }
+
+exports.getStudentsInModule = async (module_id, instructor_id) => {
+  try {
+    const results = await pool.query("SELECT user_id, email, \
+      concat (last_name, \' \', first_name\) as name \
+      FROM `user`, instructor_student_module \
+      where user.user_id = instructor_student_module.student_id \
+      and instructor_student_module.module_id = ? \
+      and instructor_student_module.instructor_id = ?" , [module_id, instructor_id])
+      return results[0]
+  } catch (error) {
+    throw (error)
+  }
+
+}
