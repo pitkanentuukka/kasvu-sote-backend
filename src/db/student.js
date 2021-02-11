@@ -158,15 +158,3 @@ exports.addSelfEvaluation = async (user_id, submission_id, evaluation_text, grad
     throw (e)
   }
 }
-
-exports.addEvaluation = async (criteria_id, student_id, instructor_id, evaluation_text) => {
-  const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-  try {
-    const result = await pool.query("INSERT INTO evaluation \
-    (criteria_id, student_id, instructor_id, evaluation_text, evaluation_date) \
-    values (?, ?, ?, ?)", [criteria_id, student_id, instructor_id, evaluation_text, datetime])
-    return result[0]
-  } catch(e) {
-    throw (e)
-  }
-}
