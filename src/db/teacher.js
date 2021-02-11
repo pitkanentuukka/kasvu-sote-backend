@@ -381,22 +381,3 @@ exports.assignModuleProblemForStudent = async (teacher_id, student_id, module_id
     throw e
   }
 }
-
-exports.getAllEvaluations = async(teacher_id, student_id, criteria_id) => {
-  try {
-    const checkTeacher = "select * from teacher_student_module where teacher_id = ? and student_id = ?"
-    const checkTeacherResult = await pool.query(checkTeacher, [teacher_id, student_id])
-
-    if (checkTeacherResult[0].length >0) {
-      const sql = "select * from evaluation where student_id = ? and criteria_id = ?"
-      const result = await pool.query(sql, [student_id, criteria_id])
-      return result[0]
-    } else return
-
-  } catch (e) {
-
-  } finally {
-
-  }
-
-}
