@@ -158,3 +158,22 @@ exports.addSelfEvaluation = async (user_id, submission_id, evaluation_text, grad
     throw (e)
   }
 }
+
+
+exports.getInstructor = async(student_id) => {
+  try {
+    console.log(student_id);
+    const sql = "select user_id, email,\
+     concat (last_name, \' \', first_name\) as name\
+      FROM `user`, teacher_student_module\
+      where user.user_id = teacher_student_module.teacher_id\
+      and user.role = 'instructor'\
+      and teacher_student_module.student_id = ?"
+    const result = await pool.query(sql, student_id)
+
+    return result[0]
+  } catch (e) {
+    throw (e)
+  } finally {
+
+  }

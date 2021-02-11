@@ -41,3 +41,17 @@ exports.setPassword = async (userId, password) => {
     throw e
   }
 }
+
+exports.doesStudentBelongToTeacher = async(student_id, teacher_id) => {
+  try {
+    const result = await pool.query("select * from teacher_student_module where student_id = ? and teacher_id = ?",
+        [student_id, teacher_id])
+        
+    if (result[0].length > 0) return true;
+    else return false
+  } catch (e) {
+
+  } finally {
+
+  }
+}
