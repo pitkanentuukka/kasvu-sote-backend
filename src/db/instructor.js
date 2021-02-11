@@ -58,31 +58,11 @@ exports.getStudentsInModule = async (module_id, instructor_id) => {
 
 }
 
-
-
-exports.addStudentToInstructorModule = async (instructor_id, student_id, module_id, task_type) => {
+exports.addStudentToInstructorModule = async (instructor_id, student_id, module_id) => {
   try {
-    const result = await pool.query("insert into instructor_student_module values (?, ?, ?, ?)", [instructor_id, student_id, module_id, task_type])
+    const result = await pool.query("insert into instructor_student_module values (?, ?, ?)", [instructor_id, student_id, module_id])
     return result
   } catch (e) {
     throw e;
-  }
-}
-
-
-exports.addEvaluation = async (instructor_id, student_id, criteria_id, text) => {
-  try {
-    const checkInstructor = "select * from instructor_student_module where instructor_id = ? and student_id = ?"
-    const checkInstructorResult = await pool.query(checkInstructor, [instructor_id, student_id])
-    if (checkInstructorResult[0].length >0 ){
-      const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-      const addEvaluation = "insert into `evaluation` (`criteria_Id`, `student_id`, `instructor_id`, `evaluation_text`, `evaluation_date`) \
-      VALUES (?, ?, ?, ?, ?);"
-      const result = await pool.query(addEvaluation, [criteria_id, student_id, instructor_id, text, datetime])
-    }
-  } catch (e) {
-
-  } finally {
-
   }
 }
