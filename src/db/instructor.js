@@ -43,9 +43,9 @@ exports.getProblemAssignmentsForStudentAndCriteria = async(student_id, criteria_
   }
 }
 
-exports.addStudentToInstructorModule = async (instructor_id, student_id, module_id, task_type) => {
+exports.addStudentToInstructorModule = async (instructor_id, student_id, module_id) => {
   try {
-    const result = await pool.query("insert into instructor_student_module values (?, ?, ?, ?)", [instructor_id, student_id, module_id, task_type])
+    const result = await pool.query("insert into instructor_student_module values (?, ?, ?)", [instructor_id, student_id, module_id])
     return result
   } catch (e) {
     throw e;
