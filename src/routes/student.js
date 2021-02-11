@@ -158,6 +158,14 @@ router.post("/addselfeval/:id", cors(), checkRole('student'), async (req, res) =
 
 })
 
+router.get('/getInstructor/', cors(), checkRole('student'), async (req, res) =>{
+  try {
+    const result = await student.getInstructor(req.authData.userId)
+    res.status(200).json(result).end()
+  } catch (e) {
+    res.status(500).json(e).end()
+  }
+})
 
 
 

@@ -162,7 +162,6 @@ exports.addSelfEvaluation = async (user_id, submission_id, evaluation_text, grad
 
 exports.getInstructor = async(student_id) => {
   try {
-    console.log(student_id);
     const sql = "select user_id, email,\
      concat (last_name, \' \', first_name\) as name\
       FROM `user`, teacher_student_module\

@@ -415,11 +415,8 @@ router.get('/getInstructor/:id', cors(), checkRole('teacher'), async (req, res) 
   if (req.params.id) {
     try {
       if (await user.doesStudentBelongToTeacher(req.params.id, req.authData.userId)) {
-
         const result = await student.getInstructor(req.params.id)
         res.status(200).json(result).end()
-
-
       } else {
         res.status(403).end()
       }
@@ -428,9 +425,7 @@ router.get('/getInstructor/:id', cors(), checkRole('teacher'), async (req, res) 
     }
   } else {
     res.status(400).end()
-
   }
-
 })
 
 module.exports = router
