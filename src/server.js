@@ -25,3 +25,7 @@ app.use('/api/common', require('./routes/common'))
 
 
 app.use('/uploads', express.static('uploads'))
+app.use(express.static(path.join(__dirname, 'build')));
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
