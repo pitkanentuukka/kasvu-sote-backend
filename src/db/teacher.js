@@ -324,10 +324,10 @@ exports.getStudentsInProblemModule = async (module_id, teacher_id) => {
 }
 
 
-exports.getTeacherForStudentAndModule = async(student_id, module_id) => {
+exports.getTeacherForStudentAndModule = async(student_id, module_id, task_type) => {
   try {
     const result = await pool.query("select * from teacher_student_module \
-    where student_id = ? and module_id = ?", [student_id, module_id])
+    where student_id = ? and module_id = ? and task_type = ?", [student_id, module_id, task_type])
     if (result[0][0]) {
       return result[0][0].teacher_id
     } else {
@@ -337,7 +337,6 @@ exports.getTeacherForStudentAndModule = async(student_id, module_id) => {
     throw(e)
   }
 }
-
 
 exports.addStudentToModule = async (teacher_id, student_id, module_id, task_type) => {
   try {
@@ -370,14 +369,33 @@ exports.assignModuleTheoryForStudent = async (teacher_id, student_id, module_id)
 exports.assignModuleProblemForStudent = async (teacher_id, student_id, module_id) => {
   try {
     const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    const sql = "insert into problem_assignment (problem_id, teacher_id, student_id, assign_date) \
-        select problem_id, ?, ?, ? from problem, criteria, category \
+    const sql = "insert into problem_assignment (problem_id, student_id, assign_date) \
+        select problem_id, ?, ? from problem, criteria, category \
         where problem.criteria_id = criteria.criteria_id \
         and category.module_id = ? \
         and problem.teacher_id = ?"
-    const result = await pool.query(sql, [teacher_id, student_id, datetime, module_id, teacher_id])
+    const result = await pool.query(sql, [student_id, datetime, module_id, teacher_id])
     return result
   } catch (e) {
     throw e
   }
+}
+
+exports.getAllEvaluations = async(teacher_id, student_id, criteria_id) => {
+  try {
+    const checkTeacher = "select * from teacher_student_module where teacher_id = ? and student_id = ?"
+    const checkTeacherResult = await pool.query(checkTeacher, [teacher_id, student_id])
+
+    if (checkTeacherResult[0].length >0) {
+      const sql = "select * from evaluation where student_id = ? and criteria_id = ?"
+      const result = await pool.query(sql, [student_id, criteria_id])
+      return result[0]
+    } else return
+
+  } catch (e) {
+
+  } finally {
+
+  }
+
 }

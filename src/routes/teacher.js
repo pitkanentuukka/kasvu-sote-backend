@@ -10,6 +10,7 @@ const {getRoleAndId} = require('../cookie-helper')
 //const cookieParser = require('cookie-parser')
 const user = require('../db/user.js')
 const teacher = require('../db/teacher.js')
+const instructor = require('../db/instructor.js')
 const { checkRole } = require('../auth.js')
 const { uploadFile } = require('../uploadFile.js')
 const { json } = require('body-parser')
@@ -337,47 +338,46 @@ router.get('/getStudentsInModule/:id', cors(), checkRole(['teacher', 'instructor
   }
 })
 
-router.post('/addStudentToModule', cors(), checkRole('teacher'), async (req, res)=> {
+router.post('/addStudentToModule', cors(), checkRole(['teacher', 'instructor']), async (req, res)=> {
   if (req.body.student_id && req.body.module_id) {
     const student_id = req.body.student_id
     const module_id = req.body.module_id
+    const task_type = req.body.task_type
     const teacher_id = req.authData.userId
-    const task_type = 't'; /* tämä muuttuu kunhan sovitaan tekotapa: frontend lähettää uuden parametrin task_type */
     try {
-      const teacherForStudentAndModule = await teacher.getTeacherForStudentAndModule(student_id, module_id)
+      const teacherForStudentAndModule = await teacher.getTeacherForStudentAndModule(student_id, module_id, task_type)
       // either the student has currently logged in teacher for the module or there is no teacher at all
       if (!teacherForStudentAndModule) {
         await teacher.addStudentToModule(teacher_id, student_id, module_id, task_type)
-        if (task_type === 't')
+        if (task_type === 't' && req.authData.role === 'teacher')
         {
           await teacher.assignModuleTheoryForStudent(teacher_id, student_id, module_id)
         }
         else if (task_type === 'p')
         {
-          /*await teacher.assignModuleProblemForStudent(teacher_id, student_id, module_id)*/
+          await teacher.assignModuleProblemForStudent(teacher_id, student_id, module_id)
         }
         res.status(200).end()
-
       } else if (teacherForStudentAndModule === teacher_id) {
-        if (task_type === 't') {
+        if (task_type === 't' && req.authData.role === 'teacher') {
           const result = await teacher.assignModuleTheoryForStudent(teacher_id, student_id, module_id)
         } else if (task_type === 'p') {
-          /*const result = await teacher.assignModuleProblemForStudent(teacher_id, student_id, module_id)*/
+          const result = await teacher.assignModuleProblemForStudent(teacher_id, student_id, module_id)
+        } else if (task_type === 'e' && req.authData.role === 'instructor') {
+          // this student already has a instructor for this module
+          res.status(204).end()
         }
-        console.log(result);
         res.status(200).end()
-
+      } else if (teacherForStudentAndModule !== teacher_id && req.authData.role === 'instructor' && task_type === 'p') {
+        const result = await teacher.assignModuleProblemForStudent(teacher_id, student_id, module_id)
       } else {
         // this student already has a teacher for this module
         res.status(204).end()
-
       }
     }
     catch (e) {
       res.status(500).json(e).end()
-
     }
-
   } else {
     res.status(400).end()
   }
@@ -408,6 +408,19 @@ router.get('/restoreTheory/:id', cors(), checkRole('teacher'), async (req, res) 
   } else {
     res.status(400).end()
 
+  }
+})
+
+router.get('/getAllEvaluations', cors(), checkRole('teacher'), async (req, res) => {
+  if (req.query.student && req.query.criteria) {
+    try {
+      const result = await teacher.getAllEvaluations(req.authData.userId, req.query.student, req.query.criteria)
+      res.status(200).json(result).end()
+    } catch (e) {
+      res.status(500).json(e).end()
+    }
+  } else {
+    res.status(400).end()
   }
 })
 
