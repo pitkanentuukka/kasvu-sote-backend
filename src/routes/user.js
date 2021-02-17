@@ -150,7 +150,7 @@ router.post('/register/:code', cors(), validateCode, async (req, res) => {
     res.json({"msg":"email already exists"}).end()
   } else {
 
-    if (req.body.password && req.body.firstName
+    if (req.body.email && req.body.password && req.body.firstName
         && req.body.lastName && req.body.role) {
 
 
@@ -236,5 +236,8 @@ router.post('/setNewPassword/:code', cors(), validateCode, async (req, res) => {
   }
 
 })
+
+
+
 
 module.exports = router
