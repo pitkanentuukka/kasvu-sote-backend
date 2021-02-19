@@ -4,6 +4,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const dotenv = require('dotenv')
 const student = require('../db/student.js')
+const teacher = require('../db/teacher.js')
 const { checkRole } = require('../auth.js')
 const { uploadFile } = require('../uploadFile.js')
 
@@ -167,6 +168,19 @@ router.get('/getInstructor/', cors(), checkRole('student'), async (req, res) =>{
   }
 })
 
+router.get('/getGradeForCriteria/:id', cors(), checkRole('student'), async (req, res) =>{
+  if (req.params.id) {
+    try {
+      const result = await teacher.getGradeForStudentAndCriteria(req.authData.userId, req.params.id)
+      res.status(200).json(result).end()
+    } catch (e) {
+      res.status(500).json(e).end()
+    }
 
+  } else {
+    res.status(400).json({"msg": "missing criteria id"}).end()
+  }
+
+})
 
 module.exports = router

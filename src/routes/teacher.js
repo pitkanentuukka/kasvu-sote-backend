@@ -440,5 +440,24 @@ router.get('/getInstructor/:id', cors(), checkRole('teacher'), async (req, res) 
     res.status(400).end()
   }
 })
+router.get('/getGradeForStudentAndCriteria/', cors(), checkRole('teacher'), async (req, res) =>{
+  if (req.query.criteria_id && req.query.student_id) {
+    try {
+      if (await user.doesStudentBelongToTeacher(req.query.student_id, req.authData.userId)) {
+        const result = await teacher.getGradeForStudentAndCriteria(req.query.student_id, req.query.criteria_id)
+        res.status(200).json(result).end()
+      } else {
+        res.status(403).end()
+      }
+    } catch (e) {
+      res.status(500).json(e).end()
+    }
+  } else {
+    res.status(400).end()
+  }
+})
+
+
+
 
 module.exports = router
