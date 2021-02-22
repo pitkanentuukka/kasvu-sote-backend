@@ -10,6 +10,7 @@ const {getRoleAndId} = require('../cookie-helper')
 //const cookieParser = require('cookie-parser')
 const user = require('../db/user.js')
 const teacher = require('../db/teacher.js')
+const student = require('../db/student.js')
 const instructor = require('../db/instructor.js')
 const { checkRole } = require('../auth.js')
 const { uploadFile } = require('../uploadFile.js')
@@ -444,8 +445,13 @@ router.get('/getGradeForStudentAndCriteria/', cors(), checkRole('teacher'), asyn
   if (req.query.criteria_id && req.query.student_id) {
     try {
       if (await user.doesStudentBelongToTeacher(req.query.student_id, req.authData.userId)) {
-        const result = await teacher.getGradeForStudentAndCriteria(req.query.student_id, req.query.criteria_id)
-        res.status(200).json(result).end()
+        const result = await student.getGradeForStudentAndCriteria(req.query.student_id, req.query.criteria_id)
+        if (Number.isFinite(result)) {
+          res.status(200).json(result).end()
+        } else {
+          // result is NaN when there are no grades
+          res.status(204).end()
+        }
       } else {
         res.status(403).end()
       }

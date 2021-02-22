@@ -177,3 +177,28 @@ exports.getInstructor = async(student_id) => {
 
   }
 }
+
+exports.getGradeForStudentAndCriteria = async (student_id, criteria_id) => {
+  try {
+    const inserts = [student_id, criteria_id]
+    const getProblemGradeSql = "select distinct problem_assignment.problem_assignment_id, problem_assignment.grade from problem_assignment, problem \
+    where problem_assignment.student_id = ? and problem.criteria_id = ? and problem_assignment.grade IS NOT NULL"
+    const problemGrades = await pool.query(getProblemGradeSql, inserts)
+
+    const theoryGradeSql = "select distinct theory_assignment.theory_assignment_id, theory_assignment.grade from theory_assignment, theory \
+    where theory_assignment.student_id = ? and theory.criteria_id = ? and theory_assignment.grade IS NOT NULL"
+    const theoryGrades = await pool.query(theoryGradeSql, inserts)
+
+    const grades = problemGrades[0].concat(theoryGrades[0])
+
+    let sum = 0;
+    for (let i = 0;i < grades.length; i++) {
+      sum += grades[i].grade
+    }
+    const average = sum / grades.length
+    return average;
+
+  } catch (e) {
+    throw (e)
+  }
+}

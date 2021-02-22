@@ -171,8 +171,14 @@ router.get('/getInstructor/', cors(), checkRole('student'), async (req, res) =>{
 router.get('/getGradeForCriteria/:id', cors(), checkRole('student'), async (req, res) =>{
   if (req.params.id) {
     try {
-      const result = await teacher.getGradeForStudentAndCriteria(req.authData.userId, req.params.id)
-      res.status(200).json(result).end()
+      const result = await student.getGradeForStudentAndCriteria(req.authData.userId, req.params.id)
+      if (Number.isFinite(result)) {
+        res.status(200).json(result).end()
+      } else {
+        // result is NaN when there are no grades
+        res.status(204).end()
+      }
+
     } catch (e) {
       res.status(500).json(e).end()
     }
