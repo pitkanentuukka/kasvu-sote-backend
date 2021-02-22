@@ -76,7 +76,11 @@ router.get('/getTheoryAssignmentsForCriteria/:id', cors(), checkRole('student'),
   if (req.params.id) {
     try {
       const results = await student.getTheoryAssignmentsForCriteria(req.authData.userId, req.params.id);
-      res.status(200).json(results).end();
+      if (results.length === 0) {
+        res.status(204).end()
+      } else if (results.length > 0) {
+        res.status(200).json(results).end()
+      }
     }
     catch (error) {
       res.status(500).json(error).end
@@ -92,7 +96,11 @@ router.get('/getProblemAssignmentsForCriteria/:id', cors(), checkRole('student')
   if (req.params.id) {
     try {
       const results = await student.getProblemAssignmentsForCriteria(req.authData.userId, req.params.id);
-      res.status(200).json(results).end();
+      if (results.length === 0) {
+        res.status(204).end()
+      } else if (results.length > 0) {
+        res.status(200).json(results).end()
+      }
     }
     catch (error) {
       res.status(500).json(error).end

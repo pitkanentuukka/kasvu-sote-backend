@@ -30,8 +30,11 @@ router.get('/getProblemsForStudent/', cors(), checkRole('instructor'), async (re
     try {
       const results = await instructor.getProblemAssignmentsForStudentAndCriteria(
         req.query.student, req.query.criteria, req.authData.userId)
-
-        res.status(200).json(results).end();
+        if (results.length === 0) {
+          res.status(204).end()
+        } else if (results.length > 0) {
+          res.status(200).json(results).end()
+        }
     } catch (e) {
       res.status(500).json(e).end()
     }
