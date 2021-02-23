@@ -277,22 +277,23 @@ exports.addStudentAndModule = async (teacher_id, module_id, student_id, task_typ
   }
 }
 
-exports.getStudentsNotInModule = async (module_id) => {
+exports.getStudentsNotInModule = async (module_id, task_type) => {
   try {
     const results = await pool.query("SELECT user_id, email,\
      concat (last_name, \' \', first_name\) as name\
       FROM `user` where not exists \
       (select * from teacher_student_module \
       where teacher_student_module.student_id = user.user_id \
+      and teacher_student_module.task_type = ? \
       and teacher_student_module.module_id = ?) \
-      and user.role = 'student'", module_id)
+      and user.role = 'student'", [task_type, module_id])
     return results[0]
   } catch (error) {
     throw (error)
   }
 }
 
-exports.getStudentsInModule = async (module_id, teacher_id) => {
+exports.getStudentsInModule = async (module_id, teacher_id, task_type) => {
   try {
 
     const results = await pool.query("SELECT user_id, email, \
@@ -300,7 +301,8 @@ exports.getStudentsInModule = async (module_id, teacher_id) => {
       FROM `user`, teacher_student_module \
       where user.user_id = teacher_student_module.student_id \
       and teacher_student_module.module_id = ? \
-      and teacher_student_module.teacher_id = ?" , [module_id, teacher_id])
+      and teacher_student_module.teacher_id = ? \
+      and teacher_student_module.task_type = ?" , [module_id, teacher_id, task_type])
     return results[0]
   } catch (error) {
     throw (error)
