@@ -32,7 +32,8 @@ exports.getTheoryAssignmentsForStudentAndCriteria = async(criteria_id, student_i
   self_evaluation_datetime as theory_self_evaluation_datetime, \
   grade as theory_grade, \
   evaluation as theory_evaluation, \
-  theory.text as theory_text \
+  theory.text as theory_text, \
+  theory.file as theory_file \
   FROM theory_assignment, theory \
   WHERE theory.criteria_id = ? \
   and theory_assignment.student_id = ? \
@@ -67,10 +68,10 @@ exports.getProblemAssignmentsForStudentAndCriteria = async(criteria_id, student_
   * check if this teacher has assigned problems to this student
   * if not, get problem tasks with assigner id & name
   */
-
   const problem_check_sql = "select task_type from teacher_student_module where student_id = ? and teacher_id = ? and task_type ='p'"
   try {
     const problem_check_result = await pool.query(problem_check_sql, [student_id, teacher_id])
+
     if (problem_check_result[0].length > 0) {
 
       // the teacher has assigned problems to this student & module
@@ -79,6 +80,7 @@ exports.getProblemAssignmentsForStudentAndCriteria = async(criteria_id, student_
       problem_assignment.submission_text AS problem_submission_text, \
       problem_assignment.submission_time as problem_submission_time, \
       problem.text as problem_text, \
+      problem.file as problem_file, \
       problem_assignment.grade as problem_grade, \
       problem_assignment.evaluation as problem_evaluation \
       FROM problem_assignment, problem\
@@ -90,11 +92,13 @@ exports.getProblemAssignmentsForStudentAndCriteria = async(criteria_id, student_
         const results = await pool.query(sql, inserts)
         return results[0]
     } else {
+
       const sql = "SELECT problem_assignment.problem_assignment_id, \
       problem_assignment.submission_file AS problem_submission_file, \
       problem_assignment.submission_text AS problem_submission_text, \
       problem_assignment.submission_time as problem_submission_time, \
       problem.text as problem_text, \
+      problem.text as problem_file, \
       problem_assignment.grade as problem_grade, \
       problem_assignment.evaluation as problem_evaluation, \
       concat (user.last_name, \' \', user.first_name\) as assigner_name,\
@@ -105,6 +109,9 @@ exports.getProblemAssignmentsForStudentAndCriteria = async(criteria_id, student_
       and problem.teacher_id = ?\
       and problem.criteria_Id = ?\
       and user_id = problem.teacher_id"
+      const inserts = [ student_id, teacher_id, criteria_id]
+        const results = await pool.query(sql, inserts)
+        return results[0]
     }
 
   } catch (e) {
