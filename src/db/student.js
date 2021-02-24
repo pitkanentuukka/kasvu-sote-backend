@@ -78,7 +78,8 @@ exports.getTheoryAssignmentsForCriteria = async (userId, criteria_Id) => {
     theory_assignment.grade as theory_grade,\
     theory_assignment.evaluation as theory_evaluation,\
     theory_assignment.evaluation_datetime as theory_evaluation_datetime,\
-    theory.text as theory_text \
+    theory.text as theory_text, \
+    theory.file as theory_file \
     from theory_assignment, theory\
     where theory_assignment.student_id = ?\
     and theory_assignment.theory_id = theory.theory_id\
@@ -101,6 +102,7 @@ exports.getProblemAssignmentsForCriteria = async (userId, criteria_Id) => {
         problem_assignment.evaluation as problem_evaluation,\
         problem_assignment.evaluation_datetime,\
         problem.text as problem_text, \
+        problem.file as problem_file, \
         concat (user.last_name, \' \', user.first_name\) as grader_name, \
         user.role as grader_role \
         from problem_assignment, problem, user\
