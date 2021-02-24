@@ -25,6 +25,7 @@ exports.getProblemAssignmentsForStudentAndCriteria = async(student_id, criteria_
     problem_assignment.submission_text AS problem_submission_text, \
     problem_assignment.submission_time as problem_submission_time, \
     problem.text as problem_text, \
+    problem.file as problem_file, \
     problem_assignment.grade as problem_grade, \
     problem_assignment.evaluation as problem_evaluation \
     FROM problem_assignment, problem \
