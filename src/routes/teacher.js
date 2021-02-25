@@ -340,7 +340,7 @@ router.get('/getStudentsInModule/:id', cors(), checkRole(['teacher', 'instructor
       res.status(200).json(result).end()
       } else if (req.authData.role === 'instructor') {
 
-        const result = await teacher.getStudentsInModule(req.params.id, req.authData.userId, 'p')
+        const result = await teacher.getStudentsInModule(req.params.id, req.authData.userId, 'e')
         res.status(200).json(result).end()
       }
     } catch (e) {
