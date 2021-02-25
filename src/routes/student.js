@@ -201,8 +201,8 @@ router.get('/getEvaluationsForCriteria/:id', cors(), checkRole('student'), async
   if (req.params.id) {
     try {
       const result = await student.getEvaluationsForCriteria(req.authData.userId, req.params.id)
-      if (result[0].length >0 ) {
-        res.status(200).json(result).end()
+      if (result[0] ) {
+        res.status(200).json(result[0]).end()
       } else {
         res.status(204).end()
       }
