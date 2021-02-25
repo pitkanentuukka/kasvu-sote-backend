@@ -204,3 +204,17 @@ exports.getGradeForStudentAndCriteria = async (student_id, criteria_id) => {
     throw (e)
   }
 }
+
+
+exports.getEvaluationsForCriteria = async (student_id, criteria_id) => {
+  try {
+    const sql = "select * from evaluation where student_id = ? and criteria_id = ?"
+    const result = await pool.query(sql, [student_id, criteria_id])
+    return result
+  } catch (e) {
+    throw e;
+
+  } finally {
+
+  }
+}

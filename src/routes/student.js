@@ -197,4 +197,24 @@ router.get('/getGradeForCriteria/:id', cors(), checkRole('student'), async (req,
 
 })
 
+router.get('/getEvaluationsForCriteria/:id', cors(), checkRole('student'), async (req, res) =>{
+  if (req.params.id) {
+    try {
+      const result = await student.getEvaluationsForCriteria(req.authData.userId, req.params.id)
+      if (result[0].length >0 ) {
+        res.status(200).json(result).end()
+      } else {
+        res.status(204).end()
+      }
+    } catch (e) {
+      res.status(500).json(e).end()
+    }
+  } else {
+    res.status(400).json({"msg": "missing criteria id"}).end()
+
+  }
+
+})
+
+
 module.exports = router
