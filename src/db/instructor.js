@@ -6,9 +6,10 @@ exports.getStudentsForInstructor = async (id) => {
   try {
     const results = await pool.query( "select distinct user_id, email,\
     concat (last_name, \' \', first_name\) as name\
-    from user, instructor_student_module \
-    where user.user_id = instructor_student_module.student_id \
-    and instructor_student_module.instructor_id = ? ", id)
+    from user, teacher_student_module \
+    where user.user_id = teacher_student_module.student_id \
+    and teacher_student_module.task_type = 'e' \
+    and teacher_student_module.teacher_id = ? ", id)
 
     return results[0]
   }
