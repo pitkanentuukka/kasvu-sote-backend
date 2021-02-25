@@ -379,7 +379,7 @@ exports.assignModuleProblemForStudent = async (teacher_id, student_id, module_id
   try {
     const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
     const sql = "insert into problem_assignment (problem_id, student_id, assign_date) \
-        select problem_id, ?, ? from problem, criteria, category \
+        select distinct problem_id, ?, ? from problem, criteria, category \
         where problem.criteria_id = criteria.criteria_id \
         and category.module_id = ? \
         and problem.teacher_id = ?"
