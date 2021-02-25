@@ -56,7 +56,7 @@ router.post('/addTheory', cors(), checkRole('teacher'), uploadFile, async (req, 
 * teacher adds a problem task linked to his uid & posted criteria
 */
 
-router.post('/addProblem', cors(), checkRole('teacher'), uploadFile, async (req, res) => {
+router.post('/addProblem', cors(), checkRole(['teacher', 'instructor']), uploadFile, async (req, res) => {
   if (req.body.criteria_id) {
     if (req.filePath || req.body.text){
       try {
@@ -196,7 +196,7 @@ router.get('/restoreTheory/:id', cors(), checkRole('teacher'), async (req, res) 
 })
 
 
-router.get("/deleteProblem/:id", cors(), checkRole('teacher'), async (req, res) => {
+router.get("/deleteProblem/:id", cors(), checkRole(['teacher', 'instructor']), async (req, res) => {
   try {
 
     const result = await teacher.deleteProblem(req.params.id, req.authData.userId)
@@ -206,7 +206,7 @@ router.get("/deleteProblem/:id", cors(), checkRole('teacher'), async (req, res) 
   }
 })
 
-router.get('/restoreProblem/:id', cors(), checkRole('teacher'), async (req, res) => {
+router.get('/restoreProblem/:id', cors(), checkRole(['teacher', 'instructor']), async (req, res) => {
   if (req.params.id) {
     try {
       const result = await teacher.restoreProblem(req.params.id, req.authData.userId)
@@ -237,7 +237,7 @@ router.get('/getAllTheoryTasks/:id', cors(), checkRole('teacher'), async (req, r
 /*
   Get all problem tasks by criteria_id that teacher has added
 */
-router.get('/getAllProblemTasks/:id', cors(), checkRole('teacher'), async (req, res) => {
+router.get('/getAllProblemTasks/:id', cors(), checkRole(['teacher', 'instructor']), async (req, res) => {
   try {
     const results = await teacher.getAllProblemTasks(req.authData.userId, req.params.id)
     res.status(200).json(results).end()
