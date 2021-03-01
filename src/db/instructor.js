@@ -68,3 +68,17 @@ exports.addStudentToInstructorModule = async (instructor_id, student_id, module_
     throw e;
   }
 }
+
+
+exports.addEvaluation = async(criteria_id, student_id, instructor_id, evaluation_text) => {
+  const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  try {
+    const sql = "insert into evaluation (criteria_Id, student_id, instructor_id, evaluation_text, evaluation_date) values (?, ?, ?, ?, ?)"
+    const inserts = [criteria_id, student_id, instructor_id, evaluation_text, datetime]
+    const result = await pool.query(sql, inserts)
+  } catch (e) {
+    throw e
+  } finally {
+
+  }
+}

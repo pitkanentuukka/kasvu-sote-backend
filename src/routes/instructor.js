@@ -14,8 +14,12 @@ const instructor = require('../db/instructor.js')
 router.post('/evaluateStudent', cors(), checkRole('instructor'), async (req, res) => {
   if (req.body.criteria_id && req.body.student_id && req.body.evaluation_text) {
     try {
-      const result = await instructor.addEvaluation(req.body.criteria_id, req.body.student_id, req.authData.userId, req.body.evaluation_text)
-      res.status(200).json(result).end()
+      if (user.doesStudentBelongToTeacher(req.body.student_id, req.authData.userId)){
+        const result = await instructor.addEvaluation(req.body.criteria_id, req.body.student_id, req.authData.userId,  req.body.evaluation_text)
+        res.status(200).json(result).end()
+      } else {
+        res.status(403).end()
+      }
     } catch (e) {
       res.status(500).json(e).end()
     }
