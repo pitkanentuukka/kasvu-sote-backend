@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6deb4
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 25, 2020 at 12:15 PM
--- Server version: 10.1.44-MariaDB-0+deb9u1
--- PHP Version: 7.0.33-0+deb9u7
+-- Generation Time: 25.02.2021 klo 14:39
+-- Palvelimen versio: 10.3.27-MariaDB-0+deb10u1
+-- PHP Version: 7.3.19-1~deb10u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -23,19 +24,20 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `category`
+-- Dumping data for table `module`
 --
 
-CREATE TABLE `category` (
-  `category_id` int(11) NOT NULL,
-  `module_id` int(11) NOT NULL,
-  `name` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `module` (`module_id`, `name`) VALUES
+(1, 'Kasvun ja osallisuuden edistäminen'),
+(2, 'Hyvinvoinnin ja toimintakyvyn edistäminen');
+
+
+-- --------------------------------------------------------
 
 --
 -- Dumping data for table `category`
 --
-/*
+
 INSERT INTO `category` (`category_id`, `module_id`, `name`) VALUES
 (1, 1, 'Opiskelija työskentelee kasvatus-, sosiaali- ja terveysalan työn säädösten, määräysten, toimintaperiaatteiden, arvojen ja ammattieettisten ohjeiden mukaan.'),
 (2, 1, 'Opiskelija suunnittelee työtään ja tekee yhteistyötä työryhmän kanssa.'),
@@ -58,27 +60,16 @@ INSERT INTO `category` (`category_id`, `module_id`, `name`) VALUES
 (19, 2, 'Opiskelija ohjaa apuvälineiden ja hyvinvointia tukevan teknologian käytössä ja huollossa.'),
 (20, 2, 'Opiskelija ylläpitää turvallisuutta, työkykyään ja työhyvinvointiaan.'),
 (21, 2, 'Opiskelija kehittää toimintaansa ja perustelee ratkaisujaan ammatillisella tiedolla.');
-*/
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `criteria`
---
-
-CREATE TABLE `criteria` (
-  `criteria_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL,
-  `text` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
 -- Dumping data for table `criteria`
 --
-/*
+
 INSERT INTO `criteria` (`criteria_id`, `category_id`, `text`) VALUES
 
-/* module 1 - Kasvun ja osallisuuden edistäminen * /
+/* module 1 - Kasvun ja osallisuuden edistäminen */
 
 (1, 1, 'toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen\n'),
 (2, 1, 'noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa\r\n'),
@@ -149,7 +140,7 @@ INSERT INTO `criteria` (`criteria_id`, `category_id`, `text`) VALUES
 (58, 10, 'tekee työssään valintoja ja ratkaisee ongelmia joustavasti erilaisissa tilanteissa työryhmän jäsenenä'),
 (59, 10, 'ylläpitää ja kehittää aktiivisesti ammatin edellyttämiä tietoja ja taitoja.'),
 
-/* module 2 - Hyvinvoinnin ja toimintakyvyn edistäminen * /
+/* module 2 - Hyvinvoinnin ja toimintakyvyn edistäminen */
 
 (60, 11, 'noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.\r\n'),
 (61, 11, 'toimii kestävän kehityksen periaatteiden mukaisesti ja perustelee toimintaansa.\r\n'),
@@ -251,336 +242,7 @@ INSERT INTO `criteria` (`criteria_id`, `category_id`, `text`) VALUES
 (147, 21, 'perustelee monipuolisesti työhönsä liittyviä ratkaisuja näyttöön perustuvalla tiedolla ja hakee tietoa luotettavista lähteistä.\r\n'),
 (148, 21, 'tekee itsenäisiä päätöksiä lähihoitajan vastuualueella yhteistyössä asiakkaan sekä tämän läheisten ja verkoston kanssa.\r\n'),
 (149, 21, 'tekee realistisia kehittämisehdotuksia asiakkaan terveyden ja hyvinvoinnin lisäämiseksi ja toimii aktiivisesti hyvinvointia edistäen.\r\n');
-*/
--- --------------------------------------------------------
-
---
--- Table structure for table `evaluation`
---
-
-CREATE TABLE `evaluation` (
-  `evaluation_id` int(11) NOT NULL,
-  `criteria_Id` int(11) NOT NULL,
-  `student_id` int(11) NOT NULL,
-  `instructor_id` int(11) NOT NULL,
-  `evaluation_text` text NOT NULL,
-  `evaluation_date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `module`
---
-
-CREATE TABLE `module` (
-  `module_id` int(11) NOT NULL,
-  `name` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `module`
---
-/*
-INSERT INTO `module` (`module_id`, `name`) VALUES
-(1, 'Kasvun ja osallisuuden edistäminen'),
-(2, 'Hyvinvoinnin ja toimintakyvyn edistäminen');
-*/
--- --------------------------------------------------------
-
---
--- Table structure for table `problem`
---
-
-CREATE TABLE `problem` (
-  `problem_id` int(11) NOT NULL,
-  `criteria_Id` int(11) NOT NULL,
-  `file` TEXT NULL,
-  `text` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `teacher_id` int(11) NOT NULL,
-  `hidden` BOOLEAN NOT NULL DEFAULT FALSE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `problem_assignment`
---
-
-CREATE TABLE `problem_assignment` (
-  `problem_assignment_id` int(11) NOT NULL,
-  `problem_id` int(11) NOT NULL,
-  `student_id` int(11) NOT NULL,
-  `assign_date` datetime NOT NULL,
-  `submission_file` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `submission_text` TEXT NULL,
-  `submission_time` datetime NULL DEFAULT NULL,
-  `grade` int(11) DEFAULT NULL,
-  `evaluation` text,
-  `evaluation_datetime` DATETIME NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `teacher_student_module`
---
-
-CREATE TABLE `teacher_student_module` (
-  `teacher_id` int(11) NOT NULL,
-  `student_id` int(11) NOT NULL,
-  `module_id` int(11) NOT NULL,
-  `task_type` ENUM ('t', 'p', 'e') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `theory`
---
-
-CREATE TABLE `theory` (
-  `theory_id` int(11) NOT NULL,
-  `file` TEXT NULL,
-  `criteria_Id` int(11) NOT NULL,
-  `text` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `teacher_id` int(11) NOT NULL,
-  `hidden` BOOLEAN NOT NULL DEFAULT FALSE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `theory_assignment`
---
-
-CREATE TABLE `theory_assignment` (
-  `theory_assignment_id` int(11) NOT NULL,
-  `theory_id` int(11) NOT NULL,
-  `student_id` int(11) NOT NULL,
-  `assign_date` datetime NOT NULL,
-  `submission_file` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `submission_text` TEXT NULL,
-  `submission_time` datetime DEFAULT NULL,
-  `self_grade` int(11) DEFAULT NULL,
-  `self_evaluation_text` text,
-  `self_evaluation_datetime` datetime DEFAULT NULL,
-  `grade` int(11) DEFAULT NULL,
-  `evaluation` TEXT NULL DEFAULT NULL,
-  `evaluation_datetime` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user`
---
-
-CREATE TABLE `user` (
-  `user_id` int(11) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `role` enum('admin','student','teacher','instructor') NOT NULL,
-  `first_name` varchar(50) NOT NULL,
-  `last_name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `category`
---
-ALTER TABLE `category`
-  ADD PRIMARY KEY (`category_id`),
-  ADD KEY `module_id` (`module_id`);
-
---
--- Indexes for table `criteria`
---
-ALTER TABLE `criteria`
-  ADD PRIMARY KEY (`criteria_id`),
-  ADD KEY `category_id` (`category_id`);
-
---
--- Indexes for table `evaluation`
---
-ALTER TABLE `evaluation`
-  ADD PRIMARY KEY (`evaluation_id`),
-  ADD KEY `criteria_Id` (`criteria_Id`),
-  ADD KEY `student_id` (`student_id`),
-  ADD KEY `instructor_id` (`instructor_id`);
-
---
--- Indexes for table `module`
---
-ALTER TABLE `module`
-  ADD PRIMARY KEY (`module_id`);
-
---
--- Indexes for table `problem`
---
-ALTER TABLE `problem`
-  ADD PRIMARY KEY (`problem_id`),
-  ADD KEY `criteria_Id` (`criteria_Id`),
-  ADD KEY `teacher_problem` (`teacher_id`);
-
---
--- Indexes for table `problem_assignment`
---
-ALTER TABLE `problem_assignment`
-  ADD PRIMARY KEY (`problem_assignment_id`),
-  ADD KEY `student_id` (`student_id`),
-  ADD KEY `problem_id` (`problem_id`);
-
---
--- Indexes for table `teacher_student_module`
---
-ALTER TABLE `teacher_student_module`
-  ADD PRIMARY KEY (`student_id`,`module_id`, `task_type`),
-  ADD KEY `teacher_id` (`teacher_id`),
-  ADD KEY `student_id` (`student_id`),
-  ADD KEY `module_id` (`module_id`),
-  ADD KEY `task_type` (`task_type`);
-
---
--- Indexes for table `theory`
---
-ALTER TABLE `theory`
-  ADD PRIMARY KEY (`theory_id`),
-  ADD KEY `criteria_Id` (`criteria_Id`),
-  ADD KEY `teacher_id` (`teacher_id`);
-
---
--- Indexes for table `theory_assignment`
---
-ALTER TABLE `theory_assignment`
-  ADD PRIMARY KEY (`theory_assignment_id`),
-  ADD KEY `student_id` (`student_id`),
-  ADD KEY `theory_id` (`theory_id`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`user_id`);
-
--- --------------------------------------------------------
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `category`
---
-ALTER TABLE `category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
---
--- AUTO_INCREMENT for table `criteria`
---
-ALTER TABLE `criteria`
-  MODIFY `criteria_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
---
--- AUTO_INCREMENT for table `evaluation`
---
-ALTER TABLE `evaluation`
-  MODIFY `evaluation_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `module`
---
-ALTER TABLE `module`
-  MODIFY `module_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `problem`
---
-ALTER TABLE `problem`
-  MODIFY `problem_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `problem_assignment`
---
-ALTER TABLE `problem_assignment`
-  MODIFY `problem_assignment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `theory`
---
-ALTER TABLE `theory`
-  MODIFY `theory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
---
--- AUTO_INCREMENT for table `theory_assignment`
---
-ALTER TABLE `theory_assignment`
-  MODIFY `theory_assignment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
--- --------------------------------------------------------
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `category`
---
-ALTER TABLE `category`
-  ADD CONSTRAINT `module` FOREIGN KEY (`module_id`) REFERENCES `module` (`module_id`);
-
---
--- Constraints for table `criteria`
---
-ALTER TABLE `criteria`
-  ADD CONSTRAINT `category` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`);
-
---
--- Constraints for table `evaluation`
---
-ALTER TABLE `evaluation`
-  ADD CONSTRAINT `criteria` FOREIGN KEY (`criteria_Id`) REFERENCES `criteria` (`criteria_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `instructor` FOREIGN KEY (`instructor_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `student` FOREIGN KEY (`student_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `problem`
---
-ALTER TABLE `problem`
-  ADD CONSTRAINT `criteria_id` FOREIGN KEY (`criteria_Id`) REFERENCES `criteria` (`criteria_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `teacher_problem` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `problem_assignment`
---
-ALTER TABLE `problem_assignment`
-  ADD CONSTRAINT `problem_id` FOREIGN KEY (`problem_id`) REFERENCES `problem` (`problem_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `student_id` FOREIGN KEY (`student_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `teacher_student_module`
---
-ALTER TABLE `teacher_student_module`
-  ADD CONSTRAINT `teacher_student_module_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `teacher_student_module_ibfk_2` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `teacher_student_module_ibfk_3` FOREIGN KEY (`module_id`) REFERENCES `module` (`module_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `theory`
---
-ALTER TABLE `theory`
-  ADD CONSTRAINT `teacher_theory` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `theory_ibfk_1` FOREIGN KEY (`criteria_Id`) REFERENCES `criteria` (`criteria_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `theory_assignment`
---
-ALTER TABLE `theory_assignment`
-  ADD CONSTRAINT `studen` FOREIGN KEY (`student_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `theory_id` FOREIGN KEY (`theory_id`) REFERENCES `theory` (`theory_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
