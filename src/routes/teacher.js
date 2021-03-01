@@ -77,54 +77,6 @@ router.post('/addProblem', cors(), checkRole(['teacher', 'instructor']), uploadF
 })
 
 
-router.get('/getProblemAssignmentsForEvaluation/:id', cors(), checkRole('teacher'), (req, res) => {
-  if (!req.params.id) {
-    // gotta catch them all
-    const inserts = [req.authData.userId]
-    const sql ="SELECT problem_assignment.problem_assignment_id,\
-    problem_assignment.problem_id, problem_assignment.student_id,\
-    problem_assignment.assign_date, problem_assignment.submission,\
-    problem_assignment.submission_time, problem.text, problem.criteria_id,\
-    problem.problem_id, criteria.criteria_id, criteria.text, user.email,\
-    user.first_name, user.last_name \
-    FROM problem_assignment, problem, criteria, user \
-    WHERE user.user_id = problem_assignment.student_id \
-    AND problem.problem_id = problem_assignment.problem_assignment_id \
-    AND criteria.criteria_id = problem.criteria_id AND problem_assignment.grade IS NULL \
-    AND problem_assignment.submission IS NOT NULL \
-    AND problem_assignment.teacher_id = ?"
-  } else {
-    // there can be only one
-    const inserts = [req.authData.userId, req.parans.id]
-    const sql ="SELECT problem_assignment.problem_assignment_id,\
-    problem_assignment.problem_id, problem_assignment.student_id,\
-    problem_assignment.assign_date, problem_assignment.submission,\
-    problem_assignment.submission_date, problem.text, problem.criteria_id,\
-    problem_assignment.submission_time, problem.text, problem.criteria_id,\
-    problem.problem_id, criteria.criteria_id, criteria.text\
-    FROM problem_assignment, problem, criteria, \
-    WHERE user.user_id = problem_assignment.student_id \
-    AND problem.problem_id = problem_assignment.problem_assignment_id \
-    AND criteria.criteria_id = problem.criteria_id AND problem_assignment.grade IS NULL \
-    AND problem_assignment.submission IS NOT NULL \
-    AND problem_assignment.teacher_id = ? \
-    AND problem_assignment.student_id = ?"
-    config.sql_pool().getConnection((err, connection) => {
-      connection.query(sql, inserts, (err, results, fields) => {
-
-        if (err) {
-          console.log(err);
-          res.status(500).end()
-        } else {
-          console.log(results);
-          res.status(200).json({id: results.insertId}).end()
-        }
-      })
-    })
-
-  }
-})
-
 /**
 * this takes a query string
 * ?criteria=criteria_id&student=student_id

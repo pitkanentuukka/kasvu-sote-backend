@@ -2,7 +2,6 @@ const pool = require('../db/mysql.js').pool
 
 
 exports.getStudentsForInstructor = async (id) => {
-  console.log(id);
   try {
     const results = await pool.query( "select distinct user_id, email,\
     concat (last_name, \' \', first_name\) as name\

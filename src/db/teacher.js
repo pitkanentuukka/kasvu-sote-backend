@@ -261,15 +261,6 @@ exports.getProblemTasks = async (user_id, criteria_id) => {
   }
 }
 
-exports.assignStudentAndTheoryForTeacher = async(userId, module_id, student_id) => {
-  console.log("tuli tänne 2, id=", student_id)
-  /*try {
-    results = await pool.query("", [])
-  } catch (error) {
-    throw error
-  }*/
-}
-
 exports.addStudentAndModule = async (teacher_id, module_id, student_id, task_type) => {
   try {
 /*    results = await pool.query( "INSERT IGNORE INTO teacher_student_module \
