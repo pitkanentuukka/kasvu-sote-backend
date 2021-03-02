@@ -397,16 +397,6 @@ exports.getAllEvaluations = async(teacher_id, student_id, criteria_id) => {
   }
 }
 
-exports.getNumberOfAssignmentsForCategoryAndStudent = async (student_id, category_id) => {
-  try {
-
-
-  } catch (e) {
-
-  }
-}
-
-
 
 exports.getNumberOfAssignmentsForCriteriaAndStudent = async (teacher_id, student_id, criteria_id) => {
   try {

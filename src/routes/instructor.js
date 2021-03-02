@@ -59,4 +59,48 @@ router.get("/students", cors(), checkRole('instructor'), async (req, res) => {
   }
 })
 
+router.get('/getNumberOfAssignmentsForCategory/', cors(), checkRole('instructor'), async (req, res) =>{
+  if (req.query.category_id && req.query.student_id) {
+    try {
+      if (await user.doesStudentBelongToTeacher(req.query.student_id, req.authData.userId)) {
+        const result = {}
+        result.total = await teacher.getNumberOfAssignmentsForCategoryAndStudent(req.authData.userId, req.query.student_id, req.query.category_id)
+        result.open = await teacher.getNumberOfOpenAssignmentsForCategoryAndStudent(req.authData.userId, req.query.student_id, req.query.category_id)
+        result.ungraded = await teacher.getNumberOfUngradedAssignmentsForCategoryAndStudent(req.authData.userId, req.query.student_id, req.query.category_id)
+        res.status(200).json(result).end()
+
+      } else {
+        res.status(403).end()
+      }
+    } catch (e) {
+      res.status(500).json(e).end()
+    }
+
+  } else {
+    res.status(400).end()
+  }
+})
+
+router.get('/getNumberOfAssignmentsForCriteria/', cors(), checkRole('instructor'), async (req, res) =>{
+  if (req.query.criteria_id && req.query.student_id) {
+    try {
+      if (await user.doesStudentBelongToTeacher(req.query.student_id, req.authData.userId)) {
+        const result = {}
+        result.total = await teacher.getNumberOfAssignmentsForCriteriaAndStudent(req.authData.userId, req.query.student_id, req.query.criteria_id)
+        result.open = await teacher.getNumberOfOpenAssignmentsForCriteriaAndStudent(req.authData.userId, req.query.student_id, req.query.criteria_id)
+        result.ungraded = await teacher.getNumberOfUngradedAssignmentsForCriteriaAndStudent(req.authData.userId, req.query.student_id, req.query.criteria_id)
+        res.status(200).json(result).end()
+
+      } else {
+        res.status(403).end()
+      }
+    } catch (e) {
+      res.status(500).json(e).end()
+    }
+
+  } else {
+    res.status(400).end()
+  }
+})
+
 module.exports = router
