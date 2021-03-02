@@ -396,3 +396,122 @@ exports.getAllEvaluations = async(teacher_id, student_id, criteria_id) => {
     throw (e)
   }
 }
+
+exports.getNumberOfAssignmentsForCategoryAndStudent = async (student_id, category_id) => {
+  try {
+
+
+  } catch (e) {
+
+  }
+}
+
+
+
+exports.getNumberOfAssignmentsForCriteriaAndStudent = async (teacher_id, student_id, criteria_id) => {
+  try {
+    const sql = "select count(*) from theory, theory_assignment \
+    where theory.teacher_id = ? \
+    and theory.criteria_id = ? \
+    and theory_assignment.theory_id = theory.theory_id \
+    and theory_assignment.student_id = ?"
+    const inserts = [teacher_id, criteria_id, student_id]
+    const result = await pool.query(sql, inserts)
+    return Object.values(result[0][0])[0]
+  } catch (e) {
+    throw e;
+  }
+}
+
+
+exports.getNumberOfOpenAssignmentsForCriteriaAndStudent = async (teacher_id, student_id, criteria_id) => {
+  try {
+    const sql = "select count(*) from theory, theory_assignment \
+    where theory.teacher_id = ? \
+    and theory.criteria_id = ? \
+    and theory_assignment.theory_id = theory.theory_id \
+    and theory_assignment.student_id = ? \
+    and theory_assignment.submission_text is null \
+    and theory_assignment.submission_file is null"
+    const inserts = [teacher_id, criteria_id, student_id]
+    const result = await pool.query(sql, inserts)
+    return Object.values(result[0][0])[0]
+  } catch (e) {
+    throw e;
+  }
+}
+
+exports.getNumberOfUngradedAssignmentsForCriteriaAndStudent = async (teacher_id, student_id, criteria_id) => {
+  try {
+    const sql = "select count(*) from theory, theory_assignment \
+    where theory.teacher_id = ? \
+    and theory.criteria_id = ? \
+    and theory_assignment.theory_id = theory.theory_id \
+    and theory_assignment.student_id = ? \
+    and theory_assignment.submission_text is not null \
+    and theory_assignment.submission_file is not null \
+    and theory_assignment.grade is null"
+    const inserts = [teacher_id, criteria_id, student_id]
+    const result = await pool.query(sql, inserts)
+    return Object.values(result[0][0])[0]
+  } catch (e) {
+    throw e;
+  }
+}
+
+
+exports.getNumberOfAssignmentsForCategoryAndStudent = async (teacher_id, student_id, category_id) => {
+  try {
+    const sql = "select count(*) from theory, theory_assignment, criteria \
+    where theory.teacher_id = ? \
+    and theory.criteria_id = criteria.criteria_id \
+    and criteria.category_id = ? \
+    and theory_assignment.theory_id = theory.theory_id \
+    and theory_assignment.student_id = ?"
+    const inserts = [teacher_id, category_id, student_id]
+    const result = await pool.query(sql, inserts)
+    console.log(result);
+    return Object.values(result[0][0])[0]
+  } catch (e) {
+    throw e;
+  }
+}
+
+exports.getNumberOfOpenAssignmentsForCategoryAndStudent = async (teacher_id, student_id, category_id) => {
+  try {
+    const sql = "select count(*) from theory, theory_assignment, criteria \
+    where theory.teacher_id = ? \
+    and theory.criteria_id = criteria.criteria_id \
+    and criteria.category_id = ? \
+    and theory_assignment.theory_id = theory.theory_id \
+    and theory_assignment.student_id = ? \
+    and theory_assignment.submission_text is null \
+    and theory_assignment.submission_file is null"
+    const inserts = [teacher_id, category_id, student_id]
+    const result = await pool.query(sql, inserts)
+
+    return Object.values(result[0][0])[0]
+  } catch (e) {
+    throw e;
+  }
+}
+
+
+exports.getNumberOfUngradedAssignmentsForCategoryAndStudent = async (teacher_id, student_id, category_id) => {
+  try {
+    const sql = "select count(*) from theory, theory_assignment, criteria \
+    where theory.teacher_id = ? \
+    and theory.criteria_id = criteria.criteria_id \
+    and criteria.category_id = ? \
+    and theory_assignment.theory_id = theory.theory_id \
+    and theory_assignment.student_id = ?\
+    and theory_assignment.submission_text is not null \
+    and theory_assignment.submission_file is not null \
+    and theory_assignment.grade is null"
+    const inserts = [teacher_id, category_id, student_id]
+    const result = await pool.query(sql, inserts)
+    return Object.values(result[0][0])[0]
+  } catch (e) {
+    throw e;
+  }
+}
