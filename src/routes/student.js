@@ -216,5 +216,45 @@ router.get('/getEvaluationsForCriteria/:id', cors(), checkRole('student'), async
 
 })
 
+router.get('/getNumberOfAssignmentsForCriteria/:id', cors(), checkRole('student'), async (req, res) =>{
+  if (req.params.id) {
+    try {
+      const result = {}
+      result.total = await student.getNumberOfAssignmentsForCriteria(req.authData.userId, req.params.id)
+      result.open = await student.getNumberOfOpenAssignmentsForCriteria(req.authData.userId, req.params.id)
+      result.graded = await student.getNumberOfGradedAssignmentsForCriteria(req.authData.userId, req.params.id)
+      res.status(200).json(result).end()
+    } catch (e) {
+      res.status(500).json(e).end()
+    console.log(e);
+    }
+  } else {
+    res.status(400).json({"msg": "missing criteria id"}).end()
+
+  }
+
+})
+
+
+
+
+router.get('/getNumberOfAssignmentsForCategory/:id', cors(), checkRole('student'), async (req, res) =>{
+  if (req.params.id) {
+    try {
+      const result = {}
+      result.total = await student.getNumberOfAssignmentsForCategory(req.authData.userId, req.params.id)
+      result.open = await student.getNumberOfOpenAssignmentsForCategory(req.authData.userId, req.params.id)
+      result.graded = await student.getNumberOfGradedAssignmentsForCategory(req.authData.userId, req.params.id)
+      res.status(200).json(result)-end()
+    } catch (e) {
+      res.status(500).json(e).end()
+    }
+  } else {
+    res.status(400).json({"msg": "missing category id"}).end()
+
+  }
+
+})
+
 
 module.exports = router

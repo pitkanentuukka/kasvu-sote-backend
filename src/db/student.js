@@ -226,3 +226,136 @@ exports.getEvaluationsForCriteria = async (student_id, criteria_id) => {
 
   }
 }
+
+exports.getNumberOfGradedAssignmentsForCriteria = async (student_id, criteria_id) => {
+  try {
+    const theoryAssignmentSql = "select count(*) from theory_assignment, theory \
+      where theory_assignment.student_id = ? \
+      and theory_assignment.theory_id = theory.theory_id \
+      and theory.criteria_id = ? \
+      and theory_assignment.grade is not null"
+      const problemAssignmentSql = "select count(*) from problem_assignment, problem \
+      where problem_assignment.student_id = ? \
+      and problem_assignment.problem_id = problem.problem_id \
+      and problem.criteria_id = ? \
+      and problem_assignment.grade is not null"
+    const inserts = [student_id, criteria_id]
+    const theoryResults = await pool.query(theoryAssignmentSql, inserts)
+    const problemResults = await pool.query(problemAssignmentSql, inserts)
+    return Object.values(theoryResults[0][0])[0] + Object.values(problemResults[0][0])[0]
+  } catch (e) {
+    throw e;
+  }
+}
+
+exports.getNumberOfAssignmentsForCriteria = async (student_id, criteria_id) => {
+  try {
+    const theoryAssignmentSql = "select count(*) from theory_assignment, theory \
+      where theory_assignment.student_id = ? \
+      and theory_assignment.theory_id = theory.theory_id \
+      and theory.criteria_id = ?"
+      const problemAssignmentSql = "select count(*) from problem_assignment, problem \
+      where problem_assignment.student_id = ? \
+      and problem_assignment.problem_id = problem.problem_id \
+      and problem.criteria_id = ?"
+    const inserts = [student_id, criteria_id]
+    const theoryResults = await pool.query(theoryAssignmentSql, inserts)
+    const problemResults = await pool.query(problemAssignmentSql, inserts)
+    return Object.values(theoryResults[0][0])[0] + Object.values(problemResults[0][0])[0]
+  } catch (e) {
+    throw e;
+  }
+}
+
+
+exports.getNumberOfOpenAssignmentsForCriteria = async (student_id, criteria_id) => {
+  try {
+    const theoryAssignmentSql = "select count(*) from theory_assignment, theory \
+      where theory_assignment.student_id = ? \
+      and theory_assignment.theory_id = theory.theory_id \
+      and theory.criteria_id = ?\
+      and theory_assignment.submission_text is null \
+      and theory_assignment.submission_file is null"
+      const problemAssignmentSql = "select count(*) from problem_assignment, problem \
+      where problem_assignment.student_id = ? \
+      and problem_assignment.problem_id = problem.problem_id \
+      and problem.criteria_id = ?\
+      and problem_assignment.submission_text is null \
+      and problem_assignment.submission_file is null"
+    const inserts = [student_id, criteria_id]
+    const theoryResults = await pool.query(theoryAssignmentSql, inserts)
+    const problemResults = await pool.query(problemAssignmentSql, inserts)
+    return Object.values(theoryResults[0][0])[0] + Object.values(problemResults[0][0])[0]
+  } catch (e) {
+    throw e;
+  }
+}
+
+exports.getNumberOfAssignmentsForCategory = async (student_id, category_id) => {
+  try {
+    const theoryAssignmentSql = "select count(*) from theory_assignment, theory, criteria \
+      where theory_assignment.student_id = ? \
+      and theory_assignment.theory_id = theory.theory_id \
+      and theory.criteria_id = criteria.criteria_id \
+      and criteria.category_id = ?"
+      const problemAssignmentSql = "select count(*) from problem_assignment, problem, criteria \
+      where problem_assignment.student_id = ? \
+      and problem_assignment.problem_id = problem.problem_id \
+      and problem.criteria_id = criteria.criteria_id \
+      and criteria.category_id = ?"
+    const inserts = [student_id, category_id]
+    const theoryResults = await pool.query(theoryAssignmentSql, inserts)
+    const problemResults = await pool.query(problemAssignmentSql, inserts)
+    return Object.values(theoryResults[0][0])[0] + Object.values(problemResults[0][0])[0]
+  } catch (e) {
+    throw e;
+  }
+}
+
+exports.getNumberOfOpenAssignmentsForCategory = async (student_id, category_id) => {
+  try {
+    const theoryAssignmentSql = "select count(*) from theory_assignment, theory, criteria \
+      where theory_assignment.student_id = ? \
+      and theory_assignment.theory_id = theory.theory_id \
+      and theory.criteria_id = criteria.criteria_id \
+      and criteria.category_id = ? \
+      and theory_assignment.submission_text is null \
+      and theory_assignment.submission_file is null"
+      const problemAssignmentSql = "select count(*) from problem_assignment, problem, criteria \
+      where problem_assignment.student_id = ? \
+      and problem_assignment.problem_id = problem.problem_id \
+      and problem.criteria_id = criteria.criteria_id \
+      and criteria.category_id = ? \
+      and problem_assignment.submission_text is null \
+      and problem_assignment.submission_file is null"
+    const inserts = [student_id, category_id]
+    const theoryResults = await pool.query(theoryAssignmentSql, inserts)
+    const problemResults = await pool.query(problemAssignmentSql, inserts)
+    return Object.values(theoryResults[0][0])[0] + Object.values(problemResults[0][0])[0]
+  } catch (e) {
+    throw e;
+  }
+}
+
+exports.getNumberOfGradedAssignmentsForCategory = async (student_id, category_id) => {
+  try {
+    const theoryAssignmentSql = "select count(*) from theory_assignment, theory, criteria \
+      where theory_assignment.student_id = ? \
+      and theory_assignment.theory_id = theory.theory_id \
+      and theory.criteria_id = criteria.criteria_id \
+      and criteria.category_id = ? \
+      and theory_assignment.grade is not null"
+      const problemAssignmentSql = "select count(*) from problem_assignment, problem, criteria \
+      where problem_assignment.student_id = ? \
+      and problem_assignment.problem_id = problem.problem_id \
+      and problem.criteria_id = criteria.criteria_id \
+      and criteria.category_id = ? \
+      and problem_assignment.grade is not null"
+    const inserts = [student_id, category_id]
+    const theoryResults = await pool.query(theoryAssignmentSql, inserts)
+    const problemResults = await pool.query(problemAssignmentSql, inserts)
+    return Object.values(theoryResults[0][0])[0] + Object.values(problemResults[0][0])[0]
+  } catch (e) {
+    throw e;
+  }
+}
