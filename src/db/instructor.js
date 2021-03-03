@@ -146,7 +146,6 @@ exports.getNumberOfAssignmentsForCategoryAndStudent = async (teacher_id, student
     and problem_assignment.student_id = ?"
     const inserts = [teacher_id, category_id, student_id]
     const result = await pool.query(sql, inserts)
-    console.log(result);
     return Object.values(result[0][0])[0]
   } catch (e) {
     throw e;
