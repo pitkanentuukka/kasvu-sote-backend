@@ -67,32 +67,32 @@ INSERT INTO `user` (`user_id`, `email`, `password`, `role`, `first_name`, `last_
 
 INSERT INTO `problem` (`problem_id`, `criteria_Id`, `file`, `text`, `teacher_id`, `hidden`) VALUES
 -- module 1 category 1-10, criteria 1-59
-(1, 1, 'ongelmanratkaisutehtävän teksti 1-1', 3, FALSE),
-(2, 2, 'ongelmanratkaisutehtävän teksti 2-2', 3, FALSE),
-(3, 1, 'ongelmanratkaisutehtävän teksti 3-1', 4, FALSE),
-(4, 1, 'ongelmanratkaisutehtävän teksti 4-1', 3, FALSE),
-(5, 1, 'ongelmanratkaisutehtävän teksti 5-1', 3, FALSE),
-(6, 2, 'ongelmanratkaisutehtävän teksti 6-2', 3, FALSE),
-(7, 2, 'ongelmanratkaisutehtävän teksti 7-2', 3, FALSE),
-(8, 2, 'ongelmanratkaisutehtävän teksti 8-2', 3, FALSE),
-(9, 1, 'ongelmanratkaisutehtävän teksti 9-1', 3, FALSE),
-(10, 1, 'ongelmanratkaisutehtävän teksti 10-1', 3, FALSE),
-(11, 2, 'ongelmanratkaisutehtävän teksti 11-2', 3, FALSE),
-(12, 1, 'ongelmanratkaisutehtävän teksti 12-1', 3, FALSE),
-(13, 2, 'ongelmanratkaisutehtävän teksti 13-2', 3, FALSE),
-(14, 3, 'ongelmanratkaisutehtävän teksti 14-3', 3, FALSE),
+(1, 1, NULL, 'ongelmanratkaisutehtävän teksti 1-1', 3, FALSE),
+(2, 2, NULL, 'ongelmanratkaisutehtävän teksti 2-2', 3, FALSE),
+(3, 1, NULL, 'ongelmanratkaisutehtävän teksti 3-1', 4, FALSE),
+(4, 1, NULL, 'ongelmanratkaisutehtävän teksti 4-1', 3, FALSE),
+(5, 1, NULL, 'ongelmanratkaisutehtävän teksti 5-1', 3, FALSE),
+(6, 2, NULL, 'ongelmanratkaisutehtävän teksti 6-2', 3, FALSE),
+(7, 2, NULL, 'ongelmanratkaisutehtävän teksti 7-2', 3, FALSE),
+(8, 2, NULL, 'ongelmanratkaisutehtävän teksti 8-2', 3, FALSE),
+(9, 1, NULL, 'ongelmanratkaisutehtävän teksti 9-1', 3, FALSE),
+(10, 1, NULL, 'ongelmanratkaisutehtävän teksti 10-1', 3, FALSE),
+(11, 2, NULL, 'ongelmanratkaisutehtävän teksti 11-2', 3, FALSE),
+(12, 1, NULL, 'ongelmanratkaisutehtävän teksti 12-1', 3, FALSE),
+(13, 2, NULL, 'ongelmanratkaisutehtävän teksti 13-2', 3, FALSE),
+(14, 3, NULL, 'ongelmanratkaisutehtävän teksti 14-3', 3, FALSE),
 -- module 2 category 11-21, criteria 60-149
-(15, 60, 'ongelmanratkaisutehtävän teksti 15-60', 3, FALSE),
-(16, 60, 'ongelmanratkaisutehtävän teksti 16-60', 3, FALSE),
-(17, 61, 'ongelmanratkaisutehtävän teksti 17-61', 3, FALSE),
-(18, 61, 'ongelmanratkaisutehtävän teksti 18-61', 3, FALSE),
-(19, 60, 'ongelmanratkaisutehtävän teksti 19-60', 3, FALSE),
-(20, 61, 'ongelmanratkaisutehtävän teksti 20-61', 3, FALSE),
-(21, 61, 'ongelmanratkaisutehtävän teksti 21-61', 3, FALSE), 
-(22, 60, 'ongelmanratkaisutehtävän teksti 22-60', 3, FALSE),
-(23, 60, 'ongelmanratkaisutehtävän teksti 23-60', 3, FALSE),
-(24, 61, 'ongelmanratkaisutehtävän teksti 24-61', 3, FALSE),
-(25, 60, 'ongelmanratkaisutehtävän teksti 25-60', 3, FALSE);
+(15, 60, NULL, 'ongelmanratkaisutehtävän teksti 15-60', 3, FALSE),
+(16, 60, NULL, 'ongelmanratkaisutehtävän teksti 16-60', 3, FALSE),
+(17, 61, NULL, 'ongelmanratkaisutehtävän teksti 17-61', 3, FALSE),
+(18, 61, NULL, 'ongelmanratkaisutehtävän teksti 18-61', 3, FALSE),
+(19, 60, NULL, 'ongelmanratkaisutehtävän teksti 19-60', 3, FALSE),
+(20, 61, NULL, 'ongelmanratkaisutehtävän teksti 20-61', 3, FALSE),
+(21, 61, NULL, 'ongelmanratkaisutehtävän teksti 21-61', 3, FALSE), 
+(22, 60,  NULL,'ongelmanratkaisutehtävän teksti 22-60', 3, FALSE),
+(23, 60, NULL, 'ongelmanratkaisutehtävän teksti 23-60', 3, FALSE),
+(24, 61, NULL, 'ongelmanratkaisutehtävän teksti 24-61', 3, FALSE),
+(25, 60, NULL, 'ongelmanratkaisutehtävän teksti 25-60', 3, FALSE);
 
 --
 -- Vedos taulusta `problem_assignment`
@@ -162,16 +162,16 @@ INSERT INTO `teacher_student_module` (`teacher_id`, `student_id`, `module_id`, `
 
 INSERT INTO `theory` (`theory_id`, `file`, `criteria_Id`, `text`, `teacher_id`, `hidden`) VALUES
 -- module 1 category 1-10
-(1, 1, 'teoriatehtävä 1-1', 3), -- category 1, criteria 1
-(2, 2, 'teoriatehtävä 2-2', 3), -- category 1, criteria 2
-(3, 1, 'teoriatehtävä 3-1', 3), -- category 1, criteria 1
-(4, 2, 'teoriatehtävä 4-2', 3), -- category 1, criteria 2
-(5, 3, 'teoriatehtävä 5-3', 3), -- category 1, criteria 3
+(1, NULL, 1, 'teoriatehtävä 1-1', 3, FALSE),
+(2, NULL, 2, 'teoriatehtävä 2-2', 3, FALSE),
+(3, NULL, 1, 'teoriatehtävä 3-1', 3, FALSE),
+(4, NULL, 2, 'teoriatehtävä 4-2', 3, FALSE),
+(5, NULL, 3, 'teoriatehtävä 5-3', 3, FALSE),
 -- module 2 category 11-21
-(6, 60, 'teoriatehtävä 5-60', 3), -- category 1, criteria 1
-(7, 61, 'teoriatehtävä 6-61', 3), -- category 1, criteria 2
-(8, 62, 'teoriatehtävä 7-62', 3), -- category 1, criteria 1
-(9, 63, 'teoriatehtävä 8-63', 3); -- category 1, criteria 2
+(6, NULL, 60, 'teoriatehtävä 5-60', 3, FALSE),
+(7, NULL, 61, 'teoriatehtävä 6-61', 3, FALSE),
+(8, NULL, 62, 'teoriatehtävä 7-62', 3, FALSE),
+(9, NULL, 63, 'teoriatehtävä 8-63', 3, FALSE);
 
 --
 -- Vedos taulusta `theory_assignment`
