@@ -64,9 +64,9 @@ router.get('/getNumberOfAssignmentsForCategory/', cors(), checkRole('instructor'
     try {
       if (await user.doesStudentBelongToTeacher(req.query.student_id, req.authData.userId)) {
         const result = {}
-        result.total = await teacher.getNumberOfAssignmentsForCategoryAndStudent(req.authData.userId, req.query.student_id, req.query.category_id)
-        result.open = await teacher.getNumberOfOpenAssignmentsForCategoryAndStudent(req.authData.userId, req.query.student_id, req.query.category_id)
-        result.ungraded = await teacher.getNumberOfUngradedAssignmentsForCategoryAndStudent(req.authData.userId, req.query.student_id, req.query.category_id)
+        result.total = await instructor.getNumberOfAssignmentsForCategoryAndStudent(req.authData.userId, req.query.student_id, req.query.category_id)
+        result.open = await instructor.getNumberOfOpenAssignmentsForCategoryAndStudent(req.authData.userId, req.query.student_id, req.query.category_id)
+        result.ungraded = await instructor.getNumberOfUngradedAssignmentsForCategoryAndStudent(req.authData.userId, req.query.student_id, req.query.category_id)
         res.status(200).json(result).end()
 
       } else {
@@ -86,9 +86,9 @@ router.get('/getNumberOfAssignmentsForCriteria/', cors(), checkRole('instructor'
     try {
       if (await user.doesStudentBelongToTeacher(req.query.student_id, req.authData.userId)) {
         const result = {}
-        result.total = await teacher.getNumberOfAssignmentsForCriteriaAndStudent(req.authData.userId, req.query.student_id, req.query.criteria_id)
-        result.open = await teacher.getNumberOfOpenAssignmentsForCriteriaAndStudent(req.authData.userId, req.query.student_id, req.query.criteria_id)
-        result.ungraded = await teacher.getNumberOfUngradedAssignmentsForCriteriaAndStudent(req.authData.userId, req.query.student_id, req.query.criteria_id)
+        result.total = await instructor.getNumberOfAssignmentsForCriteriaAndStudent(req.authData.userId, req.query.student_id, req.query.criteria_id)
+        result.open = await instructor.getNumberOfOpenAssignmentsForCriteriaAndStudent(req.authData.userId, req.query.student_id, req.query.criteria_id)
+        result.ungraded = await instructor.getNumberOfUngradedAssignmentsForCriteriaAndStudent(req.authData.userId, req.query.student_id, req.query.criteria_id)
         res.status(200).json(result).end()
 
       } else {
