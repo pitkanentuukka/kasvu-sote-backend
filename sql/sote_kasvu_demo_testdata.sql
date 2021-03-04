@@ -66,34 +66,33 @@ INSERT INTO `user` (`user_id`, `email`, `password`, `role`, `first_name`, `last_
 --
 
 INSERT INTO `problem` (`problem_id`, `criteria_Id`, `file`, `text`, `teacher_id`, `hidden`) VALUES
-INSERT INTO `problem` (`problem_id`, `criteria_Id`, `text`, `teacher_id`) VALUES
 -- module 1 category 1-10, criteria 1-59
-(1, 1, 'ongelmanratkaisutehtävän teksti 1-1', 3),
-(2, 2, 'ongelmanratkaisutehtävän teksti 2-2', 3),
-(3, 1, 'ongelmanratkaisutehtävän teksti 3-1', 4),
-(4, 1, 'ongelmanratkaisutehtävän teksti 4-1', 3),
-(5, 1, 'ongelmanratkaisutehtävän teksti 5-1', 3),
-(6, 2, 'ongelmanratkaisutehtävän teksti 6-2', 3),
-(7, 2, 'ongelmanratkaisutehtävän teksti 7-2', 3),
-(8, 2, 'ongelmanratkaisutehtävän teksti 8-2', 3),
-(9, 1, 'ongelmanratkaisutehtävän teksti 9-1', 3),
-(10, 1, 'ongelmanratkaisutehtävän teksti 10-1', 3),
-(11, 2, 'ongelmanratkaisutehtävän teksti 11-2', 3),
-(12, 1, 'ongelmanratkaisutehtävän teksti 12-1', 3),
-(13, 2, 'ongelmanratkaisutehtävän teksti 13-2', 3),
-(14, 3, 'ongelmanratkaisutehtävän teksti 14-3', 3),
+(1, 1, 'ongelmanratkaisutehtävän teksti 1-1', 3, FALSE),
+(2, 2, 'ongelmanratkaisutehtävän teksti 2-2', 3, FALSE),
+(3, 1, 'ongelmanratkaisutehtävän teksti 3-1', 4, FALSE),
+(4, 1, 'ongelmanratkaisutehtävän teksti 4-1', 3, FALSE),
+(5, 1, 'ongelmanratkaisutehtävän teksti 5-1', 3, FALSE),
+(6, 2, 'ongelmanratkaisutehtävän teksti 6-2', 3, FALSE),
+(7, 2, 'ongelmanratkaisutehtävän teksti 7-2', 3, FALSE),
+(8, 2, 'ongelmanratkaisutehtävän teksti 8-2', 3, FALSE),
+(9, 1, 'ongelmanratkaisutehtävän teksti 9-1', 3, FALSE),
+(10, 1, 'ongelmanratkaisutehtävän teksti 10-1', 3, FALSE),
+(11, 2, 'ongelmanratkaisutehtävän teksti 11-2', 3, FALSE),
+(12, 1, 'ongelmanratkaisutehtävän teksti 12-1', 3, FALSE),
+(13, 2, 'ongelmanratkaisutehtävän teksti 13-2', 3, FALSE),
+(14, 3, 'ongelmanratkaisutehtävän teksti 14-3', 3, FALSE),
 -- module 2 category 11-21, criteria 60-149
-(15, 60, 'ongelmanratkaisutehtävän teksti 15-60', 3),
-(16, 60, 'ongelmanratkaisutehtävän teksti 16-60', 3),
-(17, 61, 'ongelmanratkaisutehtävän teksti 17-61', 3),
-(18, 61, 'ongelmanratkaisutehtävän teksti 18-61', 3),
-(19, 60, 'ongelmanratkaisutehtävän teksti 19-60', 3),
-(20, 61, 'ongelmanratkaisutehtävän teksti 20-61', 3),
-(21, 61, 'ongelmanratkaisutehtävän teksti 21-61', 3), 
-(22, 60, 'ongelmanratkaisutehtävän teksti 22-60', 3),
-(23, 60, 'ongelmanratkaisutehtävän teksti 23-60', 3),
-(24, 61, 'ongelmanratkaisutehtävän teksti 24-61', 3),
-(25, 60, 'ongelmanratkaisutehtävän teksti 25-60', 3);
+(15, 60, 'ongelmanratkaisutehtävän teksti 15-60', 3, FALSE),
+(16, 60, 'ongelmanratkaisutehtävän teksti 16-60', 3, FALSE),
+(17, 61, 'ongelmanratkaisutehtävän teksti 17-61', 3, FALSE),
+(18, 61, 'ongelmanratkaisutehtävän teksti 18-61', 3, FALSE),
+(19, 60, 'ongelmanratkaisutehtävän teksti 19-60', 3, FALSE),
+(20, 61, 'ongelmanratkaisutehtävän teksti 20-61', 3, FALSE),
+(21, 61, 'ongelmanratkaisutehtävän teksti 21-61', 3, FALSE), 
+(22, 60, 'ongelmanratkaisutehtävän teksti 22-60', 3, FALSE),
+(23, 60, 'ongelmanratkaisutehtävän teksti 23-60', 3, FALSE),
+(24, 61, 'ongelmanratkaisutehtävän teksti 24-61', 3, FALSE),
+(25, 60, 'ongelmanratkaisutehtävän teksti 25-60', 3, FALSE);
 
 --
 -- Vedos taulusta `problem_assignment`
