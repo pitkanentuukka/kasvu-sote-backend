@@ -7,6 +7,19 @@
 -- Palvelimen versio: 10.3.27-MariaDB-0+deb10u1
 -- PHP Version: 7.3.19-1~deb10u1
 
+START TRANSACTION;
+DELETE FROM problem_assignment;
+DELETE FROM problem;
+DELETE FROM theory_assignment;
+DELETE FROM theory;
+DELETE FROM evaluation;
+DELETE FROM user;
+COMMIT;
+
+
+
+
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -24,6 +37,7 @@ SET time_zone = "+00:00";
 --
 -- Vedos taulusta `user`
 --
+
 
 INSERT INTO `user` (`user_id`, `email`, `password`, `role`, `first_name`, `last_name`) VALUES
 (1, 'someone@example.com', '$2b$10$xMP0yVK3GyR8Seuq2czyEOctMUo39LIkWJ5ExYa8DkHCzyue0pHhG', 'admin', 'Jaska', 'Jokunen'),
@@ -88,7 +102,7 @@ INSERT INTO `problem` (`problem_id`, `criteria_Id`, `file`, `text`, `teacher_id`
 (18, 61, NULL, 'ongelmanratkaisutehtävän teksti 18-61', 3, FALSE),
 (19, 60, NULL, 'ongelmanratkaisutehtävän teksti 19-60', 3, FALSE),
 (20, 61, NULL, 'ongelmanratkaisutehtävän teksti 20-61', 3, FALSE),
-(21, 61, NULL, 'ongelmanratkaisutehtävän teksti 21-61', 3, FALSE), 
+(21, 61, NULL, 'ongelmanratkaisutehtävän teksti 21-61', 3, FALSE),
 (22, 60,  NULL,'ongelmanratkaisutehtävän teksti 22-60', 3, FALSE),
 (23, 60, NULL, 'ongelmanratkaisutehtävän teksti 23-60', 3, FALSE),
 (24, 61, NULL, 'ongelmanratkaisutehtävän teksti 24-61', 3, FALSE),
@@ -180,7 +194,7 @@ INSERT INTO `theory` (`theory_id`, `file`, `criteria_Id`, `text`, `teacher_id`, 
 INSERT INTO `theory_assignment` (`theory_assignment_id`, `theory_id`, `student_id`, `assign_date`, `submission_file`, `submission_text`, `submission_time`, `self_grade`, `self_evaluation_text`, `self_evaluation_datetime`, `grade`, `evaluation`, `evaluation_datetime`) VALUES
 (1, 1, 5, '2020-10-29 10:59:39', NULL, "teoriatehtävä 1", '2020-11-01 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
 (2, 2, 5, '2020-10-29 10:59:39', NULL, "teoriatehtävä 2", '2020-11-01 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(3, 6, 6, '2020-10-29 12:45:16', NULL, "teoriatehtävä 6", '2020-11-01 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL), 
+(3, 6, 6, '2020-10-29 12:45:16', NULL, "teoriatehtävä 6", '2020-11-01 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
 (4, 7, 6, '2020-10-29 12:45:16', NULL, "teoriatehtävä 7", '2020-11-01 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
 (5, 7, 7, '2020-10-30 13:25:45', NULL, "teoriatehtävä 7", '2020-11-02 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
 (6, 6, 7, '2020-10-30 13:25:45', NULL, "teoriatehtävä 6", '2020-11-02 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -204,7 +218,7 @@ INSERT INTO `theory_assignment` (`theory_assignment_id`, `theory_id`, `student_i
 
 INSERT INTO `evaluation` (`evaluation_id`, `criteria_Id`, `student_id`, `instructor_id`, `evaluation_text`, `evaluation_date`) VALUES
 (1, 1, 5, 4, "palaute työpaikkaohjaajalta 1-1", "2020-12-15 14:00:00"),
-(2, 61, 7, 4, "palaute työpaikkaohjaajalta 2-61", "2020-12-15 14:00:00"), 
+(2, 61, 7, 4, "palaute työpaikkaohjaajalta 2-61", "2020-12-15 14:00:00"),
 (3, 1, 9, 4, "palaute työpaikkaohjaajalta 3-1", "2020-12-15 14:00:00"),
 (4, 3, 11, 4, "palaute työpaikkaohjaajalta 4-3", "2020-12-15 14:00:00"),
 (5, 1, 12, 4, "palaute työpaikkaohjaajalta 5-1", "2020-12-15 14:00:00");
