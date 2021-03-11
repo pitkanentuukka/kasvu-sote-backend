@@ -124,8 +124,8 @@ exports.getNumberOfUngradedAssignmentsForCriteriaAndStudent = async (teacher_id,
     and problem.criteria_id = ? \
     and problem_assignment.problem_id = problem.problem_id \
     and problem_assignment.student_id = ? \
-    and problem_assignment.submission_text is not null \
-    and problem_assignment.submission_file is not null \
+    and (problem_assignment.submission_text is not null \
+    or problem_assignment.submission_file is not null) \
     and problem_assignment.grade is null"
     const inserts = [teacher_id, criteria_id, student_id]
     const result = await pool.query(sql, inserts)
@@ -180,8 +180,8 @@ exports.getNumberOfUngradedAssignmentsForCategoryAndStudent = async (teacher_id,
     and criteria.category_id = ? \
     and problem_assignment.problem_id = problem.problem_id \
     and problem_assignment.student_id = ?\
-    and problem_assignment.submission_text is not null \
-    and problem_assignment.submission_file is not null \
+    and (problem_assignment.submission_text is not null \
+    or problem_assignment.submission_file is not null) \
     and problem_assignment.grade is null"
     const inserts = [teacher_id, category_id, student_id]
     const result = await pool.query(sql, inserts)
