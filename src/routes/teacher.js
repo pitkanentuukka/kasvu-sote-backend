@@ -509,4 +509,22 @@ router.get('/getNumberOfAssignmentsForCriteria/', cors(), checkRole('teacher'), 
     res.status(400).end()
   }
 })
+
+router.get('/search/:search', cors(), checkRole('teacher'), async (req, res) =>{
+  console.log(req.params);
+  if (req.params.search) {
+    try {
+      const result = await teacher.search(req.authData.userId, req.params.search)
+
+      res.status(200).json(result).end()
+
+    } catch (e) {
+      res.status(500).json(e).end()
+    }
+  } else {
+    res.status(400).end()
+  }
+
+})
+
 module.exports = router

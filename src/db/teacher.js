@@ -504,3 +504,35 @@ exports.getNumberOfUngradedAssignmentsForCategoryAndStudent = async (teacher_id,
     throw e;
   }
 }
+
+
+
+exports.search = async (teacher_id, search) => {
+  try {
+    const result = {}
+    const theorySql = "select * from theory where theory.text like concat('%', ?, '%') and theory.teacher_id = ?"
+    const theoryResult = await pool.query(theorySql, [search, teacher_id])
+    const theoryAssignmentSql = "select * from theory_assignment, theory where theory_assignment.theory_id = theory.theory_id \
+    and theory.teacher_id = ? \
+    and theory_assignment.submission_text like concat('%', ?, '%') \
+    or theory_assignment.self_evaluation_text like concat('%', ?, '%') \
+    or theory_assignment.evaluation like concat('%', ?, '%')"
+    const theoryAssignmentResult = await pool.query(theoryAssignmentSql, [teacher_id, search, search, search])
+    const problemSql = "select * from problem where problem.text like concat('%', ?, '%') and problem.teacher_id = ?"
+    const problemResult = await pool.query(problemSql, [search, teacher_id])
+    const problemAssignmentSql = "select * from problem_assignment, problem where problem_assignment.problem_id = problem.problem_id \
+    and problem.teacher_id = ? \
+    and problem_assignment.submission_text like concat('%', ?, '%') \
+    or problem_assignment.evaluation like concat('%', ?, '%')"
+    const problemAssignmentResult = await pool.query(problemAssignmentSql, [teacher_id, search, search])
+    result.theory = theoryResult[0]
+    result.theoryAssignment = theoryAssignmentResult[0]
+    result.problem = problemResult[0]
+    result.problemAssignment = problemAssignmentResult[0]
+
+    return result
+  } catch (e) {
+    throw e
+  }
+
+}
