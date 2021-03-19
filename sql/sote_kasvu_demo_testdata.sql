@@ -81,63 +81,63 @@ INSERT INTO `user` (`user_id`, `email`, `password`, `role`, `first_name`, `last_
 
 INSERT INTO `problem` (`problem_id`, `criteria_Id`, `file`, `text`, `teacher_id`, `hidden`) VALUES
 -- module 1 category 1-10, criteria 1-59
-(1, 1, NULL, 'ongelmanratkaisutehtävän teksti 1-1', 3, FALSE),
-(2, 2, NULL, 'ongelmanratkaisutehtävän teksti 2-2', 3, FALSE),
-(3, 1, NULL, 'ongelmanratkaisutehtävän teksti 3-1', 4, FALSE),
-(4, 1, NULL, 'ongelmanratkaisutehtävän teksti 4-1', 3, FALSE),
-(5, 1, NULL, 'ongelmanratkaisutehtävän teksti 5-1', 3, FALSE),
-(6, 2, NULL, 'ongelmanratkaisutehtävän teksti 6-2', 3, FALSE),
-(7, 2, NULL, 'ongelmanratkaisutehtävän teksti 7-2', 3, FALSE),
-(8, 2, NULL, 'ongelmanratkaisutehtävän teksti 8-2', 3, FALSE),
-(9, 1, NULL, 'ongelmanratkaisutehtävän teksti 9-1', 3, FALSE),
-(10, 1, NULL, 'ongelmanratkaisutehtävän teksti 10-1', 3, FALSE),
-(11, 2, NULL, 'ongelmanratkaisutehtävän teksti 11-2', 3, FALSE),
-(12, 1, NULL, 'ongelmanratkaisutehtävän teksti 12-1', 3, FALSE),
-(13, 2, NULL, 'ongelmanratkaisutehtävän teksti 13-2', 3, FALSE),
-(14, 3, NULL, 'ongelmanratkaisutehtävän teksti 14-3', 3, FALSE),
+(1, 1, NULL, 'toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen', 3, FALSE),
+(2, 2, NULL, 'noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa', 3, FALSE),
+(3, 1, NULL, 'toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen', 4, FALSE),
+(4, 1, NULL, 'toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen', 3, FALSE),
+(5, 1, NULL, 'toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen', 3, FALSE),
+(6, 2, NULL, 'noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa', 3, FALSE),
+(7, 2, NULL, 'noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa', 3, FALSE),
+(8, 2, NULL, 'noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa', 3, FALSE),
+(9, 1, NULL, 'toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen', 3, FALSE),
+(10, 1, NULL, 'toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen', 3, FALSE),
+(11, 2, NULL, 'noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa', 3, FALSE),
+(12, 1, NULL, 'toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen', 3, FALSE),
+(13, 2, NULL, 'noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa', 3, FALSE),
+(14, 3, NULL, 'toimii kasvatus-, sosiaali- ja terveysalan työn arvojen ja lähihoitajan ammattieettisten ohjeiden mukaan', 3, FALSE),
 -- module 2 category 11-21, criteria 60-149
-(15, 60, NULL, 'ongelmanratkaisutehtävän teksti 15-60', 3, FALSE),
-(16, 60, NULL, 'ongelmanratkaisutehtävän teksti 16-60', 3, FALSE),
-(17, 61, NULL, 'ongelmanratkaisutehtävän teksti 17-61', 3, FALSE),
-(18, 61, NULL, 'ongelmanratkaisutehtävän teksti 18-61', 3, FALSE),
-(19, 60, NULL, 'ongelmanratkaisutehtävän teksti 19-60', 3, FALSE),
-(20, 61, NULL, 'ongelmanratkaisutehtävän teksti 20-61', 3, FALSE),
-(21, 61, NULL, 'ongelmanratkaisutehtävän teksti 21-61', 3, FALSE),
-(22, 60,  NULL,'ongelmanratkaisutehtävän teksti 22-60', 3, FALSE),
-(23, 60, NULL, 'ongelmanratkaisutehtävän teksti 23-60', 3, FALSE),
-(24, 61, NULL, 'ongelmanratkaisutehtävän teksti 24-61', 3, FALSE),
-(25, 60, NULL, 'ongelmanratkaisutehtävän teksti 25-60', 3, FALSE);
+(15, 60, NULL, 'noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.', 3, FALSE),
+(16, 60, NULL, 'noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.', 3, FALSE),
+(17, 61, NULL, 'toimii kestävän kehityksen periaatteiden mukaisesti ja perustelee toimintaansa.', 3, FALSE),
+(18, 61, NULL, 'toimii kestävän kehityksen periaatteiden mukaisesti ja perustelee toimintaansa.', 3, FALSE),
+(19, 60, NULL, 'noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.', 3, FALSE),
+(20, 61, NULL, 'toimii kestävän kehityksen periaatteiden mukaisesti ja perustelee toimintaansa.', 3, FALSE),
+(21, 61, NULL, 'toimii kestävän kehityksen periaatteiden mukaisesti ja perustelee toimintaansa.', 3, FALSE),
+(22, 60,  NULL,'noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.', 3, FALSE),
+(23, 60, NULL, 'noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.', 3, FALSE),
+(24, 61, NULL, 'toimii kestävän kehityksen periaatteiden mukaisesti ja perustelee toimintaansa.', 3, FALSE),
+(25, 60, NULL, 'noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.', 3, FALSE);
 
 --
 -- Vedos taulusta `problem_assignment`
 --
 
 INSERT INTO `problem_assignment` (`problem_assignment_id`, `problem_id`, `student_id`, `assign_date`, `submission_file`, `submission_text`, `submission_time`, `grade`, `evaluation`, `evaluation_datetime`) VALUES
-(1, 1, 5, '2020-10-29 10:59:39', NULL, "ongelmaratkaisun tehtävä 1-1", '2020-10-31 11:00:00', NULL, NULL, NULL),
-(2, 2, 5, '2020-10-29 12:45:16', NULL, "ongelmaratkaisun tehtävä 2-2", '2020-10-31 11:00:00', NULL, NULL, NULL),
-(3, 3, 5, '2020-10-30 13:25:45', NULL, "ongelmaratkaisun tehtävä 3-3", '2020-11-01 11:00:00', NULL, NULL, NULL),
-(4, 15, 6, '2020-10-30 14:45:21', NULL, "ongelmaratkaisun tehtävä 4-15", '2020-11-01 11:00:00', NULL, NULL, NULL),
-(5, 16, 6, '2020-10-31 10:25:33', NULL, "ongelmaratkaisun tehtävä 5-16", '2020-11-02 11:00:00', NULL, NULL, NULL),
-(6, 17, 6, '2020-10-31 10:45:15', NULL, "ongelmaratkaisun tehtävä 6-17", '2020-11-02 11:00:00', NULL, NULL, NULL),
-(7, 18, 7, '2020-10-31 13:45:56', NULL, "ongelmaratkaisun tehtävä 7-18", '2020-11-02 11:00:00', NULL, NULL, NULL),
-(8, 19, 7, '2020-11-02 14:55:42', NULL, "ongelmaratkaisun tehtävä 8-19", '2020-11-04 11:00:00', NULL, NULL, NULL),
-(9, 20, 8, '2020-11-02 11:45:26', NULL, "ongelmaratkaisun tehtävä 9-20", '2020-11-04 11:00:00', NULL, NULL, NULL),
-(10, 21, 8, '2020-11-02 11:50:43', NULL, "ongelmaratkaisun tehtävä 10-21", '2020-11-04 11:00:00', NULL, NULL, NULL),
-(11, 4, 9, '2020-11-02 11:50:43', NULL, "ongelmaratkaisun tehtävä 11-4", '2020-11-04 11:00:00', NULL, NULL, NULL),
-(12, 5, 9, '2020-11-02 11:50:43', NULL, "ongelmaratkaisun tehtävä 12-5", '2020-11-04 11:00:00', NULL, NULL, NULL),
-(13, 6, 9, '2020-11-02 11:50:43', NULL, "ongelmaratkaisun tehtävä 13-6", '2020-11-04 11:00:00', NULL, NULL, NULL),
-(14, 22, 10, '2020-11-02 11:50:43', NULL, "ongelmaratkaisun tehtävä 14-22", '2020-11-04 11:00:00', NULL, NULL, NULL),
-(15, 23, 10, '2020-11-02 11:50:43', NULL, "ongelmaratkaisun tehtävä 15-23", '2020-11-04 11:00:00', NULL, NULL, NULL),
-(16, 7, 11, '2020-11-02 11:50:43', NULL, "ongelmaratkaisun tehtävä 16-7", '2020-11-04 11:00:00', NULL, NULL, NULL),
-(17, 8, 11, '2020-11-02 11:50:43', NULL, "ongelmaratkaisun tehtävä 17-8", '2020-11-04 11:00:00', NULL, NULL, NULL),
-(18, 9, 11, '2020-11-02 11:50:43', NULL, "ongelmaratkaisun tehtävä 18-9", '2020-11-04 11:00:00', NULL, NULL, NULL),
-(19, 10, 12, '2020-11-02 11:50:43', NULL, "ongelmaratkaisun tehtävä 19-10", '2020-11-04 11:00:00', NULL, NULL, NULL),
-(20, 11, 12, '2020-11-02 11:50:43', NULL, "ongelmaratkaisun tehtävä 20-11", '2020-11-04 11:00:00', NULL, NULL, NULL),
-(21, 12, 13, '2020-11-02 11:50:43', NULL, "ongelmaratkaisun tehtävä 21-12", '2020-11-04 11:00:00', NULL, NULL, NULL),
-(22, 13, 13, '2020-11-02 11:50:43', NULL, "ongelmaratkaisun tehtävä 22-13", '2020-11-04 11:00:00', NULL, NULL, NULL),
-(23, 14, 13, '2020-11-02 11:50:43', NULL, "ongelmaratkaisun tehtävä 23-14", '2020-11-04 11:00:00', NULL, NULL, NULL),
-(24, 24, 14, '2020-11-02 11:50:43', NULL, "ongelmaratkaisun tehtävä 24-24", '2020-11-04 11:00:00', NULL, NULL, NULL),
-(25, 25, 14, '2020-11-02 11:50:43', NULL, "ongelmaratkaisun tehtävä 25-25", '2020-11-04 11:00:00', NULL, NULL, NULL);
+(1, 1, 5, '2020-10-29 10:59:39', NULL, "toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen", '2020-10-31 11:00:00', NULL, NULL, NULL),
+(2, 2, 5, '2020-10-29 12:45:16', NULL, "noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa", '2020-10-31 11:00:00', NULL, NULL, NULL),
+(3, 3, 5, '2020-10-30 13:25:45', NULL, "Olen työpaikkalla toiminut asiakkaan perus- ja ihmisoikeuksia kunnioittaen", '2020-11-01 11:00:00', NULL, NULL, NULL),
+(4, 15, 6, '2020-10-30 14:45:21', NULL, "noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.", '2020-11-01 11:00:00', NULL, NULL, NULL),
+(5, 16, 6, '2020-10-31 10:25:33', NULL, "noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.", '2020-11-02 11:00:00', NULL, NULL, NULL),
+(6, 17, 6, '2020-10-31 10:45:15', NULL, "toimii kestävän kehityksen periaatteiden mukaisesti ja perustelee toimintaansa.", '2020-11-02 11:00:00', NULL, NULL, NULL),
+(7, 18, 7, '2020-10-31 13:45:56', NULL, "toimii kestävän kehityksen periaatteiden mukaisesti ja perustelee toimintaansa.", '2020-11-02 11:00:00', NULL, NULL, NULL),
+(8, 19, 7, '2020-11-02 14:55:42', NULL, "noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.", '2020-11-04 11:00:00', NULL, NULL, NULL),
+(9, 20, 8, '2020-11-02 11:45:26', NULL, "toimii kestävän kehityksen periaatteiden mukaisesti ja perustelee toimintaansa.", '2020-11-04 11:00:00', NULL, NULL, NULL),
+(10, 21, 8, '2020-11-02 11:50:43', NULL, "toimii kestävän kehityksen periaatteiden mukaisesti ja perustelee toimintaansa.", '2020-11-04 11:00:00', NULL, NULL, NULL),
+(11, 4, 9, '2020-11-02 11:50:43', NULL, "toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen", '2020-11-04 11:00:00', NULL, NULL, NULL),
+(12, 5, 9, '2020-11-02 11:50:43', NULL, "toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen", '2020-11-04 11:00:00', NULL, NULL, NULL),
+(13, 6, 9, '2020-11-02 11:50:43', NULL, "noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa", '2020-11-04 11:00:00', NULL, NULL, NULL),
+(14, 22, 10, '2020-11-02 11:50:43', NULL, "noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.", '2020-11-04 11:00:00', NULL, NULL, NULL),
+(15, 23, 10, '2020-11-02 11:50:43', NULL, "noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.", '2020-11-04 11:00:00', NULL, NULL, NULL),
+(16, 7, 11, '2020-11-02 11:50:43', NULL, "noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa", '2020-11-04 11:00:00', NULL, NULL, NULL),
+(17, 8, 11, '2020-11-02 11:50:43', NULL, "noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa", '2020-11-04 11:00:00', NULL, NULL, NULL),
+(18, 9, 11, '2020-11-02 11:50:43', NULL, "toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen", '2020-11-04 11:00:00', NULL, NULL, NULL),
+(19, 10, 12, '2020-11-02 11:50:43', NULL, "toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen", '2020-11-04 11:00:00', NULL, NULL, NULL),
+(20, 11, 12, '2020-11-02 11:50:43', NULL, "noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa", '2020-11-04 11:00:00', NULL, NULL, NULL),
+(21, 12, 13, '2020-11-02 11:50:43', NULL, "toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen", '2020-11-04 11:00:00', NULL, NULL, NULL),
+(22, 13, 13, '2020-11-02 11:50:43', NULL, "noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa", '2020-11-04 11:00:00', NULL, NULL, NULL),
+(23, 14, 13, '2020-11-02 11:50:43', NULL, "toimii kasvatus-, sosiaali- ja terveysalan työn arvojen ja lähihoitajan ammattieettisten ohjeiden mukaan", '2020-11-04 11:00:00', NULL, NULL, NULL),
+(24, 24, 14, '2020-11-02 11:50:43', NULL, "toimii kestävän kehityksen periaatteiden mukaisesti ja perustelee toimintaansa.", '2020-11-04 11:00:00', NULL, NULL, NULL),
+(25, 25, 14, '2020-11-02 11:50:43', NULL, "noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.", '2020-11-04 11:00:00', NULL, NULL, NULL);
 
 --
 -- Vedos taulusta `teacher_student_module`
@@ -176,52 +176,52 @@ INSERT INTO `teacher_student_module` (`teacher_id`, `student_id`, `module_id`, `
 
 INSERT INTO `theory` (`theory_id`, `file`, `criteria_Id`, `text`, `teacher_id`, `hidden`) VALUES
 -- module 1 category 1-10
-(1, NULL, 1, 'teoriatehtävä 1-1', 3, FALSE),
-(2, NULL, 2, 'teoriatehtävä 2-2', 3, FALSE),
-(3, NULL, 1, 'teoriatehtävä 3-1', 3, FALSE),
-(4, NULL, 2, 'teoriatehtävä 4-2', 3, FALSE),
-(5, NULL, 3, 'teoriatehtävä 5-3', 3, FALSE),
+(1, NULL, 1, 'toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen', 3, FALSE),
+(2, NULL, 2, 'noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa', 3, FALSE),
+(3, NULL, 1, 'toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen', 3, FALSE),
+(4, NULL, 2, 'noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa', 3, FALSE),
+(5, NULL, 3, 'toimii kasvatus-, sosiaali- ja terveysalan työn arvojen ja lähihoitajan ammattieettisten ohjeiden mukaan', 3, FALSE),
 -- module 2 category 11-21
-(6, NULL, 60, 'teoriatehtävä 5-60', 3, FALSE),
-(7, NULL, 61, 'teoriatehtävä 6-61', 3, FALSE),
-(8, NULL, 62, 'teoriatehtävä 7-62', 3, FALSE),
-(9, NULL, 63, 'teoriatehtävä 8-63', 3, FALSE);
+(6, NULL, 60, 'noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.', 3, FALSE),
+(7, NULL, 61, 'toimii kestävän kehityksen periaatteiden mukaisesti ja perustelee toimintaansa.', 3, FALSE),
+(8, NULL, 62, 'asettaa tavoitteita työlleen yhdessä asiakkaiden kanssa tarve- ja kulttuurilähtöisesti ja suunnittelee työtään sen pohjalta.', 3, FALSE),
+(9, NULL, 63, 'esittää vaihtoehtoisia toimintatapoja ja tekee työtä asiakaslähtöisesti perustellen toimintaansa.', 3, FALSE);
 
 --
 -- Vedos taulusta `theory_assignment`
 --
 
 INSERT INTO `theory_assignment` (`theory_assignment_id`, `theory_id`, `student_id`, `assign_date`, `submission_file`, `submission_text`, `submission_time`, `self_grade`, `self_evaluation_text`, `self_evaluation_datetime`, `grade`, `evaluation`, `evaluation_datetime`) VALUES
-(1, 1, 5, '2020-10-29 10:59:39', NULL, "teoriatehtävä 1", '2020-11-01 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(2, 2, 5, '2020-10-29 10:59:39', NULL, "teoriatehtävä 2", '2020-11-01 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(3, 6, 6, '2020-10-29 12:45:16', NULL, "teoriatehtävä 6", '2020-11-01 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(4, 7, 6, '2020-10-29 12:45:16', NULL, "teoriatehtävä 7", '2020-11-01 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(5, 7, 7, '2020-10-30 13:25:45', NULL, "teoriatehtävä 7", '2020-11-02 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(6, 6, 7, '2020-10-30 13:25:45', NULL, "teoriatehtävä 6", '2020-11-02 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(7, 7, 8, '2020-10-30 14:45:21', NULL, "teoriatehtävä 7", '2020-11-02 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(8, 1, 9, '2020-10-31 10:45:15', NULL, "teoriatehtävä 1", '2020-11-03 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(9, 2, 9, '2020-10-31 10:45:15', NULL, "teoriatehtävä 2", '2020-11-03 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(10, 6, 10, '2020-11-02 14:55:42', NULL, "teoriatehtävä 6", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(11, 3, 11, '2020-11-02 11:45:26', NULL, "teoriatehtävä 3", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(12, 4, 11, '2020-11-02 11:45:26', NULL, "teoriatehtävä 4", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(13, 1, 12, '2020-11-02 11:50:43', NULL, "teoriatehtävä 1", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(14, 4, 12, '2020-11-02 11:50:43', NULL, "teoriatehtävä 4", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(15, 3, 13, '2020-11-02 11:50:43', NULL, "teoriatehtävä 3", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(16, 4, 13, '2020-11-02 11:50:43', NULL, "teoriatehtävä 4", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(17, 5, 13, '2020-11-02 11:50:43', NULL, "teoriatehtävä 5", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(18, 7, 14, '2020-11-02 11:50:43', NULL, "teoriatehtävä 7", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(19, 6, 14, '2020-11-02 11:50:43', NULL, "teoriatehtävä 6", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL);
+(1, 1, 5, '2020-10-29 10:59:39', NULL, "toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen", '2020-11-01 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 2, 5, '2020-10-29 10:59:39', NULL, "noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa", '2020-11-01 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(3, 6, 6, '2020-10-29 12:45:16', NULL, "noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.", '2020-11-01 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL), 
+(4, 7, 6, '2020-10-29 12:45:16', NULL, "toimii kestävän kehityksen periaatteiden mukaisesti ja perustelee toimintaansa.", '2020-11-01 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(5, 7, 7, '2020-10-30 13:25:45', NULL, "toimii kestävän kehityksen periaatteiden mukaisesti ja perustelee toimintaansa.", '2020-11-02 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(6, 6, 7, '2020-10-30 13:25:45', NULL, "noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.", '2020-11-02 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(7, 7, 8, '2020-10-30 14:45:21', NULL, "toimii kestävän kehityksen periaatteiden mukaisesti ja perustelee toimintaansa.", '2020-11-02 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(8, 1, 9, '2020-10-31 10:45:15', NULL, "toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen", '2020-11-03 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(9, 2, 9, '2020-10-31 10:45:15', NULL, "noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa", '2020-11-03 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(10, 6, 10, '2020-11-02 14:55:42', NULL, "noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(11, 3, 11, '2020-11-02 11:45:26', NULL, "toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(12, 4, 11, '2020-11-02 11:45:26', NULL, "noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(13, 1, 12, '2020-11-02 11:50:43', NULL, "toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(14, 4, 12, '2020-11-02 11:50:43', NULL, "noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(15, 3, 13, '2020-11-02 11:50:43', NULL, "toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(16, 4, 13, '2020-11-02 11:50:43', NULL, "noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(17, 5, 13, '2020-11-02 11:50:43', NULL, "toimii kasvatus-, sosiaali- ja terveysalan työn arvojen ja lähihoitajan ammattieettisten ohjeiden mukaan", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(18, 7, 14, '2020-11-02 11:50:43', NULL, "toimii kestävän kehityksen periaatteiden mukaisesti ja perustelee toimintaansa.", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(19, 6, 14, '2020-11-02 11:50:43', NULL, "noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.", '2020-11-05 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Vedos taulusta `evaluation`
 --
 
 INSERT INTO `evaluation` (`evaluation_id`, `criteria_Id`, `student_id`, `instructor_id`, `evaluation_text`, `evaluation_date`) VALUES
-(1, 1, 5, 4, "palaute työpaikkaohjaajalta 1-1", "2020-12-15 14:00:00"),
-(2, 61, 7, 4, "palaute työpaikkaohjaajalta 2-61", "2020-12-15 14:00:00"),
-(3, 1, 9, 4, "palaute työpaikkaohjaajalta 3-1", "2020-12-15 14:00:00"),
-(4, 3, 11, 4, "palaute työpaikkaohjaajalta 4-3", "2020-12-15 14:00:00"),
-(5, 1, 12, 4, "palaute työpaikkaohjaajalta 5-1", "2020-12-15 14:00:00");
+(1, 1, 5, 4, "On toiminut asiallisesti työpaikalla ollessa, kunnioittanut työkavereita ja saanut myös kehuja asiakaspalvelutehtävistä suoraan asiakkailta", "2020-12-15 14:00:00"),
+(2, 61, 7, 4, "On toiminut kehityksen periaatteiden mukaisesti ja perustellut hyvin toimintaansa.", "2020-12-15 14:00:00"),
+(3, 1, 9, 4, "On toiminut asiallisesti työpaikalla ollessa, kunnioittanut työkavereita ja ollut hyvä asiakaspalvelutehtävissä", "2020-12-15 14:00:00"),
+(4, 3, 11, 4, "On toiminut terveysalan työn arvojen ja lähihoitajan ohjeiden mukaisesti", "2020-12-15 14:00:00"),
+(5, 1, 12, 4, "On toiminut asiallisesti työpaikalla ollessa, saanut hyvää palautettu työkavereilta", "2020-12-15 14:00:00");
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
