@@ -113,8 +113,8 @@ INSERT INTO `problem` (`problem_id`, `criteria_Id`, `file`, `text`, `teacher_id`
 --
 
 INSERT INTO `problem_assignment` (`problem_assignment_id`, `problem_id`, `student_id`, `assign_date`, `submission_file`, `submission_text`, `submission_time`, `grade`, `evaluation`, `evaluation_datetime`) VALUES
-(1, 1, 5, '2020-10-29 10:59:39', NULL, "toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen", '2020-10-31 11:00:00', NULL, NULL, NULL),
-(2, 2, 5, '2020-10-29 12:45:16', NULL, "noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa", '2020-10-31 11:00:00', NULL, NULL, NULL),
+(1, 1, 5, '2020-10-29 10:59:39', NULL, "Olen toiminut asiakkaiden perus- ja ihmisoikeuksia kunnioittaen työpaikalla", '2020-10-31 11:00:00', NULL, NULL, NULL),
+(2, 2, 5, '2020-10-29 12:45:16', NULL, "Olen noudattanut terveysalan lainsäädäntöä ja määräyksiä työpaikan työryhmän kanssa", '2020-10-31 11:00:00', NULL, NULL, NULL),
 (3, 3, 5, '2020-10-30 13:25:45', NULL, "Olen työpaikkalla toiminut asiakkaan perus- ja ihmisoikeuksia kunnioittaen", '2020-11-01 11:00:00', NULL, NULL, NULL),
 (4, 15, 6, '2020-10-30 14:45:21', NULL, "noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.", '2020-11-01 11:00:00', NULL, NULL, NULL),
 (5, 16, 6, '2020-10-31 10:25:33', NULL, "noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.", '2020-11-02 11:00:00', NULL, NULL, NULL),
@@ -192,8 +192,8 @@ INSERT INTO `theory` (`theory_id`, `file`, `criteria_Id`, `text`, `teacher_id`, 
 --
 
 INSERT INTO `theory_assignment` (`theory_assignment_id`, `theory_id`, `student_id`, `assign_date`, `submission_file`, `submission_text`, `submission_time`, `self_grade`, `self_evaluation_text`, `self_evaluation_datetime`, `grade`, `evaluation`, `evaluation_datetime`) VALUES
-(1, 1, 5, '2020-10-29 10:59:39', NULL, "toimii asiakkaan perus- ja ihmisoikeuksia kunnioittaen", '2020-11-01 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-(2, 2, 5, '2020-10-29 10:59:39', NULL, "noudattaa kasvatus-, sosiaali- ja terveysalan lainsäädäntöä, määräyksiä, toimintaperiaatteita ja työpaikan ohjeita työryhmän kanssa", '2020-11-01 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(1, 1, 5, '2020-10-29 10:59:39', NULL, "Olen muistanut toimia asiakkaiden perus- ja ihmisoikeuksia kunnioittaen", '2020-11-01 12:00:00', 3, "Mielestäni ole toiminut asiakkaiden perus- ja ihmisoikeuksia kunnioittaen", '2020-11-01 12:00:00', NULL, NULL, NULL),
+(2, 2, 5, '2020-10-29 10:59:39', NULL, "Olen toiminut kasvatus- ja terveysalan määräyksiä ohjeiden mukaan", '2020-11-01 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
 (3, 6, 6, '2020-10-29 12:45:16', NULL, "noudattaa sosiaali- ja terveysalan säädöksiä, säännöksiä, määräyksiä ja eettisiä periaatteita muuttuvissa tilanteissa.", '2020-11-01 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL), 
 (4, 7, 6, '2020-10-29 12:45:16', NULL, "toimii kestävän kehityksen periaatteiden mukaisesti ja perustelee toimintaansa.", '2020-11-01 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
 (5, 7, 7, '2020-10-30 13:25:45', NULL, "toimii kestävän kehityksen periaatteiden mukaisesti ja perustelee toimintaansa.", '2020-11-02 12:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -217,7 +217,7 @@ INSERT INTO `theory_assignment` (`theory_assignment_id`, `theory_id`, `student_i
 --
 
 INSERT INTO `evaluation` (`evaluation_id`, `criteria_Id`, `student_id`, `instructor_id`, `evaluation_text`, `evaluation_date`) VALUES
-(1, 1, 5, 4, "On toiminut asiallisesti työpaikalla ollessa, kunnioittanut työkavereita ja saanut myös kehuja asiakaspalvelutehtävistä suoraan asiakkailta", "2020-12-15 14:00:00"),
+(1, 1, 5, 4, "Hän toiminut asiallisesti työpaikalla ollessa. Hän myös kunnioittanut muita työkavereita.", "2020-12-15 14:00:00"),
 (2, 61, 7, 4, "On toiminut kehityksen periaatteiden mukaisesti ja perustellut hyvin toimintaansa.", "2020-12-15 14:00:00"),
 (3, 1, 9, 4, "On toiminut asiallisesti työpaikalla ollessa, kunnioittanut työkavereita ja ollut hyvä asiakaspalvelutehtävissä", "2020-12-15 14:00:00"),
 (4, 3, 11, 4, "On toiminut terveysalan työn arvojen ja lähihoitajan ohjeiden mukaisesti", "2020-12-15 14:00:00"),
